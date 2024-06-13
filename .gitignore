@@ -1,32 +1,35 @@
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
+# Ignorowanie plików binarnych i wyników kompilacji
+/build/
 *.o
 *.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
 *.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
 *.exe
-*.out
-*.app
+*.dll
+*.dylib
+
+# Ignorowanie plików generowanych przez CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.ninja
+*.ninja_deps
+*.ninja_log
+rules.ninja
+
+# Ignorowanie plików konfiguracyjnych i tymczasowych edytorów
+*.swp
+*~
+.DS_Store
+
+# Ignorowanie plików logów
+*.log
+
+# Ignorowanie plików Qt
+*.user
+*.pro.user
+*.pro.user.*
+
+# Ignorowanie plików generowanych przez Doxygen
+docs/html/
+docs/latex/

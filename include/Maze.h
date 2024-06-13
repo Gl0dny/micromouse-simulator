@@ -9,7 +9,8 @@ public:
     void generateMaze();
     bool isWall(int x, int y) const;
     void displayMaze() const;
-
+    int getWidth() const;
+    int getHeight() const;
 private:
     int width, height;
     std::vector<std::vector<int>> mazeGrid;

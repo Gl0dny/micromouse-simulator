@@ -41,6 +41,9 @@ void Maze::displayMaze() const {
     }
 }
 
+int Maze::getWidth() const { return width; }
+int Maze::getHeight() const { return height; }
+
 
 
 

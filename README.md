@@ -82,3 +82,89 @@ Zaimplementuj klasę Sensor jako szablon:
 Zaimplementuj interfejs użytkownika: Użyj Qt do stworzenia GUI.
 Testuj i debuguj: Utwórz testy jednostkowe i integracyjne w folderze tests.
 Dokumentacja: Udokumentuj kod przy użyciu doxygen. -->
+
+## Opis diagramu:
+
+    Simulator: Zarządza instancjami Maze i Robot, oraz kontroluje symulację.
+    Maze: Reprezentuje labirynt, zawiera siatkę z komórkami labiryntu oraz metody do generowania i wyświetlania labiryntu.
+    Robot: Reprezentuje robota w labiryncie, przechowuje jego pozycję oraz sensory.
+    Sensor: Reprezentuje czujnik robota, wykrywa otoczenie.
+    GUI: Odpowiada za wyświetlanie labiryntu i robota, ale w tej strukturze jest to klasa abstrakcyjna, bardziej jak koncept.
+    MainWindow: Główne okno aplikacji Qt, zawiera widget labiryntu oraz instancję symulatora.
+    MazeWidget: Widget odpowiedzialny za rysowanie labiryntu i robota.
+    Utils: Zawiera funkcje pomocnicze, takie jak czytanie plików, generowanie liczb losowych oraz logowanie wiadomości.
+
+```mermaid
+classDiagram
+    class Simulator {
+        -Maze maze
+        -Robot robot
+        +start()
+        +reset()
+        +getMaze() : Maze
+        +getRobot() : Robot
+    }
+
+    class Maze {
+        -int width
+        -int height
+        -vector~vector~int~~ mazeGrid
+        +Maze(int width, int height)
+        +generateMaze()
+        +isWall(int x, int y) : bool
+        +displayMaze()
+        +getWidth() : int
+        +getHeight() : int
+    }
+
+    class Robot {
+        -int x
+        -int y
+        -vector~Sensor~ sensors
+        +Robot(int startX, int startY)
+        +move()
+        +getX() : int
+        +getY() : int
+        +addSensor(Sensor* sensor)
+    }
+
+    class Sensor {
+        +detect() : int
+        +getType() : string
+    }
+
+    class GUI {
+        +displayMaze(Maze* maze)
+        +displayRobot(Robot* robot)
+    }
+
+    class MainWindow {
+        -MazeWidget* mazeWidget
+        -Simulator* simulator
+        +MainWindow(QWidget* parent = nullptr)
+        +~MainWindow()
+        +startSimulation()
+        +resetSimulation()
+    }
+
+    class MazeWidget {
+        -Simulator* simulator
+        +MazeWidget(QWidget* parent = nullptr, Simulator* simulator = nullptr)
+        +paintEvent(QPaintEvent* event)
+    }
+
+    class Utils {
+        +readFile(const string &fileName) : vector~string~
+        +getRandomNumber(int min, int max) : int
+        +logMessage(const string &message)
+    }
+
+    Simulator --> Maze : uses
+    Simulator --> Robot : uses
+    Simulator --> GUI : uses
+    Maze --> Utils : uses
+    Robot --> Sensor : contains
+    MainWindow --> Simulator : contains
+    MainWindow --> MazeWidget : contains
+    MazeWidget --> Simulator : uses
+

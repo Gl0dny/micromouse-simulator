@@ -1,16 +1,16 @@
 cmake_minimum_required(VERSION 3.10)
 
-# Nazwa projektu
+# Project name
 project(MicromouseProject)
 
-# Wersja standardu C++
+# C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Ścieżki do nagłówków
+# Include directories
 include_directories(include)
 
-# Dodajemy wszystkie pliki źródłowe
+# Source files
 set(SOURCES
     src/Micromouse.cpp
     src/Robot.cpp
@@ -18,18 +18,29 @@ set(SOURCES
     src/Sensor.cpp
     src/Simulator.cpp
     src/GUI.cpp
+    src/Utils.cpp
+    src/MainWindow.cpp
+    src/MazeWidget.cpp
 )
 
-# Tworzenie głównego pliku wykonywalnego
+# Main executable
 add_executable(MicromouseProject main.cpp ${SOURCES})
 
-# # Dodajemy bibliotekę Qt5 (jeśli używasz Qt)
-# find_package(Qt5 REQUIRED COMPONENTS Widgets)
-# include_directories(${Qt5Widgets_INCLUDE_DIRS})
-# target_link_libraries(MicromouseProject Qt5::Widgets)
+# Test executable
+add_executable(tests tests/test_maze.cpp ${SOURCES})
 
-# # Dodajemy testy
-# add_executable(tests tests/test_main.cpp ${SOURCES})
-# target_link_libraries(tests Qt5::Widgets)
-# enable_testing()
-# add_test(NAME tests COMMAND tests)
+# Enable testing
+enable_testing()
+add_test(NAME maze_tests COMMAND tests)
+
+# Włączenie automatycznego generowania plików MOC dla Qt
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
+# If using Qt5, uncomment these lines and add the necessary components
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
+include_directories(${Qt5Widgets_INCLUDE_DIRS})
+target_link_libraries(MicromouseProject Qt5::Widgets)
+target_link_libraries(tests Qt5::Widgets)
+

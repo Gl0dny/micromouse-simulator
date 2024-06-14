@@ -1,16 +1,16 @@
-#ifndef MICROMOUSE_H
-#define MICROMOUSE_H
+#include "Micromouse.h"
 
-#include "Robot.h"
+Micromouse::Micromouse(int startX, int startY)
+    : Robot(startX, startY) {}
 
-class Micromouse : public Robot {
-public:
-    Micromouse(int startX, int startY);
-    void move() override;
-    void updateSensors() override;
-    void makeDecision() override;
-};
+void Micromouse::move() {
+    // Implement the movement logic
+}
 
-#endif // MICROMOUSE_H
+void Micromouse::updateSensors() {
+    // Implement sensor update logic
+}
 
-// Kod definiuje klasę Micromouse dziedziczącą po klasie Robot, dostosowaną do symulacji robota micromouse - poruszającego się po labiryncie. Wykorzystuje dziedziczenie i przesłanianie metod do dostosowania zachowań takich jak ruch, aktualizacje sensorów oraz podejmowanie decyzji specyficznych dla zadań robota micromouse.
+void Micromouse::makeDecision() {
+    // Implement decision-making logic
+}

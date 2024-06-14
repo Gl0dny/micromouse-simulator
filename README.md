@@ -1,6 +1,17 @@
 Wstępny Opis Projektu: Symulacja Micromouse
 1. Opis Projektu
 
+<!-- TODO
+
+Dodaj klasę logera - //logger z virtual metodą log, która ma bazową implementację ale może być override
+Loguj testy maze do pliku
+Zrozum gtest config zakomentowany
+Napraw pojawianie się walli dodatkowych w maze
+
+
+Zaimplementuj interfejs użytkownika: Użyj Qt do stworzenia GUI.
+Dokumentacja: Udokumentuj kod przy użyciu doxygen.  -->
+
 Projekt zakłada stworzenie symulacji robota typu micromouse, którego zadaniem jest przejście przez labirynt. Robot będzie wyposażony w czujniki, które pozwolą mu zbierać dane o otoczeniu, i na ich podstawie podejmować decyzje dotyczące ruchu. Symulacja będzie zawierała wizualizację ruchu robota w labiryncie.
 
 2. Funkcjonalność
@@ -82,9 +93,7 @@ make
 sudo make install
 
 
-<!-- 
-Zaimplementuj interfejs użytkownika: Użyj Qt do stworzenia GUI.
-Dokumentacja: Udokumentuj kod przy użyciu doxygen. --> 
+
 
 ## Opis diagramu:
 

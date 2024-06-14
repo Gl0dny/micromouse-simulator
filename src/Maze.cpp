@@ -27,6 +27,9 @@ void Maze::generateMaze() {
     // Ensuring full connectivity
     // ensureFullConnectivity();
 
+    //Display maze
+    // displayMaze();
+
     Utils::logMessage("Maze generation completed.");
 }
 
@@ -88,7 +91,7 @@ void Maze::carvePassage(int x, int y) {
     Utils::logMessage("Carving passage at (" + std::to_string(x) + ", " + std::to_string(y) + ").");
 
     // Print maze with current position
-    printMazeWithCurrentPosition(x, y);
+    // printMazeWithCurrentPosition(x, y);
 
     std::random_device rd;
     std::mt19937 g(rd());

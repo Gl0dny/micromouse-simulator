@@ -30,7 +30,8 @@ namespace Utils {
     }
 
     void logMessage(const std::string &message) {
-        std::cout << "[LOG] " << message << std::endl;
+        // std::cout << "[LOG] " << message << std::endl;
+        //logger z virtual metodą log, która ma bazową implementację ale może być override
     }
 
 } // namespace Utils

@@ -9,11 +9,13 @@ public:
     void generateMaze();
     bool isWall(int x, int y) const;
     void displayMaze() const;
-    int getWidth() const;
-    int getHeight() const;
+
 private:
+    void carvePassage(int x, int y);
+
     int width, height;
     std::vector<std::vector<int>> mazeGrid;
+    std::vector<std::pair<int, int>> directions;
 };
 
 #endif // MAZE_H

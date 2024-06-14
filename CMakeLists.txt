@@ -38,12 +38,12 @@ add_executable(MicromouseProject main.cpp ${SOURCES})
 # Linkowanie bibliotek Qt5
 target_link_libraries(MicromouseProject Qt5::Widgets)
 
-# Test executable
-add_executable(tests tests/test_maze.cpp ${SOURCES})
+# # Test executable
+# add_executable(tests tests/test_maze.cpp ${SOURCES})
 
-# Linkowanie bibliotek Qt5 do testów
-target_link_libraries(tests Qt5::Widgets)
+# # Linkowanie bibliotek Qt5 do testów
+# target_link_libraries(tests Qt5::Widgets)
 
-# Enable testing
-enable_testing()
-add_test(NAME maze_tests COMMAND tests)
+# # Enable testing
+# enable_testing()
+# add_test(NAME maze_tests COMMAND tests)

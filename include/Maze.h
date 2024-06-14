@@ -2,6 +2,8 @@
 #define MAZE_H
 
 #include <vector>
+#include <map>
+#include <string>
 
 class Maze {
 public:
@@ -11,11 +13,17 @@ public:
     void displayMaze() const;
 
 private:
-    void carvePassage(int x, int y);
-
-    int width, height;
+    int width;
+    int height;
     std::vector<std::vector<int>> mazeGrid;
     std::vector<std::pair<int, int>> directions;
+    std::map<std::pair<int, int>, std::string> directionNames;
+
+    void carvePassage(int x, int y);
+    void createRandomExit();
+    bool isValidExit(int x, int y);
+    void ensureFullConnectivity();
+    void printMazeWithCurrentPosition(int cx, int cy) const;
 };
 
 #endif // MAZE_H

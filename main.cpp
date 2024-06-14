@@ -2,8 +2,8 @@
 #include "Maze.h"
 
 int main() {
-    int width = 21;  // Szerokość labiryntu
-    int height = 21; // Wysokość labiryntu
+    int width = 11;  // Szerokość labiryntu
+    int height = 11; // Wysokość labiryntu
 
     Maze maze(width, height);
     maze.generateMaze();

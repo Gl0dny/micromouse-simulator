@@ -42,7 +42,10 @@ Projekt zakłada stworzenie symulacji robota typu micromouse, którego zadaniem 
 1. Struktura katalogów projektu
 
     MicromouseProject/
+    ├── CMakeLists.txt
     ├── include/
+    │   ├── MainWindow.h
+    │   ├── MazeWidget.h
     │   ├── Micromouse.h
     │   ├── Robot.h
     │   ├── Maze.h
@@ -51,6 +54,8 @@ Projekt zakłada stworzenie symulacji robota typu micromouse, którego zadaniem 
     │   ├── GUI.h
     │   └── Utils.h
     ├── src/
+    │   ├── MainWindow.cpp
+    │   ├── MazeWidget.cpp
     │   ├── Micromouse.cpp
     │   ├── Robot.cpp
     │   ├── Maze.cpp
@@ -58,14 +63,9 @@ Projekt zakłada stworzenie symulacji robota typu micromouse, którego zadaniem 
     │   ├── Simulator.cpp
     │   ├── GUI.cpp
     │   └── Utils.cpp
-    ├── resources/
-    │   ├── maze_data.txt 
-    ├── tests/
-    │   ├── test_main.cpp
-    ├── docs/
-    │   ├── doxygen_config (plik konfiguracyjny doxygen)
-    ├── CMakeLists.txt
-    └── README.md
+    ├── main.cpp
+    └── build.sh
+
 
 Dependencies:
 

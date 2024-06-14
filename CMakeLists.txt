@@ -18,6 +18,9 @@ set(SOURCES
     src/Sensor.cpp
     src/Simulator.cpp
     src/GUI.cpp
+    src/Utils.cpp
+    src/MainWindow.cpp
+    src/MazeWidget.cpp
 )
 
 # Tworzenie głównego pliku wykonywalnego

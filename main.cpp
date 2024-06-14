@@ -4,7 +4,7 @@
 
 int main() {
     // Utworzenie obiektu labiryntu o szerokości 5 i wysokości 3
-    Maze maze(5, 3);
+    Maze maze(10, 10);
 
     // Generowanie labiryntu (z pliku lub losowe)
     maze.generateMaze();

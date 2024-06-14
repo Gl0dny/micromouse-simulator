@@ -2,6 +2,7 @@ Wstępny Opis Projektu: Symulacja Micromouse
 1. Opis Projektu
 
 Projekt zakłada stworzenie symulacji robota typu micromouse, którego zadaniem jest przejście przez labirynt. Robot będzie wyposażony w czujniki, które pozwolą mu zbierać dane o otoczeniu, i na ich podstawie podejmować decyzje dotyczące ruchu. Symulacja będzie zawierała wizualizację ruchu robota w labiryncie.
+
 2. Funkcjonalność
 
     Generowanie i wyświetlanie labiryntu: Labirynt będzie generowany losowo lub wczytywany z pliku. Będzie wyświetlany w interfejsie użytkownika, pokazując zarówno ściany, jak i wolne przestrzenie.
@@ -16,9 +17,9 @@ Projekt zakłada stworzenie symulacji robota typu micromouse, którego zadaniem 
 
     Obszar wyświetlania labiryntu: Centralna część okna, gdzie będzie wyświetlany labirynt i pozycja robota.
     Panel kontrolny: Panel boczny zawierający przyciski sterujące:
-        Start/Pauza: Rozpoczęcie lub zatrzymanie symulacji.
-        Reset: Zresetowanie symulacji.
-        Opcje: Ustawienia parametrów labiryntu i robota.
+    Start/Pauza: Rozpoczęcie lub zatrzymanie symulacji.
+    Reset: Zresetowanie symulacji.
+    Opcje: Ustawienia parametrów labiryntu i robota.
 
 3.2. Diagram klas
 
@@ -72,9 +73,6 @@ sudo apt install qt5-default
 
 
 <!-- 
-Zaimplementuj klasę Sensor jako szablon:
-    Utwórz szablon klasy Sensor.
-    Zaimplementuj metody szablonu.
 Zaimplementuj interfejs użytkownika: Użyj Qt do stworzenia GUI.
 Dokumentacja: Udokumentuj kod przy użyciu doxygen. --> 
 

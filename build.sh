@@ -58,7 +58,7 @@ build_and_run_application() {
     check_cmake
 
     # Sprawdzenie, czy Qt5 jest zainstalowany (odkomentuj, jeśli używasz Qt5)
-    # check_qt
+    check_qt
 
     # Tworzenie katalogu build, jeśli nie istnieje
     if [ ! -d "build" ]; then
@@ -123,10 +123,10 @@ done
 # Wykonywanie odpowiednich czynności na podstawie flag
 if $CLEAN; then
     clean_build
+    build_and_run_application
 fi
 
 if $TEST; then
-    build_and_run_application
     run_tests
 elif ! $CLEAN; then
     build_and_run_application

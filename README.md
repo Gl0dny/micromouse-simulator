@@ -68,6 +68,7 @@ Projekt zakłada stworzenie symulacji robota typu micromouse, którego zadaniem 
 
 
 Dependencies:
+sudo apt install qt5-default
 
 
 <!-- Plan implementacji z dziedziczeniem, polimorfizmem i szablonami

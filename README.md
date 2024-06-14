@@ -71,18 +71,12 @@ Dependencies:
 sudo apt install qt5-default
 
 
-<!-- Plan implementacji z dziedziczeniem, polimorfizmem i szablonami
-Zaimplementuj bazową klasę Robot oraz klasę pochodną Micromouse:
-    Robot jako klasa abstrakcyjna.
-    Micromouse jako klasa dziedzicząca po Robot.
-Zaimplementuj klasę Maze: Zaimplementuj generowanie i wyświetlanie labiryntu.
-Zaimplementuj klasę Simulator z użyciem polimorfizmu: Użyj polimorfizmu, aby klasa Simulator mogła współpracować z dowolnym typem robota dziedziczącym po klasie Robot.
+<!-- 
 Zaimplementuj klasę Sensor jako szablon:
     Utwórz szablon klasy Sensor.
     Zaimplementuj metody szablonu.
 Zaimplementuj interfejs użytkownika: Użyj Qt do stworzenia GUI.
-Testuj i debuguj: Utwórz testy jednostkowe i integracyjne w folderze tests.
-Dokumentacja: Udokumentuj kod przy użyciu doxygen. -->
+Dokumentacja: Udokumentuj kod przy użyciu doxygen. --> 
 
 ## Opis diagramu:
 

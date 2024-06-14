@@ -90,6 +90,16 @@ build_and_run_application() {
 
     # Powrót do katalogu głównego
     cd ..
+
+    # Uruchamianie aplikacji
+    echo "Uruchamianie aplikacji..."
+    ./build/MicromouseProject
+
+    # Sprawdzenie, czy aplikacja została uruchomiona poprawnie
+    if [ $? -ne 0 ]; then
+        echo "Uruchomienie aplikacji nie powiodło się."
+        exit 1
+    fi
 }
 
 # Flagi
@@ -130,13 +140,4 @@ if $TEST; then
     run_tests
 elif ! $CLEAN; then
     build_and_run_application
-    # Uruchamianie aplikacji
-    echo "Uruchamianie aplikacji..."
-    ./build/MicromouseProject
-
-    # Sprawdzenie, czy aplikacja została uruchomiona poprawnie
-    if [ $? -ne 0 ]; then
-        echo "Uruchomienie aplikacji nie powiodło się."
-        exit 1
-    fi
 fi

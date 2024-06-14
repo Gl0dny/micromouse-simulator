@@ -42,7 +42,7 @@ clean_build() {
 run_tests() {
     echo "Uruchamianie testów..."
     cd build
-    ctest --output-on-failure
+    ./tests
 
     # Sprawdzenie, czy testy zakończyły się sukcesem
     if [ $? -ne 0 ]; then

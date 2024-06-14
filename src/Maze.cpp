@@ -16,17 +16,6 @@ void Maze::generateMaze() {
     // Generowanie labiryntu wewnętrznego
     carvePassage(1, 1);
 
-    // Dodanie ścian dookoła
-    for (int x = 0; x < width; ++x) {
-        mazeGrid[x][0] = 1;
-        mazeGrid[x][height-1] = 1;
-    }
-
-    for (int y = 0; y < height; ++y) {
-        mazeGrid[0][y] = 1;
-        mazeGrid[width-1][y] = 1;
-    }
-
     // Tworzenie jednego wyjścia
     mazeGrid[width-2][height-1] = 0;
 
@@ -47,7 +36,7 @@ void Maze::carvePassage(int x, int y) {
 
         if (nx >= 1 && nx < width-1 && ny >= 1 && ny < height-1 && mazeGrid[nx][ny] == 1) {
             mazeGrid[x + dx][y + dy] = 0;
-            // carvePassage(nx, ny);
+            carvePassage(nx, ny);
         }
     }
 }

@@ -21,6 +21,7 @@ namespace Utils {
     }
 
     void Logger::enableFileOutput(const std::string &filePath, bool toFileOnly) {
+        createLogDirectory(filePath);
         logFile.open(filePath, std::ios::out | std::ios::app);
         if (logFile.is_open()) {
             logToFile = true;
@@ -43,6 +44,20 @@ namespace Utils {
         char buf[80];
         std::strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
         return buf;
+    }
+
+    void Logger::createLogDirectory(const std::string &filePath) {
+        std::string dirPath = filePath.substr(0, filePath.find_last_of("/\\"));
+        struct stat info;
+
+        if (stat(dirPath.c_str(), &info) != 0) {
+            // Directory does not exist
+            if (mkdir(dirPath.c_str(), 0777) == -1) {
+                std::cerr << "Error creating directory: " << dirPath << std::endl;
+            }
+        } else if (!(info.st_mode & S_IFDIR)) {
+            std::cerr << dirPath << " is not a directory" << std::endl;
+        }
     }
 
     int getRandomNumber(int min, int max) {

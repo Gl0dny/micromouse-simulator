@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include <ctime>
+#include <sys/stat.h>
 
 namespace Utils {
 
@@ -22,10 +23,13 @@ namespace Utils {
 
     private:
         std::string getCurrentDateTime();
+        void createLogDirectory(const std::string &filePath);
+        void clearLogFile();
 
         std::ofstream logFile;
         bool logToFile;
         bool logToFileOnly;
+        std::string logFilePath;
     };
 
     extern Logger logger;

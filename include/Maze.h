@@ -1,9 +1,11 @@
 #ifndef MAZE_H
 #define MAZE_H
 
+#include "Logger.h"
 #include <vector>
 #include <map>
 #include <string>
+#include <memory>
 
 class Maze {
 public:
@@ -12,12 +14,16 @@ public:
     bool isWall(int x, int y) const;
     void displayMaze() const;
 
+    ~Maze();
+
 private:
     int width;
     int height;
     std::vector<std::vector<int>> mazeGrid;
     std::vector<std::pair<int, int>> directions;
     std::map<std::pair<int, int>, std::string> directionNames;
+    std::string maze_log_file = "./logs/maze.log";
+    std::unique_ptr<Logger> logger;
 
     void carvePassage(int x, int y);
     void createRandomExit();

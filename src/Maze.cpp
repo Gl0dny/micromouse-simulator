@@ -6,18 +6,24 @@
 #include <random>
 #include <map>
 #include <vector>
-#include <memory> // for smart pointers
+#include <memory>
 
-
-std::unique_ptr<Logger> logger= std::make_unique<Logger>();
 
 
 // Constructor
 Maze::Maze(int width, int height)
-    : width(width), height(height), mazeGrid(width, std::vector<int>(height, 1)) {
+    : width(width), height(height), mazeGrid(width, std::vector<int>(height, 1)), logger(std::make_unique<Logger>()) {
     directions = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
     directionNames = {{{0, -1}, "North"}, {{0, 1}, "South"}, {{-1, 0}, "West"}, {{1, 0}, "East"}};
+
+    logger->enableFileOutput(maze_log_file, true);
+    logger->clearLogFile();
     logger->logMessage("Maze initialized with all walls.");
+}
+
+// Destructor
+Maze::~Maze() {
+    logger->disableFileOutput();
 }
 
 // Function to generate the maze

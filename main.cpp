@@ -5,7 +5,6 @@
 
 int main() {
     std::string main_log_file = "./logs/main.log";
-    std::string maze_log_file = "./logs/maze.log";
 
     std::unique_ptr<Logger> logger= std::make_unique<Logger>();
 
@@ -17,9 +16,6 @@ int main() {
     int height = 21;
 
     logger->logMessage("Creating the Maze: ");
-    logger->disableFileOutput();
-    logger->enableFileOutput(maze_log_file, true);
-    logger->clearLogFile();
 
     // Using smart pointer for Maze object
     std::unique_ptr<Maze> maze = std::make_unique<Maze>(width, height);

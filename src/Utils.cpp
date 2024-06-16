@@ -1,4 +1,7 @@
 #include "Utils.h"
+#include <fstream>
+#include <iostream>
+#include <sys/stat.h>
 
 namespace Utils {
 
@@ -22,10 +25,25 @@ namespace Utils {
 
     void Logger::enableFileOutput(const std::string &filePath, bool toFileOnly) {
         createLogDirectory(filePath);
+        logFilePath = filePath;
+
+        std::cout << "Checking if log file exists: " << filePath << std::endl;
+
+        if (std::ifstream(filePath)) {
+            std::cout << "Log file exists." << std::endl;
+        } else {
+            std::cout << "Log file does not exist." << std::endl;
+        }
+
         logFile.open(filePath, std::ios::out | std::ios::app);
         if (logFile.is_open()) {
             logToFile = true;
             logToFileOnly = toFileOnly;
+            if (toFileOnly) {
+                std::cout << "Logging to file only: " << filePath << std::endl;
+            } else {
+                std::cout << "Logging to both terminal and file: " << filePath << std::endl;
+            }
         } else {
             std::cerr << "Unable to open log file: " << filePath << std::endl;
         }
@@ -37,6 +55,7 @@ namespace Utils {
         }
         logToFile = false;
         logToFileOnly = false;
+        std::cout << "File logging disabled. Logging to terminal only." << std::endl;
     }
 
     std::string Logger::getCurrentDateTime() {
@@ -54,9 +73,20 @@ namespace Utils {
             // Directory does not exist
             if (mkdir(dirPath.c_str(), 0777) == -1) {
                 std::cerr << "Error creating directory: " << dirPath << std::endl;
+            } else {
+                std::cout << "Created directory." << std::endl;
             }
         } else if (!(info.st_mode & S_IFDIR)) {
             std::cerr << dirPath << " is not a directory" << std::endl;
+        }
+    }
+
+    void Logger::clearLogFile() {
+        std::ofstream ofs(logFilePath, std::ios::trunc);
+        if (ofs) {
+            std::cout << "Log file cleared: " << logFilePath << std::endl;
+        } else {
+            std::cerr << "Failed to clear log file: " << logFilePath << std::endl;
         }
     }
 

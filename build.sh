@@ -31,6 +31,8 @@ show_help() {
 clean_build() {
     echo "Czyszczenie katalogu build i wszystkich plików wyjściowych..."
     rm -rf build
+    rm -rf logs
+    rm -rf tests/logs
     if [ $? -ne 0 ]; then
         echo "Czyszczenie nie powiodło się."
         exit 1

@@ -21,10 +21,11 @@ namespace Utils {
 
         void disableFileOutput();
 
+        void clearLogFile();
+
     private:
         std::string getCurrentDateTime();
         void createLogDirectory(const std::string &filePath);
-        void clearLogFile();
 
         std::ofstream logFile;
         bool logToFile;

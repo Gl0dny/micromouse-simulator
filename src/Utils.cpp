@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <ctime>
+#include <sys/stat.h>
 
 namespace Utils {
 
@@ -27,6 +28,21 @@ namespace Utils {
         char buf[80];
         std::strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
         return buf;
+    }
+
+    void createDirectory(const std::string &dirPath) {
+        struct stat info;
+
+        if (stat(dirPath.c_str(), &info) != 0) {
+            // Directory does not exist
+            if (mkdir(dirPath.c_str(), 0777) == -1) {
+                std::cerr << "Error creating directory: " << dirPath << std::endl;
+            } else {
+                std::cout << "Created directory: " << dirPath << std::endl;
+            }
+        } else if (!(info.st_mode & S_IFDIR)) {
+            std::cerr << dirPath << " is not a directory" << std::endl;
+        }
     }
 
 } // namespace Utils

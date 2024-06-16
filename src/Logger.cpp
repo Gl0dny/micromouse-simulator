@@ -1,7 +1,6 @@
 #include "Logger.h"
 #include "Utils.h"
 #include <iostream>
-#include <sys/stat.h>
 #include <fstream>
 
 Logger::Logger() : logToFile(false), logToFileOnly(false) {}
@@ -60,17 +59,6 @@ void Logger::clearLogFile() {
 }
 
 void Logger::createLogDirectory(const std::string &filePath) {
-    std::string dirPath = filePath.substr(0, filePath.find_last_of("/\\"));
-    struct stat info;
-
-    if (stat(dirPath.c_str(), &info) != 0) {
-        // Directory does not exist
-        if (mkdir(dirPath.c_str(), 0777) == -1) {
-            std::cerr << "Error creating directory: " << dirPath << std::endl;
-        } else {
-            std::cout << "Created directory." << std::endl;
-        }
-    } else if (!(info.st_mode & S_IFDIR)) {
-        std::cerr << dirPath << " is not a directory" << std::endl;
-    }
+    std::string dirPath = filePath.substr(0, filePath.find_last_of("/"));
+    Utils::createDirectory(dirPath);
 }

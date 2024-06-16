@@ -11,12 +11,12 @@ Maze::Maze(int width, int height)
     : width(width), height(height), mazeGrid(width, std::vector<int>(height, 1)) {
     directions = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
     directionNames = {{{0, -1}, "North"}, {{0, 1}, "South"}, {{-1, 0}, "West"}, {{1, 0}, "East"}};
-    Utils::logMessage("Maze initialized with all walls.");
+    Utils::logger.logMessage("Maze initialized with all walls.");
 }
 
 // Function to generate the maze
 void Maze::generateMaze() {
-    Utils::logMessage("Starting maze generation.");
+    Utils::logger.logMessage("Starting maze generation.");
     
     // Generating the internal maze
     carvePassage(1, 1);
@@ -30,7 +30,7 @@ void Maze::generateMaze() {
     //Display maze
     // displayMaze();
 
-    Utils::logMessage("Maze generation completed.");
+    Utils::logger.logMessage("Maze generation completed.");
 }
 
 // Function to create a random exit on the maze border (excluding corners and ensuring no adjacent inner walls)
@@ -63,13 +63,13 @@ void Maze::createRandomExit() {
 
         if (isValidExit(exitX, exitY)) {
             mazeGrid[exitX][exitY] = 0;
-            Utils::logMessage("Created exit at (" + std::to_string(exitX) + ", " + std::to_string(exitY) + ").");
+            Utils::logger.logMessage("Created exit at (" + std::to_string(exitX) + ", " + std::to_string(exitY) + ").");
             exitCreated = true;
         }
     }
 
     if (!exitCreated) {
-        Utils::logMessage("Failed to create a valid exit.");
+        Utils::logger.logMessage("Failed to create a valid exit.");
     }
 }
 
@@ -88,7 +88,7 @@ bool Maze::isValidExit(int x, int y) {
 // Function to carve passage at given coordinates
 void Maze::carvePassage(int x, int y) {
     mazeGrid[x][y] = 0;
-    Utils::logMessage("Carving passage at (" + std::to_string(x) + ", " + std::to_string(y) + ").");
+    Utils::logger.logMessage("Carving passage at (" + std::to_string(x) + ", " + std::to_string(y) + ").");
 
     // Print maze with current position
     // printMazeWithCurrentPosition(x, y);
@@ -102,18 +102,18 @@ void Maze::carvePassage(int x, int y) {
         int ny = y + dy * 2;
 
         std::string directionName = directionNames[{dx, dy}];
-        Utils::logMessage("Trying direction " + directionName + " to (" + std::to_string(nx) + ", " + std::to_string(ny) + ").");
+        Utils::logger.logMessage("Trying direction " + directionName + " to (" + std::to_string(nx) + ", " + std::to_string(ny) + ").");
 
         if (nx >= 1 && nx < width-1 && ny >= 1 && ny < height-1 && mazeGrid[nx][ny] == 1) {
-            Utils::logMessage("Direction " + directionName + " is valid, moving to (" + std::to_string(nx) + ", " + std::to_string(ny) + ").");
+            Utils::logger.logMessage("Direction " + directionName + " is valid, moving to (" + std::to_string(nx) + ", " + std::to_string(ny) + ").");
             mazeGrid[x + dx][y + dy] = 0;
             carvePassage(nx, ny);
         } else {
-            Utils::logMessage("Direction " + directionName + " is invalid or already visited.");
+            Utils::logger.logMessage("Direction " + directionName + " is invalid or already visited.");
         }
     }
     
-    Utils::logMessage("Returning from carving at (" + std::to_string(x) + ", " + std::to_string(y) + ").");
+    Utils::logger.logMessage("Returning from carving at (" + std::to_string(x) + ", " + std::to_string(y) + ").");
 }
 
 // Function to print the maze with the current position of the algorithm
@@ -149,7 +149,7 @@ bool Maze::isWall(int x, int y) const {
 
 // Function to display the maze
 void Maze::displayMaze() const {
-    Utils::logMessage("Displaying maze:");
+    Utils::logger.logMessage("Displaying maze:");
     for (const auto& row : mazeGrid) {
         for (const auto& cell : row) {
             std::cout << (cell ? '#' : ' ') << ' ';

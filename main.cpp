@@ -1,13 +1,26 @@
-#include <iostream>
-#include "Maze.h"
+#include "Utils.h"
 
 int main() {
-    int width = 11;  // Szerokość labiryntu
-    int height = 11; // Wysokość labiryntu
+    Utils::logger.logMessage("This is a test log message.");
 
-    Maze maze(width, height);
-    maze.generateMaze();
-    maze.displayMaze();
+    // Enable file logging (both terminal and file)
+    Utils::logger.enableFileOutput("./logs/main.log");
+
+    Utils::logger.logMessage("Logging to both terminal and file.");
+
+    // Enable file logging (file only)
+    Utils::logger.enableFileOutput("./logs/main.log", true);
+
+    Utils::logger.logMessage("Logging to file only.");
+
+    // Disable file logging
+    Utils::logger.disableFileOutput();
+
+    Utils::logger.logMessage("Logging to terminal only again.");
+
+    // Generate a random number
+    int randomNum = Utils::getRandomNumber(1, 100);
+    Utils::logger.logMessage("Generated random number: " + std::to_string(randomNum));
 
     return 0;
 }

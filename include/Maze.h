@@ -10,10 +10,10 @@
 class Maze {
 public:
     Maze(int width, int height);
-    void generateMaze();
+    Maze& generateMaze();
     bool isWall(int x, int y) const;
     void displayMaze() const;
-    void setLogger(const std::string& log_file, bool toFileOnly= true);
+    Maze& setLogger(const std::string& log_file, bool toFileOnly= true);
 
     ~Maze();
 

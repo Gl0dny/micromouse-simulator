@@ -20,9 +20,8 @@ int main() {
 
     // Using smart pointer for Maze object
     std::unique_ptr<Maze> maze = std::make_unique<Maze>(width, height);
-    maze->generateMaze();
-    maze->setLogger(main_log_file, false);
-    maze->displayMaze();
+    maze->generateMaze().displayMaze();
+    maze->setLogger(main_log_file, false).displayMaze();
 
     // logger->enableFileOutput(log_file, true);
     logger->disableFileOutput();

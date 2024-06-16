@@ -25,7 +25,7 @@ Maze::~Maze() {
 }
 
 // Function to generate the maze
-void Maze::generateMaze() {
+Maze& Maze::generateMaze() {
     logger->logMessage("Starting maze generation.");
     
     // Generating the internal maze
@@ -38,6 +38,8 @@ void Maze::generateMaze() {
     // ensureFullConnectivity();
 
     logger->logMessage("Maze generation completed.");
+
+    return *this;
 }
 
 // Function to create a random exit on the maze border (excluding corners and ensuring no adjacent inner walls)
@@ -173,8 +175,9 @@ void Maze::displayMaze() const {
     }
 }
 
-void Maze::setLogger(const std::string& log_file, bool toFileOnly /* = true */) {
+Maze& Maze::setLogger(const std::string& log_file, bool toFileOnly /* = true */) {
     maze_log_file = log_file;
     logger.reset(new Logger(maze_log_file));
     logger->enableFileOutput(toFileOnly);
+    return *this;
 }

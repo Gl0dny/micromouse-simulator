@@ -3,7 +3,7 @@ Wstępny Opis Projektu: Symulacja Micromouse
 
 <!-- TODO
 
-Dodaj klasę logera - //logger z virtual metodą log, która ma bazową implementację ale może być override
+Usuń/ przenieś do pliku logi loggera ( otwieranie / zamykanie plikow )
 Loguj testy maze do pliku
 Zrozum gtest config zakomentowany
 Napraw pojawianie się walli dodatkowych w maze

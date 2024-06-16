@@ -150,10 +150,14 @@ bool Maze::isWall(int x, int y) const {
 // Function to display the maze
 void Maze::displayMaze() const {
     Utils::logger.logMessage("Displaying maze:");
+
+    // Log each row of the maze
     for (const auto& row : mazeGrid) {
+        std::string rowString;
         for (const auto& cell : row) {
-            std::cout << (cell ? '#' : ' ') << ' ';
+            rowString += (cell ? '#' : ' ');
+            rowString += ' ';
         }
-        std::cout << '\n';
+        Utils::logger.logMessage(rowString);
     }
 }

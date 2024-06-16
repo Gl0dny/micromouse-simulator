@@ -2,6 +2,7 @@
 #include <random>
 #include <fstream>
 #include <iostream>
+#include <ctime>
 
 namespace Utils {
 
@@ -19,6 +20,13 @@ namespace Utils {
         } else {
             std::cerr << "Failed to clear file: " << filePath << std::endl;
         }
+    }
+
+    std::string getCurrentDateTime() {
+        std::time_t now = std::time(nullptr);
+        char buf[80];
+        std::strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
+        return buf;
     }
 
 } // namespace Utils

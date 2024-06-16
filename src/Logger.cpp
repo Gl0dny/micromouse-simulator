@@ -1,14 +1,13 @@
 #include "Logger.h"
 #include "Utils.h"
 #include <iostream>
-#include <ctime>
 #include <sys/stat.h>
 #include <fstream>
 
 Logger::Logger() : logToFile(false), logToFileOnly(false) {}
 
 void Logger::logMessage(const std::string &message) {
-    std::string timestamp = getCurrentDateTime();
+    std::string timestamp = Utils::getCurrentDateTime();
     std::string logEntry = "[" + timestamp + "] " + message;
 
     if (logToFile) {
@@ -58,13 +57,6 @@ void Logger::disableFileOutput() {
 
 void Logger::clearLogFile() {
     Utils::clearFile(logFilePath);
-}
-
-std::string Logger::getCurrentDateTime() {
-    std::time_t now = std::time(nullptr);
-    char buf[80];
-    std::strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
-    return buf;
 }
 
 void Logger::createLogDirectory(const std::string &filePath) {

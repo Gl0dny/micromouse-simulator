@@ -18,7 +18,6 @@ private:
     std::ofstream logFile;
     std::string logFilePath;
 
-    std::string getCurrentDateTime();
     void createLogDirectory(const std::string &filePath);
 };
 

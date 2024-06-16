@@ -8,8 +8,6 @@
 #include <vector>
 #include <memory>
 
-
-
 // Constructor
 Maze::Maze(int width, int height)
     : width(width), height(height), mazeGrid(width, std::vector<int>(height, 1)), logger(std::make_unique<Logger>()) {
@@ -162,14 +160,10 @@ bool Maze::isWall(int x, int y) const {
 // Function to display the maze
 void Maze::displayMaze() const {
     logger->logMessage("Displaying maze:");
-
-    // Log each row of the maze
     for (const auto& row : mazeGrid) {
-        std::string rowString;
         for (const auto& cell : row) {
-            rowString += (cell ? '#' : ' ');
-            rowString += ' ';
+            std::cout << (cell ? '#' : ' ') << ' ';
         }
-        logger->logMessage(rowString);
+        std::cout << '\n';
     }
 }

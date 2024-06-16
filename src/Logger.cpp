@@ -1,7 +1,9 @@
 #include "Logger.h"
+#include "Utils.h"
 #include <iostream>
 #include <ctime>
 #include <sys/stat.h>
+#include <fstream>
 
 Logger::Logger() : logToFile(false), logToFileOnly(false) {}
 
@@ -54,6 +56,10 @@ void Logger::disableFileOutput() {
     std::cout << "File logging disabled. Logging to terminal only." << std::endl;
 }
 
+void Logger::clearLogFile() {
+    Utils::clearFile(logFilePath);
+}
+
 std::string Logger::getCurrentDateTime() {
     std::time_t now = std::time(nullptr);
     char buf[80];
@@ -74,14 +80,5 @@ void Logger::createLogDirectory(const std::string &filePath) {
         }
     } else if (!(info.st_mode & S_IFDIR)) {
         std::cerr << dirPath << " is not a directory" << std::endl;
-    }
-}
-
-void Logger::clearLogFile() {
-    std::ofstream ofs(logFilePath, std::ios::trunc);
-    if (ofs) {
-        std::cout << "Log file cleared: " << logFilePath << std::endl;
-    } else {
-        std::cerr << "Failed to clear log file: " << logFilePath << std::endl;
     }
 }

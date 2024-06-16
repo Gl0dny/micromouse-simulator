@@ -7,10 +7,10 @@
 class Logger {
 public:
     Logger(const std::string &filePath);
-    void logMessage(const std::string& message, bool includeTimestamp = true);
-    void enableFileOutput(bool toFileOnly = true);
-    void disableFileOutput();
-    void clearLogFile();
+    Logger& logMessage(const std::string& message, bool includeTimestamp = true);
+    Logger& enableFileOutput(bool toFileOnly = true);
+    Logger& disableFileOutput();
+    Logger& clearLogFile();
 
 private:
     bool logToFile;

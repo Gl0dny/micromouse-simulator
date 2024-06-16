@@ -7,7 +7,7 @@ Logger::Logger(const std::string &filePath) :logFilePath(filePath),  logToFile(f
     createLogDirectory(logFilePath);
 }
 
-void Logger::logMessage(const std::string &message, bool includeTimestamp /* = true */) {
+Logger& Logger::logMessage(const std::string &message, bool includeTimestamp /* = true */) {
     std::string logEntry;
 
     if (includeTimestamp) {
@@ -25,11 +25,12 @@ void Logger::logMessage(const std::string &message, bool includeTimestamp /* = t
     } else {
         std::cout << logEntry << std::endl;
     }
+    return *this;
 }
 
 
 
-void Logger::enableFileOutput(bool toFileOnly /* = true */) {
+Logger&Logger::enableFileOutput(bool toFileOnly /* = true */) {
     std::cout << "Checking if log file exists: " << logFilePath << std::endl;
 
     Utils::fileExists(logFilePath);
@@ -46,19 +47,22 @@ void Logger::enableFileOutput(bool toFileOnly /* = true */) {
     } else {
         std::cerr << "Unable to open log file: " << logFilePath << std::endl;
     }
+    return *this;
 }
 
-void Logger::disableFileOutput() {
+Logger&Logger::disableFileOutput() {
     if (logFile.is_open()) {
         logFile.close();
     }
     logToFile = false;
     logToFileOnly = false;
     std::cout << "File logging disabled. Logging to terminal only." << std::endl;
+    return *this;
 }
 
-void Logger::clearLogFile() {
+Logger& Logger::clearLogFile() {
     Utils::clearFile(logFilePath);
+    return *this;
 }
 
 void Logger::createLogDirectory(const std::string &logFilePath) {

@@ -13,6 +13,7 @@ public:
     void generateMaze();
     bool isWall(int x, int y) const;
     void displayMaze() const;
+    void setLogger(const std::string& log_file, bool toFileOnly= true);
 
     ~Maze();
 

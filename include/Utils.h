@@ -8,6 +8,7 @@ namespace Utils {
     void clearFile(const std::string &filePath);
     std::string getCurrentDateTime();
     void createDirectory(const std::string &dirPath);
+    void fileExists(const std::string &filePath);
 }
 
 #endif // UTILS_H

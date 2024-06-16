@@ -10,11 +10,11 @@
 
 // Constructor
 Maze::Maze(int width, int height)
-    : width(width), height(height), mazeGrid(width, std::vector<int>(height, 1)), logger(std::make_unique<Logger>()) {
+    : width(width), height(height), mazeGrid(width, std::vector<int>(height, 1)), logger(std::make_unique<Logger>(maze_log_file)) {
     directions = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
     directionNames = {{{0, -1}, "North"}, {{0, 1}, "South"}, {{-1, 0}, "West"}, {{1, 0}, "East"}};
 
-    logger->enableFileOutput(maze_log_file, true);
+    logger->enableFileOutput();
     logger->clearLogFile();
     logger->logMessage("Maze initialized with all walls.");
 }
@@ -36,9 +36,6 @@ void Maze::generateMaze() {
 
     // Ensuring full connectivity
     // ensureFullConnectivity();
-
-    //Display maze
-    // displayMaze();
 
     logger->logMessage("Maze generation completed.");
 }
@@ -101,7 +98,7 @@ void Maze::carvePassage(int x, int y) {
     logger->logMessage("Carving passage at (" + std::to_string(x) + ", " + std::to_string(y) + ").");
 
     // Print maze with current position
-    // printMazeWithCurrentPosition(x, y);
+    printMazeWithCurrentPosition(x, y);
 
     std::random_device rd;
     std::mt19937 g(rd());
@@ -128,17 +125,21 @@ void Maze::carvePassage(int x, int y) {
 
 // Function to print the maze with the current position of the algorithm
 void Maze::printMazeWithCurrentPosition(int cx, int cy) const {
+    logger->logMessage("Displaying maze with current position:");
+
+    // Log each row of the maze
     for (int y = 0; y < height; ++y) {
+        std::string rowString;
         for (int x = 0; x < width; ++x) {
             if (x == cx && y == cy) {
-                std::cout << "C "; // Current position
+                rowString += "C "; // Current position
             } else {
-                std::cout << (mazeGrid[x][y] ? '#' : ' ') << ' ';
+                rowString += (mazeGrid[x][y] ? '#' : ' ');
+                rowString += ' ';
             }
         }
-        std::cout << '\n';
+        logger->logMessage(rowString, false);
     }
-    std::cout << std::endl;
 }
 
 // // Function to ensure full connectivity of the maze
@@ -160,10 +161,20 @@ bool Maze::isWall(int x, int y) const {
 // Function to display the maze
 void Maze::displayMaze() const {
     logger->logMessage("Displaying maze:");
+
+    // Log each row of the maze
     for (const auto& row : mazeGrid) {
+        std::string rowString;
         for (const auto& cell : row) {
-            std::cout << (cell ? '#' : ' ') << ' ';
+            rowString += (cell ? '#' : ' ');
+            rowString += ' ';
         }
-        std::cout << '\n';
+        logger->logMessage(rowString, false);
     }
+}
+
+void Maze::setLogger(const std::string& log_file, bool toFileOnly /* = true */) {
+    maze_log_file = log_file;
+    logger.reset(new Logger(maze_log_file));
+    logger->enableFileOutput(toFileOnly);
 }

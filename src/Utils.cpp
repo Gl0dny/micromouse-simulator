@@ -45,4 +45,13 @@ namespace Utils {
         }
     }
 
+    void fileExists(const std::string &filePath) {
+        std::ifstream ifs(filePath);
+        if (std::ifstream(filePath)) {
+        std::cout << "File exists." << std::endl;
+        } else {
+            std::cout << "File does not exist." << std::endl;
+        }
+    }
+
 } // namespace Utils

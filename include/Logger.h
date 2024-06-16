@@ -6,9 +6,9 @@
 
 class Logger {
 public:
-    Logger();
-    void logMessage(const std::string &message);
-    void enableFileOutput(const std::string &filePath, bool toFileOnly = false);
+    Logger(const std::string &filePath);
+    void logMessage(const std::string& message, bool includeTimestamp = true);
+    void enableFileOutput(bool toFileOnly = true);
     void disableFileOutput();
     void clearLogFile();
 

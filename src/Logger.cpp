@@ -3,11 +3,19 @@
 #include <iostream>
 #include <fstream>
 
-Logger::Logger() : logToFile(false), logToFileOnly(false) {}
+Logger::Logger(const std::string &filePath) :logFilePath(filePath),  logToFile(false), logToFileOnly(false) {
+    createLogDirectory(logFilePath);
+}
 
-void Logger::logMessage(const std::string &message) {
-    std::string timestamp = Utils::getCurrentDateTime();
-    std::string logEntry = "[" + timestamp + "] " + message;
+void Logger::logMessage(const std::string &message, bool includeTimestamp /* = true */) {
+    std::string logEntry;
+
+    if (includeTimestamp) {
+        std::string timestamp = Utils::getCurrentDateTime();
+        logEntry = "[" + timestamp + "] " + message;
+    } else {
+        logEntry = message;
+    }
 
     if (logToFile) {
         logFile << logEntry << std::endl;
@@ -19,29 +27,24 @@ void Logger::logMessage(const std::string &message) {
     }
 }
 
-void Logger::enableFileOutput(const std::string &filePath, bool toFileOnly) {
-    createLogDirectory(filePath);
-    logFilePath = filePath;
 
-    std::cout << "Checking if log file exists: " << filePath << std::endl;
 
-    if (std::ifstream(filePath)) {
-        std::cout << "Log file exists." << std::endl;
-    } else {
-        std::cout << "Log file does not exist." << std::endl;
-    }
+void Logger::enableFileOutput(bool toFileOnly /* = true */) {
+    std::cout << "Checking if log file exists: " << logFilePath << std::endl;
 
-    logFile.open(filePath, std::ios::out | std::ios::app);
+    Utils::fileExists(logFilePath);
+
+    logFile.open(logFilePath, std::ios::out | std::ios::app);
     if (logFile.is_open()) {
         logToFile = true;
         logToFileOnly = toFileOnly;
         if (toFileOnly) {
-            std::cout << "Logging to file only: " << filePath << std::endl;
+            std::cout << "Logging to file only: " << logFilePath << std::endl;
         } else {
-            std::cout << "Logging to both terminal and file: " << filePath << std::endl;
+            std::cout << "Logging to both terminal and file: " << logFilePath << std::endl;
         }
     } else {
-        std::cerr << "Unable to open log file: " << filePath << std::endl;
+        std::cerr << "Unable to open log file: " << logFilePath << std::endl;
     }
 }
 
@@ -58,7 +61,7 @@ void Logger::clearLogFile() {
     Utils::clearFile(logFilePath);
 }
 
-void Logger::createLogDirectory(const std::string &filePath) {
-    std::string dirPath = filePath.substr(0, filePath.find_last_of("/"));
+void Logger::createLogDirectory(const std::string &logFilePath) {
+    std::string dirPath = logFilePath.substr(0, logFilePath.find_last_of("/"));
     Utils::createDirectory(dirPath);
 }

@@ -135,11 +135,10 @@ done
 # Wykonywanie odpowiednich czynności na podstawie flag
 if $CLEAN; then
     clean_build
-    build_and_run_application
 fi
+
+build_and_run_application
 
 if $TEST; then
     run_tests
-elif ! $CLEAN; then
-    build_and_run_application
 fi

@@ -22,7 +22,7 @@ private:
     void carvePassage(int x, int y);
     void createRandomExit();
     bool isValidExit(int x, int y);
-    void ensureFullConnectivity();
+    // void ensureFullConnectivity();
     void printMazeWithCurrentPosition(int cx, int cy) const;
 };
 

@@ -3,6 +3,7 @@ Wstępny Opis Projektu: Symulacja Micromouse
 
 <!-- TODO
 
+Każda klasa powinna mieć swoją instancję loggera jeśli używa osobnego pliku
 Usuń/ przenieś do pliku logi loggera ( otwieranie / zamykanie plikow )
 Loguj testy maze do pliku
 Zrozum gtest config zakomentowany

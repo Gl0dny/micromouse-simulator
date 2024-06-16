@@ -131,16 +131,16 @@ void Maze::printMazeWithCurrentPosition(int cx, int cy) const {
     std::cout << std::endl;
 }
 
-// Function to ensure full connectivity of the maze
-void Maze::ensureFullConnectivity() {
-    for (int x = 1; x < width - 1; x += 2) {
-        for (int y = 1; y < height - 1; y += 2) {
-            if (mazeGrid[x][y] == 1) {
-                carvePassage(x, y);
-            }
-        }
-    }
-}
+// // Function to ensure full connectivity of the maze
+// void Maze::ensureFullConnectivity() {
+//     for (int x = 1; x < width - 1; x += 2) {
+//         for (int y = 1; y < height - 1; y += 2) {
+//             if (mazeGrid[x][y] == 1) {
+//                 carvePassage(x, y);
+//             }
+//         }
+//     }
+// }
 
 // Function to check if a cell is a wall
 bool Maze::isWall(int x, int y) const {

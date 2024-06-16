@@ -1,22 +1,28 @@
 #include "Maze.h"
 #include "Utils.h"
+#include "Logger.h"
 #include <iostream>
 #include <algorithm>
 #include <random>
 #include <map>
 #include <vector>
+#include <memory> // for smart pointers
+
+
+std::unique_ptr<Logger> logger= std::make_unique<Logger>();
+
 
 // Constructor
 Maze::Maze(int width, int height)
     : width(width), height(height), mazeGrid(width, std::vector<int>(height, 1)) {
     directions = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
     directionNames = {{{0, -1}, "North"}, {{0, 1}, "South"}, {{-1, 0}, "West"}, {{1, 0}, "East"}};
-    Utils::logger.logMessage("Maze initialized with all walls.");
+    logger->logMessage("Maze initialized with all walls.");
 }
 
 // Function to generate the maze
 void Maze::generateMaze() {
-    Utils::logger.logMessage("Starting maze generation.");
+    logger->logMessage("Starting maze generation.");
     
     // Generating the internal maze
     carvePassage(1, 1);
@@ -30,7 +36,7 @@ void Maze::generateMaze() {
     //Display maze
     // displayMaze();
 
-    Utils::logger.logMessage("Maze generation completed.");
+    logger->logMessage("Maze generation completed.");
 }
 
 // Function to create a random exit on the maze border (excluding corners and ensuring no adjacent inner walls)
@@ -63,13 +69,13 @@ void Maze::createRandomExit() {
 
         if (isValidExit(exitX, exitY)) {
             mazeGrid[exitX][exitY] = 0;
-            Utils::logger.logMessage("Created exit at (" + std::to_string(exitX) + ", " + std::to_string(exitY) + ").");
+            logger->logMessage("Created exit at (" + std::to_string(exitX) + ", " + std::to_string(exitY) + ").");
             exitCreated = true;
         }
     }
 
     if (!exitCreated) {
-        Utils::logger.logMessage("Failed to create a valid exit.");
+        logger->logMessage("Failed to create a valid exit.");
     }
 }
 
@@ -88,7 +94,7 @@ bool Maze::isValidExit(int x, int y) {
 // Function to carve passage at given coordinates
 void Maze::carvePassage(int x, int y) {
     mazeGrid[x][y] = 0;
-    Utils::logger.logMessage("Carving passage at (" + std::to_string(x) + ", " + std::to_string(y) + ").");
+    logger->logMessage("Carving passage at (" + std::to_string(x) + ", " + std::to_string(y) + ").");
 
     // Print maze with current position
     // printMazeWithCurrentPosition(x, y);
@@ -102,18 +108,18 @@ void Maze::carvePassage(int x, int y) {
         int ny = y + dy * 2;
 
         std::string directionName = directionNames[{dx, dy}];
-        Utils::logger.logMessage("Trying direction " + directionName + " to (" + std::to_string(nx) + ", " + std::to_string(ny) + ").");
+        logger->logMessage("Trying direction " + directionName + " to (" + std::to_string(nx) + ", " + std::to_string(ny) + ").");
 
         if (nx >= 1 && nx < width-1 && ny >= 1 && ny < height-1 && mazeGrid[nx][ny] == 1) {
-            Utils::logger.logMessage("Direction " + directionName + " is valid, moving to (" + std::to_string(nx) + ", " + std::to_string(ny) + ").");
+            logger->logMessage("Direction " + directionName + " is valid, moving to (" + std::to_string(nx) + ", " + std::to_string(ny) + ").");
             mazeGrid[x + dx][y + dy] = 0;
             carvePassage(nx, ny);
         } else {
-            Utils::logger.logMessage("Direction " + directionName + " is invalid or already visited.");
+            logger->logMessage("Direction " + directionName + " is invalid or already visited.");
         }
     }
     
-    Utils::logger.logMessage("Returning from carving at (" + std::to_string(x) + ", " + std::to_string(y) + ").");
+    logger->logMessage("Returning from carving at (" + std::to_string(x) + ", " + std::to_string(y) + ").");
 }
 
 // Function to print the maze with the current position of the algorithm
@@ -149,7 +155,7 @@ bool Maze::isWall(int x, int y) const {
 
 // Function to display the maze
 void Maze::displayMaze() const {
-    Utils::logger.logMessage("Displaying maze:");
+    logger->logMessage("Displaying maze:");
 
     // Log each row of the maze
     for (const auto& row : mazeGrid) {
@@ -158,6 +164,6 @@ void Maze::displayMaze() const {
             rowString += (cell ? '#' : ' ');
             rowString += ' ';
         }
-        Utils::logger.logMessage(rowString);
+        logger->logMessage(rowString);
     }
 }

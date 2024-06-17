@@ -22,7 +22,6 @@ private:
     int height;
     std::vector<std::vector<int>> mazeGrid;
     std::unique_ptr<Logger> logger;
-    std::vector<std::pair<int, int>> directions;
     std::map<std::pair<int, int>, std::string> directionNames;
 
     void carvePassage(int x, int y);

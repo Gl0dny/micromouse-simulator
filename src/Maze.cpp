@@ -11,9 +11,7 @@
 // Constructor
 Maze::Maze(int width, int height, const std::string& logFileName)
     : width(width), height(height), mazeGrid(width, std::vector<int>(height, 1)), logger(std::make_unique<Logger>(logFileName)) {
-    directions = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
     directionNames = {{{0, -1}, "North"}, {{0, 1}, "South"}, {{-1, 0}, "West"}, {{1, 0}, "East"}};
-
     logger->enableFileOutput();
     logger->clearLogFile();
     logger->logMessage("Maze initialized with all walls.");
@@ -51,12 +49,6 @@ void Maze::createRandomExit() {
         borderCells.push_back({width-1, i});  // Right border
     }
 
-    // Remove corners
-    borderCells.erase(std::remove(borderCells.begin(), borderCells.end(), std::make_pair(0, 0)), borderCells.end());
-    borderCells.erase(std::remove(borderCells.begin(), borderCells.end(), std::make_pair(0, height-1)), borderCells.end());
-    borderCells.erase(std::remove(borderCells.begin(), borderCells.end(), std::make_pair(width-1, 0)), borderCells.end());
-    borderCells.erase(std::remove(borderCells.begin(), borderCells.end(), std::make_pair(width-1, height-1)), borderCells.end());
-
     std::random_device rd;
     std::mt19937 g(rd());
     std::uniform_int_distribution<> dis(0, borderCells.size() - 1);
@@ -81,9 +73,9 @@ void Maze::createRandomExit() {
 
 // Function to check if the exit is valid (not adjacent to inner walls)
 bool Maze::isValidExit(int x, int y) {
-    for (const auto& [dx, dy] : directions) {
-        int nx = x + dx;
-        int ny = y + dy;
+    for (const auto& [coordinates, direction] : directionNames) {
+        int nx = x + coordinates.first;
+        int ny = y + coordinates.second;
         if (nx > 0 && nx < width - 1 && ny > 0 && ny < height - 1 && mazeGrid[nx][ny] == 1) {
             return false;
         }
@@ -93,6 +85,7 @@ bool Maze::isValidExit(int x, int y) {
 
 // Function to carve passage at given coordinates
 void Maze::carvePassage(int x, int y) {
+    std::vector<std::pair<int, int>> directions = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
     mazeGrid[x][y] = 0;
     logger->logMessage("Carving passage at (" + std::to_string(x) + ", " + std::to_string(y) + ").");
 
@@ -108,7 +101,7 @@ void Maze::carvePassage(int x, int y) {
         int ny = y + dy * 2;
 
         std::string directionName = directionNames[{dx, dy}];
-        logger->logMessage("Trying direction " + directionName + " to (" + std::to_string(nx) + ", " + std::to_string(ny) + ").");
+        logger->logMessage("Trying direction " + directionName + " from (" + std::to_string(x) + ", " + std::to_string(y) + ") to (" + std::to_string(nx) + ", " + std::to_string(ny) + ").");
 
         if (nx >= 1 && nx < width-1 && ny >= 1 && ny < height-1 && mazeGrid[nx][ny] == 1) {
             logger->logMessage("Direction " + directionName + " is valid, moving to (" + std::to_string(nx) + ", " + std::to_string(ny) + ").");

@@ -1,9 +1,6 @@
-// test_maze.cpp
-
 #include "Maze.h"
 #include "gtest/gtest.h"
 #include <set>
-#include <utility>
 #include <string>
 #include <memory>
 
@@ -27,9 +24,9 @@ protected:
 };
 
 TEST_F(MazeTest, MazeGenerationMultipleTimes) {
-    int width = 8;
-    int height = 8;
-    int trials = 10;
+    int width = 9;
+    int height = 9;
+    int trials = 100;
 
     for (int i = 0; i < trials; ++i) {
         std::string logFileName = "./tests/logs/maze_test_log_file_" + std::to_string(i + 1) + ".log";

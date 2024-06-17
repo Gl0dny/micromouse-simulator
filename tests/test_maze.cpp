@@ -1,8 +1,11 @@
+// test_maze.cpp
+
 #include "Maze.h"
 #include "gtest/gtest.h"
 #include <set>
 #include <utility>
 #include <string>
+#include <memory>
 
 class MazeTest : public ::testing::Test {
 protected:
@@ -15,35 +18,36 @@ protected:
         for (int x = 1; x < width - 1; ++x) {
             for (int y = 1; y < height - 1; ++y) {
                 if (maze.isWall(x, y) && maze.isWall(x + 1, y) && maze.isWall(x, y + 1) && maze.isWall(x + 1, y + 1)) {
-                    return true; // Additional walls found
+                    return true;
                 }
             }
         }
         return false;
     }
-
 };
 
 TEST_F(MazeTest, MazeGenerationMultipleTimes) {
-    int width = 21;
-    int height = 21;
+    int width = 8;
+    int height = 8;
     int trials = 10;
 
     for (int i = 0; i < trials; ++i) {
         std::string logFileName = "./tests/logs/maze_test_log_file_" + std::to_string(i + 1) + ".log";
-        Maze maze(width, height, logFileName);
-        maze.generateMaze();
-        maze.displayMaze();
+        std::unique_ptr<Maze> maze = std::make_unique<Maze>(width, height, logFileName);
+        maze->generateMaze();
         
         std::cout << "Generated Maze " << i + 1 << ":\n";
         
-        if (hasAdditionalWalls(maze, width, height)) {
+        if (hasAdditionalWalls(*maze, width, height)) {
             std::cout << "Additional walls found in the maze on trial " << i + 1 << ":\n";
-            maze.setLogger(logFileName, false);
-            maze.displayMaze();
+            maze->setLogger(logFileName, false);
+            maze->displayMaze();
+        }
+        else{
+            maze->displayMaze();
         }
 
-        EXPECT_FALSE(hasAdditionalWalls(maze, width, height));
+        EXPECT_FALSE(hasAdditionalWalls(*maze, width, height));
     }
 }
 

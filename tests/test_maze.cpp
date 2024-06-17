@@ -1,4 +1,3 @@
-// test_maze.cpp
 #include "Maze.h"
 #include "gtest/gtest.h"
 #include <set>
@@ -26,19 +25,21 @@ protected:
 };
 
 TEST_F(MazeTest, MazeGenerationMultipleTimes) {
-    int width = 8;
-    int height = 8;
+    int width = 21;
+    int height = 21;
     int trials = 10;
 
     for (int i = 0; i < trials; ++i) {
         std::string logFileName = "./tests/logs/maze_test_log_file_" + std::to_string(i + 1) + ".log";
         Maze maze(width, height, logFileName);
         maze.generateMaze();
+        maze.displayMaze();
         
         std::cout << "Generated Maze " << i + 1 << ":\n";
         
         if (hasAdditionalWalls(maze, width, height)) {
             std::cout << "Additional walls found in the maze on trial " << i + 1 << ":\n";
+            maze.setLogger(logFileName, false);
             maze.displayMaze();
         }
 

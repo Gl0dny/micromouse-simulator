@@ -24,8 +24,8 @@ protected:
 };
 
 TEST_F(MazeTest, MazeGenerationMultipleTimes) {
-    int width = 9;
-    int height = 9;
+    int width = 21;
+    int height = 21;
     int trials = 100;
 
     for (int i = 0; i < trials; ++i) {

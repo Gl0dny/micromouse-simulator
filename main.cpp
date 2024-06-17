@@ -7,8 +7,8 @@
 int main() {
     std::string main_log_file = "./logs/main.log";
     std::unique_ptr<Logger> logger = std::make_unique<Logger>(main_log_file);
-    int width = 9;
-    int height = 9;
+    int width = 21;
+    int height = 21;
     
     // Creating a unique log file name for the maze
     std::string maze_log_file = "./logs/maze.log";

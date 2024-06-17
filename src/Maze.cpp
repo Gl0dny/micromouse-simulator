@@ -34,9 +34,6 @@ Maze& Maze::generateMaze() {
     // Creating one exit
     createRandomExit();
 
-    // Ensuring full connectivity
-    // ensureFullConnectivity();
-
     logger->logMessage("Maze generation completed.");
 
     return *this;
@@ -143,17 +140,6 @@ void Maze::printMazeWithCurrentPosition(int cx, int cy) const {
         logger->logMessage(rowString, false);
     }
 }
-
-// // Function to ensure full connectivity of the maze
-// void Maze::ensureFullConnectivity() {
-//     for (int x = 1; x < width - 1; x += 2) {
-//         for (int y = 1; y < height - 1; y += 2) {
-//             if (mazeGrid[x][y] == 1) {
-//                 carvePassage(x, y);
-//             }
-//         }
-//     }
-// }
 
 // Function to check if a cell is a wall
 bool Maze::isWall(int x, int y) const {

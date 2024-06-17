@@ -3,8 +3,8 @@ Wstępny Opis Projektu: Symulacja Micromouse
 
 <!-- TODO
 
-Zdefiniuj DEBUG i logi plikow tylko gdy jest DEBUG mode
 Zrozum gtest config zakomentowany
+Rozdziel testy
 Napraw pojawianie się walli dodatkowych w maze
 
 

@@ -29,7 +29,6 @@ private:
     void createRandomExit();
     bool isValidExit(int x, int y);
     void printMazeWithCurrentPosition(int cx, int cy) const;
-    // void ensureFullConnectivity();
 };
 
 #endif // MAZE_H

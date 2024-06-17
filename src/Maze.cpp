@@ -9,8 +9,8 @@
 #include <memory>
 
 // Constructor
-Maze::Maze(int width, int height)
-    : width(width), height(height), mazeGrid(width, std::vector<int>(height, 1)), logger(std::make_unique<Logger>(maze_log_file)) {
+Maze::Maze(int width, int height, const std::string& logFileName)
+    : width(width), height(height), mazeGrid(width, std::vector<int>(height, 1)), logger(std::make_unique<Logger>(logFileName)) {
     directions = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
     directionNames = {{{0, -1}, "North"}, {{0, 1}, "South"}, {{-1, 0}, "West"}, {{1, 0}, "East"}};
 
@@ -176,8 +176,7 @@ void Maze::displayMaze() const {
 }
 
 Maze& Maze::setLogger(const std::string& log_file, bool toFileOnly /* = true */) {
-    maze_log_file = log_file;
-    logger.reset(new Logger(maze_log_file));
+    logger.reset(new Logger(log_file));
     logger->enableFileOutput(toFileOnly);
     return *this;
 }

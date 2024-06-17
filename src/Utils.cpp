@@ -17,7 +17,9 @@ namespace Utils {
     void clearFile(const std::string &filePath) {
         std::ofstream ofs(filePath, std::ios::trunc);
         if (ofs) {
+#ifdef DEBUG_MODE
             std::cout << "File cleared: " << filePath << std::endl;
+#endif
         } else {
             std::cerr << "Failed to clear file: " << filePath << std::endl;
         }
@@ -38,7 +40,9 @@ namespace Utils {
             if (mkdir(dirPath.c_str(), 0777) == -1) {
                 std::cerr << "Error creating directory: " << dirPath << std::endl;
             } else {
+#ifdef DEBUG_MODE
                 std::cout << "Created directory: " << dirPath << std::endl;
+#endif
             }
         } else if (!(info.st_mode & S_IFDIR)) {
             std::cerr << dirPath << " is not a directory" << std::endl;
@@ -47,11 +51,13 @@ namespace Utils {
 
     void fileExists(const std::string &filePath) {
         std::ifstream ifs(filePath);
-        if (std::ifstream(filePath)) {
-        std::cout << "File exists." << std::endl;
+    #ifdef DEBUG_MODE
+        if (ifs) {
+            std::cout << "File exists." << std::endl;
         } else {
             std::cout << "File does not exist." << std::endl;
         }
+    #endif
     }
 
 } // namespace Utils

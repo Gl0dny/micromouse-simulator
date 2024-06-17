@@ -1,7 +1,9 @@
+// test_maze.cpp
 #include "Maze.h"
 #include "gtest/gtest.h"
 #include <set>
 #include <utility>
+#include <string>
 
 class MazeTest : public ::testing::Test {
 protected:
@@ -24,12 +26,13 @@ protected:
 };
 
 TEST_F(MazeTest, MazeGenerationMultipleTimes) {
-    int width = 21;
-    int height = 21;
+    int width = 8;
+    int height = 8;
     int trials = 10;
 
     for (int i = 0; i < trials; ++i) {
-        Maze maze(width, height);
+        std::string logFileName = "./tests/logs/maze_test_log_file_" + std::to_string(i + 1) + ".log";
+        Maze maze(width, height, logFileName);
         maze.generateMaze();
         
         std::cout << "Generated Maze " << i + 1 << ":\n";

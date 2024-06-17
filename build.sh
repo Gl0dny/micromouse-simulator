@@ -25,6 +25,7 @@ show_help() {
     echo "  --help     Wyświetla tę pomoc"
     echo "  --test     Buduje projekt i uruchamia tylko testy, bez uruchamiania głównej aplikacji"
     echo "  --clean    Czyści katalog build i wszystkie pliki wyjściowe"
+    echo "  --debug    Buduje projekt w trybie debugowania"
 }
 
 # Funkcja do czyszczenia katalogu build i plików wyjściowych
@@ -40,39 +41,22 @@ clean_build() {
     echo "Czyszczenie zakończone sukcesem."
 }
 
-# Funkcja do uruchamiania testów
-run_tests() {
-    echo "Uruchamianie testów..."
-    cd build
-    ./tests
-
-    # Sprawdzenie, czy testy zakończyły się sukcesem
-    if [ $? -ne 0 ]; then
-        echo "Testy nie powiodły się."
-        exit 1
-    fi
-    cd ..
-}
-
-# Funkcja do budowania i uruchamiania aplikacji
-build_and_run_application() {
-    # Sprawdzenie, czy CMake jest zainstalowany
-    check_cmake
-
-    # Sprawdzenie, czy Qt5 jest zainstalowany (odkomentuj, jeśli używasz Qt5)
-    check_qt
-
-    # Tworzenie katalogu build, jeśli nie istnieje
+# Funkcja do budowania projektu
+build() {
+    echo "Tworzenie katalogu build, jeśli nie istnieje..."
     if [ ! -d "build" ]; then
         mkdir build
     fi
 
-    # Przejście do katalogu build
-    cd build
+    cd build || exit
 
     # Konfiguracja projektu za pomocą CMake
     echo "Konfiguracja projektu za pomocą CMake..."
-    cmake ..
+    if $DEBUG; then
+        cmake -DCMAKE_BUILD_TYPE=Debug ..
+    else
+        cmake ..
+    fi
 
     # Sprawdzenie, czy konfiguracja zakończyła się sukcesem
     if [ $? -ne 0 ]; then
@@ -90,10 +74,11 @@ build_and_run_application() {
         exit 1
     fi
 
-    # Powrót do katalogu głównego
     cd ..
+}
 
-    # Uruchamianie aplikacji
+# Funkcja do uruchamiania aplikacji
+run_application() {
     echo "Uruchamianie aplikacji..."
     ./build/MicromouseProject
 
@@ -104,9 +89,23 @@ build_and_run_application() {
     fi
 }
 
+# Funkcja do uruchamiania testów
+run_tests() {
+    echo "Uruchamianie testów..."
+    ./build/tests
+
+    # Sprawdzenie, czy testy zakończyły się sukcesem
+    if [ $? -ne 0 ]; then
+        echo "Testy nie powiodły się."
+        exit 1
+    fi
+    cd ..
+}
+
 # Flagi
 CLEAN=false
 TEST=false
+DEBUG=false
 
 # Parsowanie argumentów
 for arg in "$@"
@@ -118,6 +117,10 @@ do
         ;;
         --test)
         TEST=true
+        shift # Usuwa argument
+        ;;
+        --debug)
+        DEBUG=true
         shift # Usuwa argument
         ;;
         --help)
@@ -137,8 +140,10 @@ if $CLEAN; then
     clean_build
 fi
 
-build_and_run_application
-
 if $TEST; then
+    build
     run_tests
+else
+    build
+    run_application
 fi

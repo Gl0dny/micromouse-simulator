@@ -4,8 +4,16 @@ Wstępny Opis Projektu: Symulacja Micromouse
 
 <!-- TODO
 
+Simulator:
+'odświeżanie' symulacji -> prowadzenie działania myszy w gotowym labiryncie?
+Robot / Micromouse / DecisionAlgorithm -> Mysz ma specyficzne zachowania wg. określone DecisionAlgorithm , robot to tylko abtract class
+polimorfizm -> inne roboty? dwie myszy? dwa algorytmy?
+Sensor / Distance sensor -> sensor to template dla różnych typów danych sensorów gdzie Distance sensor to specific sensor?
 Zrozum gtest config zakomentowany
 Rozdziel testy
+Zaimplementuj interfejs użytkownika: Użyj Qt do stworzenia GUI.
+Dokumentacja: Udokumentuj kod przy użyciu doxygen.
+
 Napraw pojawianie się walli dodatkowych w maze: parzysta liczba w ścianie;
 # # # # # # # # #
 #   #
@@ -27,10 +35,7 @@ Napraw pojawianie się walli dodatkowych w maze: parzysta liczba w ścianie;
 # # # # # # # #
 
 Można poprawić ale specyfika labiryntu ( korytarz musi być otoczony więc liczbą wyboru korytarza musi być liczba nieparzysta ( indeksowanie od 0 ), w przypadku parzystej liczby wyboru zawsze w labiryncie musiałbym pozwolić na istnieje podwójnych ścian - zakaz podwójnych ścian to założenie labiryntu i jego testów ). Mógłbym sztucznie wyżłobić pojedyncze ślepe uliczki ( sprawdzając trzy kierunki dookoła podwójnej ściany i decydując, że da się ją wyżłobić poza algorytmem depth-first search ) na długość jednego kroku ale mija się to ze specyfiką labiryntu. Pozostawiam hardcoded odd number of width/height.
-
-
-Zaimplementuj interfejs użytkownika: Użyj Qt do stworzenia GUI.
-Dokumentacja: Udokumentuj kod przy użyciu doxygen.  -->
+  -->
 
 Projekt zakłada stworzenie symulacji robota typu micromouse, którego zadaniem jest przejście przez labirynt. Robot będzie wyposażony w czujniki, które pozwolą mu zbierać dane o otoczeniu, i na ich podstawie podejmować decyzje dotyczące ruchu. Symulacja będzie zawierała wizualizację ruchu robota w labiryncie.
 

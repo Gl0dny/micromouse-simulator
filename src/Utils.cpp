@@ -1,26 +1,11 @@
 #include "Utils.h"
+#include <random>
 #include <fstream>
 #include <iostream>
-#include <random>
+#include <ctime>
+#include <sys/stat.h>
 
 namespace Utils {
-
-    std::vector<std::string> readFile(const std::string &fileName) {
-        std::vector<std::string> lines;
-        std::ifstream file(fileName);
-
-        if (file.is_open()) {
-            std::string line;
-            while (getline(file, line)) {
-                lines.push_back(line);
-            }
-            file.close();
-        } else {
-            logMessage("Unable to open file: " + fileName);
-        }
-
-        return lines;
-    }
 
     int getRandomNumber(int min, int max) {
         std::random_device rd;
@@ -29,8 +14,50 @@ namespace Utils {
         return dis(gen);
     }
 
-    void logMessage(const std::string &message) {
-        std::cout << "[LOG] " << message << std::endl;
+    void clearFile(const std::string &filePath) {
+        std::ofstream ofs(filePath, std::ios::trunc);
+        if (ofs) {
+#ifdef DEBUG_MODE
+            std::cout << "File cleared: " << filePath << std::endl;
+#endif
+        } else {
+            std::cerr << "Failed to clear file: " << filePath << std::endl;
+        }
+    }
+
+    std::string getCurrentDateTime() {
+        std::time_t now = std::time(nullptr);
+        char buf[80];
+        std::strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
+        return buf;
+    }
+
+    void createDirectory(const std::string &dirPath) {
+        struct stat info;
+
+        if (stat(dirPath.c_str(), &info) != 0) {
+            // Directory does not exist
+            if (mkdir(dirPath.c_str(), 0777) == -1) {
+                std::cerr << "Error creating directory: " << dirPath << std::endl;
+            } else {
+#ifdef DEBUG_MODE
+                std::cout << "Created directory: " << dirPath << std::endl;
+#endif
+            }
+        } else if (!(info.st_mode & S_IFDIR)) {
+            std::cerr << dirPath << " is not a directory" << std::endl;
+        }
+    }
+
+    void fileExists(const std::string &filePath) {
+        std::ifstream ifs(filePath);
+    #ifdef DEBUG_MODE
+        if (ifs) {
+            std::cout << "File exists." << std::endl;
+        } else {
+            std::cout << "File does not exist." << std::endl;
+        }
+    #endif
     }
 
 } // namespace Utils

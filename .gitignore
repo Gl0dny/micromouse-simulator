@@ -33,3 +33,5 @@ rules.ninja
 # Ignorowanie plików generowanych przez Doxygen
 docs/html/
 docs/latex/
+
+/.vscode

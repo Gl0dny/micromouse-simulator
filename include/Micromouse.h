@@ -1,16 +1,35 @@
 #ifndef MICROMOUSE_H
 #define MICROMOUSE_H
 
-#include "Robot.h"
+#include <memory>
+#include <vector>
+#include "Maze.h"
 
-class Micromouse : public Robot {
+class Micromouse {
 public:
-    Micromouse(int startX, int startY);
-    void move() override;
-    void updateSensors() override;
-    void makeDecision() override;
+    Micromouse();
+    virtual ~Micromouse() = default;
+
+    void move();
+    virtual void updateSensors() = 0;
+    virtual void makeDecision() = 0;
+    bool hasReachedGoal() const;
+    void reset();
+
+    int getPosX() const;
+    int getPosY() const;
+    void setPosition(int startX, int startY);
+    void setStartingPosition(int startX, int startY);
+
+    // void logMovement(int x, int y);
+    // void saveRouteToFile(const std::string& filename) const;
+
+protected:
+    int posX, posY;
+    int startX, startY;
+    int direction; // 0 - North, 1 - East, 2 - South, 3 - West
+    std::vector<std::pair<int, int>> route; // to store the route taken
+
 };
 
 #endif // MICROMOUSE_H
-
-// Kod definiuje klasę Micromouse dziedziczącą po klasie Robot, dostosowaną do symulacji robota micromouse - poruszającego się po labiryncie. Wykorzystuje dziedziczenie i przesłanianie metod do dostosowania zachowań takich jak ruch, aktualizacje sensorów oraz podejmowanie decyzji specyficznych dla zadań robota micromouse.

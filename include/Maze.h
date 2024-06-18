@@ -16,6 +16,9 @@ public:
     void displayMaze() const;
     bool isWall(int x, int y) const;
     Maze& setLogger(const std::string& logFile, bool toFileOnly = true);
+    const std::vector<std::vector<int>>& getMazeGrid() const;
+    int getWidth() const;
+    int getHeight() const;
 
 private:
     int width;

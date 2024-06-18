@@ -1,18 +1,20 @@
 #ifndef SIMULATOR_H
 #define SIMULATOR_H
 
-#include "Robot.h"
+#include <memory>
 #include "Maze.h"
+#include "Micromouse.h"
 
 class Simulator {
 public:
-    Simulator(Robot* robot);
-    void runSimulation();
-    void resetSimulation();
+    Simulator(Micromouse& mmouse);
+    void run();
 
 private:
-    Robot* robot;
-    Maze* maze;
+    std::shared_ptr<Maze> maze;
+    Micromouse& micromouse;
+    void displayMazeWithMouse() const;
+    void setRandomStartPosition();
 };
 
 #endif // SIMULATOR_H

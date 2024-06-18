@@ -31,7 +31,6 @@ TEST_F(MazeTest, MazeGenerationMultipleTimes) {
     for (int i = 0; i < trials; ++i) {
         std::string logFileName = "./tests/logs/maze_test_log_file_" + std::to_string(i + 1) + ".log";
         std::unique_ptr<Maze> maze = std::make_unique<Maze>(width, height, logFileName);
-        maze->generateMaze();
         
         std::cout << "Generated Maze " << i + 1 << ":\n";
         

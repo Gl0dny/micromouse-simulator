@@ -36,14 +36,17 @@ include_directories(include)
 
 # Source files
 set(SOURCES
-    src/Micromouse.cpp
-    src/Robot.cpp
     src/Maze.cpp
-    src/Sensor.cpp
-    src/Simulator.cpp
-    src/GUI.cpp
     src/Logger.cpp
     src/Utils.cpp
+    src/Micromouse.cpp
+    src/Sensor.cpp
+    src/Simulator.cpp
+    src/RightHandRuleMazeSolver.cpp
+    src/BacktrackingMazeSolver.cpp
+    src/LaserBacktrackingMazeSolver.cpp
+    src/LidarBacktrackingMazeSolver.cpp
+    src/GUI.cpp
     src/MainWindow.cpp
     src/MazeWidget.cpp
 )

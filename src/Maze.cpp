@@ -15,6 +15,7 @@ Maze::Maze(int width, int height, const std::string& logFileName)
     logger->enableFileOutput();
     logger->clearLogFile();
     logger->logMessage("Maze initialized with all walls.");
+    generateMaze();
 }
 
 // Destructor
@@ -26,10 +27,7 @@ Maze::~Maze() {
 Maze& Maze::generateMaze() {
     logger->logMessage("Starting maze generation.");
     
-    // Generating the internal maze
     carvePassage(1, 1);
-
-    // Creating one exit
     createRandomExit();
 
     logger->logMessage("Maze generation completed.");
@@ -158,4 +156,16 @@ Maze& Maze::setLogger(const std::string& log_file, bool toFileOnly /* = true */)
     logger.reset(new Logger(log_file));
     logger->enableFileOutput(toFileOnly);
     return *this;
+}
+
+const std::vector<std::vector<int>>& Maze::getMazeGrid() const {
+    return mazeGrid;
+}
+
+int Maze::getWidth() const {
+    return width;
+}
+
+int Maze::getHeight() const {
+    return height;
 }

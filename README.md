@@ -8,6 +8,10 @@ Simulator:
 'odświeżanie' symulacji -> prowadzenie działania myszy w gotowym labiryncie?
 Robot / Micromouse / DecisionAlgorithm -> Mysz ma specyficzne zachowania wg. określone DecisionAlgorithm , robot to tylko abtract class
 polimorfizm -> inne roboty? dwie myszy? dwa algorytmy?
+micromouse Simple algorithm: follow the right-hand rule
+micromouse that knows that its in the corner
+micromouse with memory
+intelligent micromouse ( memory + she knows that its in the corner )
 Sensor / Distance sensor -> sensor to template dla różnych typów danych sensorów gdzie Distance sensor to specific sensor?
 Zrozum gtest config zakomentowany
 Rozdziel testy

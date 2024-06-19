@@ -5,7 +5,7 @@
 #include <chrono>
 
 Simulator::Simulator(std::shared_ptr<Micromouse> mmouse) : micromouse(mmouse), startX(1), startY(1){
-    maze = std::make_shared<Maze>(3, 3, "logs/maze.log");
+    maze = std::make_shared<Maze>(21, 21, "logs/maze.log");
     maze->displayMaze();
 }
 
@@ -18,7 +18,6 @@ void Simulator::run() {
         displayMazeWithMouse();
         micromouse->move(); // Move based on the current direction
         checkAndHandleWallCollision(previousX, previousY); // Check for wall collision
-
 
         // Delay for 1 second
         std::this_thread::sleep_for(std::chrono::seconds(1));

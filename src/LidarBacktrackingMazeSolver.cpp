@@ -1,12 +1,10 @@
-// #include "LidarBacktrackingMazeSolver.h"
+#include "LidarBacktrackingMazeSolver.h"
 
-// LidarBacktrackingMazeSolver::LidarBacktrackingMazeSolver(int startX, int startY, std::shared_ptr<Maze> maze)
-//     : Micromouse(startX, startY, maze), lidarSensor(std::make_unique<LidarSensor>(maze, startX, startY)) {}
+LidarBacktrackingMazeSolver::LidarBacktrackingMazeSolver(std::shared_ptr<Maze> maze)
+    : Micromouse(maze) {
+    sensor = std::make_shared<LidarSensor>(maze, shared_from_this());
+}
 
-// void LidarBacktrackingMazeSolver::updateSensors() {
-//     lidarSensor->updateReadings(posX, posY);
-// }
-
-// void LidarBacktrackingMazeSolver::makeDecision() {
-//     // Implementacja algorytmu z pamięcią (backtracking) i znajomością pozycji początkowej
-// }
+void LidarBacktrackingMazeSolver::makeDecision() {
+    // Implement the lidar backtracking logic
+}

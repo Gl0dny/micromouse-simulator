@@ -1,32 +1,18 @@
-// #include "LaserSensor.h"
+#include "LaserSensor.h"
 
-// LaserSensor::LaserSensor(std::shared_ptr<Maze> maze, int posX, int posY)
-//     : Sensor<int>(maze, posX, posY) {}
+LaserSensor::LaserSensor(std::shared_ptr<Maze> maze, std::shared_ptr<Micromouse> micromouse)
+    : Sensor(maze, micromouse) {}
 
-// void LaserSensor::updateReadings(int posX, int posY)
-// {
-//     this->posX = posX;
-//     this->posY = posY;
+std::vector<std::pair<int, int>> LaserSensor::getSensorData() const {
+    std::vector<std::pair<int, int>> data;
+    int x = micromouse->getPosX();
+    int y = micromouse->getPosY();
 
-//     data[0] = 0; // North
-//     data[1] = 0; // South
-//     data[2] = 0; // West
-//     data[3] = 0; // East
+    // Check for walls in four directions and add all positions up to the wall
+    for (int i = 1; !maze->isWall(x, y - i); ++i) data.emplace_back(x, y - i); // Up
+    for (int i = 1; !maze->isWall(x, y + i); ++i) data.emplace_back(x, y + i); // Down
+    for (int i = 1; !maze->isWall(x - i, y); ++i) data.emplace_back(x - i, y); // Left
+    for (int i = 1; !maze->isWall(x + i, y); ++i) data.emplace_back(x + i, y); // Right
 
-//     for (int i = posY - 1; i >= 0 && !maze->isWall(posX, i); --i)
-//     {
-//         ++data[0];
-//     }
-//     for (int i = posY + 1; i < maze->getHeight() && !maze->isWall(posX, i); ++i)
-//     {
-//         ++data[1];
-//     }
-//     for (int i = posX - 1; i >= 0 && !maze->isWall(i, posY); --i)
-//     {
-//         ++data[2];
-//     }
-//     for (int i = posX + 1; i < maze->getWidth() && !maze->isWall(i, posY); ++i)
-//     {
-//         ++data[3];
-//     }
-// }
+    return data;
+}

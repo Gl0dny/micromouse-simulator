@@ -1,12 +1,10 @@
-// #include "LaserBacktrackingMazeSolver.h"
+#include "LaserBacktrackingMazeSolver.h"
 
-// LaserBacktrackingMazeSolver::LaserBacktrackingMazeSolver(int startX, int startY, std::shared_ptr<Maze> maze)
-//     : Micromouse(startX, startY, maze), laserSensor(std::make_unique<LaserSensor>(maze, startX, startY)) {}
+LaserBacktrackingMazeSolver::LaserBacktrackingMazeSolver(std::shared_ptr<Maze> maze)
+    : Micromouse(maze) {
+    sensor = std::make_shared<LaserSensor>(maze, shared_from_this());
+}
 
-// void LaserBacktrackingMazeSolver::updateSensors() {
-//     laserSensor->updateReadings(posX, posY);
-// }
-
-// void LaserBacktrackingMazeSolver::makeDecision() {
-//     // Implementacja algorytmu z pamięcią (backtracking) i znajomością pozycji początkowej
-// }
+void LaserBacktrackingMazeSolver::makeDecision() {
+    // Implement the laser backtracking logic
+}

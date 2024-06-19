@@ -1,12 +1,10 @@
-// #include "BacktrackingMazeSolver.h"
+#include "BacktrackingMazeSolver.h"
 
-// BacktrackingMazeSolver::BacktrackingMazeSolver(int startX, int startY, std::shared_ptr<Maze> maze)
-//     : Micromouse(startX, startY, maze), distanceSensor(std::make_unique<DistanceSensor>(maze, startX, startY)) {}
+BacktrackingMazeSolver::BacktrackingMazeSolver(std::shared_ptr<Maze> maze)
+    : Micromouse(maze) {
+    sensor = std::make_shared<DistanceSensor>(maze, shared_from_this());
+}
 
-// void BacktrackingMazeSolver::updateSensors() {
-//     distanceSensor->updateReadings(posX, posY);
-// }
-
-// void BacktrackingMazeSolver::makeDecision() {
-//     // Implementacja algorytmu z pamięcią (backtracking)
-// }
+void BacktrackingMazeSolver::makeDecision() {
+    // Implement the backtracking logic
+}

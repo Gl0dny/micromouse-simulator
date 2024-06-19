@@ -3,17 +3,12 @@
 
 #include "Micromouse.h"
 #include "LidarSensor.h"
-#include <stack>
 
 class LidarBacktrackingMazeSolver : public Micromouse {
 public:
-    LidarBacktrackingMazeSolver(int startX, int startY, std::shared_ptr<Maze> maze);
-    void updateSensors() override;
-    void makeDecision() override;
+    LidarBacktrackingMazeSolver(std::shared_ptr<Maze> maze);
 
-private:
-    std::unique_ptr<LidarSensor> lidarSensor;
-    std::stack<std::pair<int, int>> pathStack;
+    void makeDecision() override;
 };
 
 #endif // LIDARBACKTRACKINGMAZESOLVER_H

@@ -2,16 +2,13 @@
 #define RIGHTHANDRULEMAZESOLVER_H
 
 #include "Micromouse.h"
-// #include "DistanceSensor.h"
+#include "DistanceSensor.h"
 
 class RightHandRuleMazeSolver : public Micromouse {
 public:
-    RightHandRuleMazeSolver();
-    void readSensors() override;
-    void makeDecision() override;
+    RightHandRuleMazeSolver(std::shared_ptr<Maze> maze);
 
-private:
-    // std::unique_ptr<DistanceSensor> distanceSensor;
+    void makeDecision() override;
 };
 
 #endif // RIGHTHANDRULEMAZESOLVER_H

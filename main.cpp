@@ -1,33 +1,29 @@
 #include "Simulator.h"
 #include "RightHandRuleMazeSolver.h"
+#include "BacktrackingMazeSolver.h"
+#include "LaserBacktrackingMazeSolver.h"
+#include "LidarBacktrackingMazeSolver.h"
 #include <memory>
 #include <iostream>
-// #include <string>
+#include <string>
 
 int main() {
-    // std::string main_log_file = "./logs/main.log";
-    // std::unique_ptr<Logger> logger = std::make_unique<Logger>(main_log_file);
-    // int width = 21;
-    // int height = 21;
+    auto main_log_file = "./logs/main.log";
+    auto logger = std::make_unique<Logger>(main_log_file);
+    int width = 21;
+    int height = 21;
     
-    // // Creating a unique log file name for the maze
-    // std::string maze_log_file = "./logs/maze.log";
-    // std::unique_ptr<Maze> maze = std::make_unique<Maze>(width, height, maze_log_file);
+    // Creating a unique log file name for the maze
+    auto maze_log_file = "./logs/maze.log";
+    auto maze = std::make_shared<Maze>(width, height, maze_log_file);
 
-    // // Logging initialization
-    // logger->enableFileOutput(false).clearLogFile().logMessage("Creating the Maze: ");
-    
-    // // Generating and displaying the maze
-    // maze->generateMaze().displayMaze();
-    
-    // // Setting the logger and displaying the maze again
-    // maze->setLogger(main_log_file, false).displayMaze();
+    logger->enableFileOutput(false).clearLogFile().logMessage("Creating the Maze: ");
+    maze->generateMaze().displayMaze();
+    maze->setLogger(main_log_file, false).displayMaze();
 
-    // // Disable file output for logger
-    // logger->disableFileOutput();
-    auto micromouse = std::make_shared<RightHandRuleMazeSolver>();
+    auto micromouse = std::make_shared<RightHandRuleMazeSolver>(maze);
 
-        // Choose the type of Micromouse
+    // Choose the type of Micromouse
     // int choice;
     // std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n2. With Memory\n3. Intelligent\n4. Advanced Intelligent\n";
     // std::cin >> choice;
@@ -49,9 +45,10 @@ int main() {
     //         return 1;
     // }
 
-    auto simulator = std::make_unique<Simulator>(micromouse);
+    auto simulator = std::make_unique<Simulator>(micromouse, maze);
     simulator->run();
-
+   // Disable file output for logger
+    logger->disableFileOutput();
     return 0;
 }
 

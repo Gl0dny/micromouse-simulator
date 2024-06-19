@@ -3,11 +3,10 @@
 
 #include "Sensor.h"
 
-class LaserSensor : public Sensor<int>
-{
+class LaserSensor : public Sensor {
 public:
-    LaserSensor(std::shared_ptr<Maze> maze, int posX, int posY);
-    void updateReadings(int posX, int posY) override;
+    LaserSensor(std::shared_ptr<Maze> maze, std::shared_ptr<Micromouse> micromouse);
+    std::vector<std::pair<int, int>> getSensorData() const override;
 };
 
 #endif // LASERSENSOR_H

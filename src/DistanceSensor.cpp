@@ -1,14 +1,16 @@
-// #include "DistanceSensor.h"
+#include "DistanceSensor.h"
 
-// DistanceSensor::DistanceSensor(std::shared_ptr<Maze> maze, int posX, int posY)
-//     : Sensor<bool>(maze, posX, posY) {}
+DistanceSensor::DistanceSensor(std::shared_ptr<Maze> maze, std::shared_ptr<Micromouse> micromouse)
+    : Sensor(maze, micromouse) {}
 
-// void DistanceSensor::updateReadings(int posX, int posY) {
-//     this->posX = posX;
-//     this->posY = posY;
-
-//     data[0] = maze->isWall(posX, posY - 1); // North
-//     data[1] = maze->isWall(posX, posY + 1); // South
-//     data[2] = maze->isWall(posX - 1, posY); // West
-//     data[3] = maze->isWall(posX + 1, posY); // East
-// }
+std::vector<std::pair<int, int>> DistanceSensor::getSensorData() const {
+    std::vector<std::pair<int, int>> data;
+    int x = micromouse->getPosX();
+    int y = micromouse->getPosY();
+    // Check for walls in four directions: up, down, left, right
+    if (maze->isWall(x, y - 1)) data.emplace_back(x, y - 1); // Up
+    if (maze->isWall(x, y + 1)) data.emplace_back(x, y + 1); // Down
+    if (maze->isWall(x - 1, y)) data.emplace_back(x - 1, y); // Left
+    if (maze->isWall(x + 1, y)) data.emplace_back(x + 1, y); // Right
+    return data;
+}

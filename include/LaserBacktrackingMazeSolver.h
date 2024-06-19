@@ -3,17 +3,12 @@
 
 #include "Micromouse.h"
 #include "LaserSensor.h"
-#include <stack>
 
 class LaserBacktrackingMazeSolver : public Micromouse {
 public:
-    LaserBacktrackingMazeSolver(int startX, int startY, std::shared_ptr<Maze> maze);
-    void updateSensors() override;
-    void makeDecision() override;
+    LaserBacktrackingMazeSolver(std::shared_ptr<Maze> maze);
 
-private:
-    std::unique_ptr<LaserSensor> laserSensor;
-    std::stack<std::pair<int, int>> pathStack;
+    void makeDecision() override;
 };
 
 #endif // LASERBACKTRACKINGMAZESOLVER_H

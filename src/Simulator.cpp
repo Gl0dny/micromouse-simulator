@@ -4,9 +4,7 @@
 #include <thread>
 #include <chrono>
 
-Simulator::Simulator(std::shared_ptr<Micromouse> mmouse) : micromouse(mmouse), startX(1), startY(1){
-    maze = std::make_shared<Maze>(21, 21, "logs/maze.log");
-    maze->displayMaze();
+Simulator::Simulator(std::shared_ptr<Micromouse> micromouse, std::shared_ptr<Maze> maze) : micromouse(micromouse), maze(maze), startX(1), startY(1){
 }
 
 void Simulator::run() {

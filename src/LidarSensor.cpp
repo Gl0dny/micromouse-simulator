@@ -1,21 +1,21 @@
-// #include "LidarSensor.h"
+#include "LidarSensor.h"
 
-// LidarSensor::LidarSensor(std::shared_ptr<Maze> maze, int posX, int posY)
-//     : Sensor<bool>(maze, posX, posY) {}
+LidarSensor::LidarSensor(std::shared_ptr<Maze> maze, std::shared_ptr<Micromouse> micromouse)
+    : Sensor(maze, micromouse) {}
 
-// void LidarSensor::updateReadings(int posX, int posY) {
-//     this->posX = posX;
-//     this->posY = posY;
+std::vector<std::pair<int, int>> LidarSensor::getSensorData() const {
+    std::vector<std::pair<int, int>> data;
+    int x = micromouse->getPosX();
+    int y = micromouse->getPosY();
 
-//     std::vector<std::pair<int, int>> offsets = {
-//         {-1, -1}, {0, -1}, {1, -1}, 
-//         {-1,  0}, {0,  0}, {1,  0}, 
-//         {-1,  1}, {0,  1}, {1,  1}
-//     };
+    // Check for walls in nine directions
+    for (int dx = -1; dx <= 1; ++dx) {
+        for (int dy = -1; dy <= 1; ++dy) {
+            if (maze->isWall(x + dx, y + dy)) {
+                data.emplace_back(x + dx, y + dy);
+            }
+        }
+    }
 
-//     for (size_t i = 0; i < offsets.size(); ++i) {
-//         int nx = posX + offsets[i].first;
-//         int ny = posY + offsets[i].second;
-//         data[i] = maze->isWall(nx, ny);
-//     }
-// }
+    return data;
+}

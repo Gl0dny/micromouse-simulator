@@ -1,8 +1,8 @@
 #include "Micromouse.h"
 #include <iostream>
 
-Micromouse::Micromouse()
-    : posX(1), posY(1), direction("North") {}
+Micromouse::Micromouse(std::shared_ptr<Maze> maze)
+    : maze(maze), posX(1), posY(1), direction("North") {}
 
 int Micromouse::getPosX() const {
     return posX;
@@ -47,3 +47,7 @@ void Micromouse::move() {
 //     outFile.close();
 // }
 
+void Micromouse::readSensors() {
+    sensorData = sensor->getSensorData();
+    // Additional processing of sensor data if needed
+}

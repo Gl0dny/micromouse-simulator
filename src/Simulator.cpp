@@ -2,7 +2,7 @@
 #include <iostream>
 #include <random>
 
-Simulator::Simulator(Micromouse& mmouse) : micromouse(mmouse) {
+Simulator::Simulator(std::shared_ptr<Micromouse> mmouse) : micromouse(mmouse) {
     maze = std::make_shared<Maze>(21, 21, "logs/maze.log");
     maze->displayMaze();
 }
@@ -10,12 +10,12 @@ Simulator::Simulator(Micromouse& mmouse) : micromouse(mmouse) {
 void Simulator::run() {
     // setRandomMouseStartPosition();
 
-    // while (!micromouse.hasReachedGoal()) {
-    //     micromouse.updateSensors();
-    //     micromouse.makeDecision();
+    // while (!micromouse->hasReachedGoal()) {
+    //     micromouse->updateSensors();
+    //     micromouse->makeDecision();
         displayMazeWithMouse();
     // }
-    // micromouse.saveRouteToFile("mouse_route.txt");
+    // micromouse->saveRouteToFile("mouse_route.txt");
 }
 
 void Simulator::setRandomStartPosition() {
@@ -45,14 +45,14 @@ void Simulator::setRandomStartPosition() {
         default:
             throw std::invalid_argument("Invalid corner specified");
     }
-    micromouse.setStartingPosition(startX, startY);
+    micromouse->setStartingPosition(startX, startY);
 }
 
 
 void Simulator::displayMazeWithMouse() const {
     auto grid = maze->getMazeGrid();
-    int mouseX = micromouse.getPosX();
-    int mouseY = micromouse.getPosY();
+    int mouseX = micromouse->getPosX();
+    int mouseY = micromouse->getPosY();
 
     for (int y = 0; y < grid[0].size(); ++y) {
         for (int x = 0; x < grid.size(); ++x) {

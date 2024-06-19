@@ -25,7 +25,7 @@ int main() {
 
     // // Disable file output for logger
     // logger->disableFileOutput();
-    std::unique_ptr<Micromouse> micromouse = std::make_unique<RightHandRuleMazeSolver>();;
+    auto micromouse = std::make_shared<RightHandRuleMazeSolver>();
 
         // Choose the type of Micromouse
     // int choice;
@@ -49,8 +49,8 @@ int main() {
     //         return 1;
     // }
 
-    Simulator simulator(*micromouse);
-    simulator.run();
+    auto simulator = std::make_unique<Simulator>(micromouse);
+    simulator->run();
 
     return 0;
 }

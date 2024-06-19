@@ -7,12 +7,12 @@
 
 class Simulator {
 public:
-    Simulator(Micromouse& mmouse);
+    Simulator(std::shared_ptr<Micromouse> mmouse);
     void run();
 
 private:
     std::shared_ptr<Maze> maze;
-    Micromouse& micromouse;
+    std::shared_ptr<Micromouse> micromouse;
     void displayMazeWithMouse() const;
     void setRandomStartPosition();
 };

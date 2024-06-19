@@ -4,7 +4,7 @@ RightHandRuleMazeSolver::RightHandRuleMazeSolver()
     : Micromouse() {}
     // , distanceSensor(std::make_unique<DistanceSensor>(maze, startX, startY)) {}
 
-void RightHandRuleMazeSolver::updateSensors() {
+void RightHandRuleMazeSolver::readSensors() {
     // distanceSensor->updateReadings(posX, posY);
 }
 

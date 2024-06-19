@@ -34,7 +34,7 @@ void Micromouse::setPosition(int x, int y) {
 }
 
 void Micromouse::move() {
-    updateSensors();
+    readSensors();
     int direction = makeDecision();
     switch (direction) {
         case 0: posY--; break; // North

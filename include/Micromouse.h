@@ -12,7 +12,7 @@ public:
     Micromouse();
     virtual ~Micromouse() = default;
 
-    virtual void updateSensors() = 0;
+    virtual void readSensors() = 0;
     virtual int makeDecision() = 0;
 
     int getPosX() const;

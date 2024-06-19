@@ -51,13 +51,13 @@ namespace Utils {
 
     void fileExists(const std::string &filePath) {
         std::ifstream ifs(filePath);
-    #ifdef DEBUG_MODE
+#ifdef DEBUG_MODE
         if (ifs) {
             std::cout << "File exists." << std::endl;
         } else {
             std::cout << "File does not exist." << std::endl;
         }
-    #endif
+#endif
     }
 
 } // namespace Utils

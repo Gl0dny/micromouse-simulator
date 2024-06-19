@@ -7,7 +7,7 @@
 class RightHandRuleMazeSolver : public Micromouse {
 public:
     RightHandRuleMazeSolver();
-    void updateSensors() override;
+    void readSensors() override;
     int makeDecision() override;
 
 private:

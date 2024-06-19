@@ -34,13 +34,6 @@ void Micromouse::setPosition(int x, int y) {
     posY = y;
 }
 
-void Micromouse::setStartingPosition(int x, int y) {
-    startX = x;
-    startY = y;
-    posX = startX;
-    posY = startY;
-}
-
 // void Micromouse::logMovement(int newX, int newY) {
 //     route.emplace_back(newX, newY);
 // }
@@ -68,15 +61,3 @@ bool Micromouse::hasReachedGoal() const {
     // Implementacja sprawdzenia czy mysz dotarła do celu
     return false; // Zmienić na odpowiednią logikę
 }
-
-void Micromouse::reset() {
-    posX = startX;
-    posY = startY;
-    direction = 0; // Zresetowanie kierunku
-}
-
-// void Micromouse::updateSensors() {
-//     distanceSensor->updateReadings(posX, posY);
-//     advancedLaserSensor->updateReadings(posX, posY);
-//     lidarSensor->updateReadings(posX, posY);
-// }

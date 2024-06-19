@@ -2,7 +2,7 @@
 #include <iostream>
 #include <random>
 
-Simulator::Simulator(std::shared_ptr<Micromouse> mmouse) : micromouse(mmouse) {
+Simulator::Simulator(std::shared_ptr<Micromouse> mmouse) : micromouse(mmouse), startX(1), startY(1){
     maze = std::make_shared<Maze>(21, 21, "logs/maze.log");
     maze->displayMaze();
 }
@@ -13,7 +13,7 @@ void Simulator::run() {
     // while (!micromouse->hasReachedGoal()) {
     //     micromouse->updateSensors();
     //     micromouse->makeDecision();
-    displayMazeWithMouse();
+        displayMazeWithMouse();
     // }
     // micromouse->saveRouteToFile("mouse_route.txt");
 }
@@ -24,7 +24,6 @@ void Simulator::setRandomStartPosition() {
     std::uniform_int_distribution<> dis(0, 3);
     int corner = dis(gen);
 
-    int startX, startY;
     switch (corner) {
         case 0:
             startX = 1;
@@ -45,7 +44,7 @@ void Simulator::setRandomStartPosition() {
         default:
             throw std::invalid_argument("Invalid corner specified");
     }
-    micromouse->setStartingPosition(startX, startY);
+    micromouse->setPosition(startX, startY);
 }
 
 
@@ -66,3 +65,7 @@ void Simulator::displayMazeWithMouse() const {
     }
     std::cout << std::endl;
 }
+
+// void Simulator::reset() {
+//     micromouse->setPosition(startX, tartY);
+// }

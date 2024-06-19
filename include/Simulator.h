@@ -13,8 +13,10 @@ public:
 private:
     std::shared_ptr<Maze> maze;
     std::shared_ptr<Micromouse> micromouse;
+    int startX, startY;
     void displayMazeWithMouse() const;
     void setRandomStartPosition();
+    // void reset();
 };
 
 #endif // SIMULATOR_H

@@ -12,23 +12,21 @@ public:
     Micromouse();
     virtual ~Micromouse() = default;
 
-    int getPosX() const;
-    int getPosY() const;
-    void setPosition(int startX, int startY);
-    void setStartingPosition(int startX, int startY);
-
     virtual void updateSensors() = 0;
     virtual void makeDecision() = 0;
+
+    int getPosX() const;
+    int getPosY() const;
+    void setPosition(int x, int y);
+
     void move();
     bool hasReachedGoal() const;
-    void reset();
 
     // void logMovement(int x, int y);
     // void saveRouteToFile(const std::string& filename) const;
 
 protected:
     int posX, posY;
-    int startX, startY;
     int direction; // 0 - North, 1 - East, 2 - South, 3 - West
     // std::unique_ptr<Sensor<bool>> distanceSensor;
     // std::unique_ptr<Sensor<int>> advancedLaserSensor;

@@ -11,8 +11,7 @@ void Simulator::run() {
     setRandomStartPosition();
 
     // while (!micromouse->hasReachedGoal()) {
-    //     micromouse->updateSensors();
-    //     micromouse->makeDecision();
+        micromouse->move();
         displayMazeWithMouse();
     // }
     // micromouse->saveRouteToFile("mouse_route.txt");

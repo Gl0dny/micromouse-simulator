@@ -88,7 +88,7 @@ void Maze::carvePassage(int x, int y) {
     logger->logMessage("Carving passage at (" + std::to_string(x) + ", " + std::to_string(y) + ").");
 
     // Print maze with current position
-    printMazeWithCurrentPosition(x, y);
+    printMazeWithCurrentCarve(x, y);
 
     std::random_device rd;
     std::mt19937 g(rd());
@@ -114,7 +114,7 @@ void Maze::carvePassage(int x, int y) {
 }
 
 // Function to print the maze with the current position of the algorithm
-void Maze::printMazeWithCurrentPosition(int cx, int cy) const {
+void Maze::printMazeWithCurrentCarve(int cx, int cy) const {
     logger->logMessage("Displaying maze with current position:");
 
     // Log each row of the maze

@@ -8,15 +8,16 @@
 #include <string>
 #include <memory>
 
-class Maze {
+class Maze
+{
 public:
-    Maze(int width, int height, const std::string& logFileName);
+    Maze(int width, int height, const std::string &logFileName);
     ~Maze();
-    Maze& generateMaze();
+    Maze &generateMaze();
     void displayMaze() const;
     bool isWall(int x, int y) const;
-    Maze& setLogger(const std::string& logFile, bool toFileOnly = true);
-    const std::vector<std::vector<int>>& getMazeGrid() const;
+    Maze &setLogger(const std::string &logFile, bool toFileOnly = true);
+    const std::vector<std::vector<int>> &getMazeGrid() const;
     int getWidth() const;
     int getHeight() const;
 
@@ -30,7 +31,7 @@ private:
     void carvePassage(int x, int y);
     void createRandomExit();
     bool isValidExit(int x, int y);
-    void printMazeWithCurrentPosition(int cx, int cy) const;
+    void printMazeWithCurrentCarve(int cx, int cy) const;
 };
 
 #endif // MAZE_H

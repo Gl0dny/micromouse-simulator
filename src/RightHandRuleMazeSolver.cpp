@@ -8,7 +8,7 @@ void RightHandRuleMazeSolver::updateSensors() {
     // distanceSensor->updateReadings(posX, posY);
 }
 
-void RightHandRuleMazeSolver::makeDecision() {
+int RightHandRuleMazeSolver::makeDecision() {
     // Implementacja algorytmu "prawej ręki"
         // Implement right-hand rule algorithm
     // // After deciding the next move, log the movement

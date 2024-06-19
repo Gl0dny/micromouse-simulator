@@ -8,7 +8,7 @@ class RightHandRuleMazeSolver : public Micromouse {
 public:
     RightHandRuleMazeSolver();
     void updateSensors() override;
-    void makeDecision() override;
+    int makeDecision() override;
 
 private:
     // std::unique_ptr<DistanceSensor> distanceSensor;

@@ -41,6 +41,8 @@ Napraw pojawianie się walli dodatkowych w maze: parzysta liczba w ścianie;
 Można poprawić ale specyfika labiryntu ( korytarz musi być otoczony więc liczbą wyboru korytarza musi być liczba nieparzysta ( indeksowanie od 0 ), w przypadku parzystej liczby wyboru zawsze w labiryncie musiałbym pozwolić na istnieje podwójnych ścian - zakaz podwójnych ścian to założenie labiryntu i jego testów ). Mógłbym sztucznie wyżłobić pojedyncze ślepe uliczki ( sprawdzając trzy kierunki dookoła podwójnej ściany i decydując, że da się ją wyżłobić poza algorytmem depth-first search ) na długość jednego kroku ale mija się to ze specyfiką labiryntu. Pozostawiam hardcoded odd number of width/height.
 
 Możliwe że muszę przekazywać do myszy labirynt żeby czujniki mogły sprawdzać ściany
+Dodać warunek wyjścia z labiryntu - dodanie do labiryntu zmiennej wyjścia
+Dodac sprawdzania ścian
   -->
 
 Projekt zakłada stworzenie symulacji robota typu micromouse, którego zadaniem jest przejście przez labirynt. Robot będzie wyposażony w czujniki, które pozwolą mu zbierać dane o otoczeniu, i na ich podstawie podejmować decyzje dotyczące ruchu. Symulacja będzie zawierała wizualizację ruchu robota w labiryncie.

@@ -26,12 +26,9 @@ Maze::~Maze() {
 // Function to generate the maze
 Maze& Maze::generateMaze() {
     logger->logMessage("Starting maze generation.");
-    
     carvePassage(1, 1);
     createRandomExit();
-
     logger->logMessage("Maze generation completed.");
-
     return *this;
 }
 

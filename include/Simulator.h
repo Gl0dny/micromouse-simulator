@@ -16,6 +16,7 @@ private:
     int startX, startY;
     void displayMazeWithMouse() const;
     void setRandomStartPosition();
+    bool hasReachedGoal() const;
     // void reset();
 };
 

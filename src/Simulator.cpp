@@ -9,12 +9,12 @@ Simulator::Simulator(std::shared_ptr<Micromouse> mmouse) : micromouse(mmouse), s
 
 void Simulator::run() {
     setRandomStartPosition();
-
+    displayMazeWithMouse();
     // while (!micromouse->hasReachedGoal()) {
         micromouse->move();
         displayMazeWithMouse();
     // }
-    // micromouse->saveRouteToFile("mouse_route.txt");
+    // micromouse->saveRouteToFile("logs/mouse_route.txt");
 }
 
 void Simulator::setRandomStartPosition() {
@@ -63,6 +63,11 @@ void Simulator::displayMazeWithMouse() const {
         std::cout << '\n';
     }
     std::cout << std::endl;
+}
+
+bool Simulator::hasReachedGoal() const {
+    // Implementacja sprawdzenia czy mysz dotarła do celu
+    return false; // Zmienić na odpowiednią logikę
 }
 
 // void Simulator::reset() {

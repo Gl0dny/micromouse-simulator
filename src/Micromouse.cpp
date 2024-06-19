@@ -2,23 +2,7 @@
 #include <iostream>
 
 Micromouse::Micromouse()
-    : posX(1), posY(1){}
-    // {    route.emplace_back(x, y); // log initial position}
-
-// Micromouse::Micromouse(int startX, int startY, std::shared_ptr<Maze> maze)
-//     : Robot(startX, startY), startX(startX), startY(startY),
-//       distanceSensor(std::make_unique<DistanceSensor>(maze, startX, startY)),
-//       advancedLaserSensor(std::make_unique<AdvancedLaserSensor>(maze, startX, startY)),
-//       lidarSensor(std::make_unique<LIDARSensor>(maze, startX, startY)) {}
-
-// void Micromouse::move(direction) {
-//     switch (direction) {
-//         case 0: posY--; break; // North
-//         case 1: posX++; break; // East
-//         case 2: posY++; break; // South
-//         case 3: posX--; break; // West
-//     }
-// }
+    : posX(1), posY(1), direction("North") {}
 
 int Micromouse::getPosX() const {
     return posX;
@@ -35,19 +19,20 @@ void Micromouse::setPosition(int x, int y) {
 
 void Micromouse::move() {
     readSensors();
-    int direction = makeDecision();
-    switch (direction) {
-        case 0: posY--; break; // North
-        case 1: posX++; break; // East
-        case 2: posY++; break; // South
-        case 3: posX--; break; // West
+    makeDecision();
+    if (direction == "North") {
+        posY--;
+    } else if (direction == "East") {
+        posX++;
+    } else if (direction == "South") {
+        posY++;
+    } else if (direction == "West") {
+        posX--;
     }
 }
 
-bool Micromouse::hasReachedGoal() const {
-    // Implementacja sprawdzenia czy mysz dotarła do celu
-    return false; // Zmienić na odpowiednią logikę
-}
+
+
 // void Micromouse::logMovement(int newX, int newY) {
 //     route.emplace_back(newX, newY);
 // }

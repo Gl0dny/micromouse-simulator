@@ -8,12 +8,12 @@ Simulator::Simulator(std::shared_ptr<Micromouse> mmouse) : micromouse(mmouse) {
 }
 
 void Simulator::run() {
-    // setRandomMouseStartPosition();
+    setRandomStartPosition();
 
     // while (!micromouse->hasReachedGoal()) {
     //     micromouse->updateSensors();
     //     micromouse->makeDecision();
-        displayMazeWithMouse();
+    displayMazeWithMouse();
     // }
     // micromouse->saveRouteToFile("mouse_route.txt");
 }

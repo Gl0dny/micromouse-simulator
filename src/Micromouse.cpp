@@ -6,6 +6,21 @@ Micromouse::Micromouse()
     // , direction(0) {}
     // {    route.emplace_back(x, y); // log initial position}
 
+// Micromouse::Micromouse(int startX, int startY, std::shared_ptr<Maze> maze)
+//     : Robot(startX, startY), startX(startX), startY(startY),
+//       distanceSensor(std::make_unique<DistanceSensor>(maze, startX, startY)),
+//       advancedLaserSensor(std::make_unique<AdvancedLaserSensor>(maze, startX, startY)),
+//       lidarSensor(std::make_unique<LIDARSensor>(maze, startX, startY)) {}
+
+// void Micromouse::move() {
+//     switch (direction) {
+//         case 0: posY--; break; // North
+//         case 1: posX++; break; // East
+//         case 2: posY++; break; // South
+//         case 3: posX--; break; // West
+//     }
+// }
+
 int Micromouse::getPosX() const {
     return posX;
 }
@@ -59,3 +74,9 @@ void Micromouse::reset() {
     posY = startY;
     direction = 0; // Zresetowanie kierunku
 }
+
+// void Micromouse::updateSensors() {
+//     distanceSensor->updateReadings(posX, posY);
+//     advancedLaserSensor->updateReadings(posX, posY);
+//     lidarSensor->updateReadings(posX, posY);
+// }

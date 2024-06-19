@@ -17,6 +17,8 @@ private:
     void displayMazeWithMouse() const;
     void setRandomStartPosition();
     bool hasReachedGoal() const;
+    void checkAndHandleWallCollision(int previousX, int previousY);
+    int collisionCount;
     // void reset();
 };
 

@@ -7,6 +7,7 @@
 #include <map>
 #include <string>
 #include <memory>
+#include <utility>
 
 class Maze
 {
@@ -20,6 +21,7 @@ public:
     const std::vector<std::vector<int>> &getMazeGrid() const;
     int getWidth() const;
     int getHeight() const;
+    std::pair<int, int> readExit() const;
 
 private:
     int width;
@@ -29,6 +31,7 @@ private:
     std::map<std::pair<int, int>, std::string> directionNames;
 
     void carvePassage(int x, int y);
+    std::pair<int, int> exit;
     void createRandomExit();
     bool isValidExit(int x, int y);
     void printMazeWithCurrentCarve(int cx, int cy) const;

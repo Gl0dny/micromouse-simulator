@@ -1,20 +1,31 @@
 #include "Simulator.h"
 #include <iostream>
 #include <random>
+#include <thread>
+#include <chrono>
 
 Simulator::Simulator(std::shared_ptr<Micromouse> mmouse) : micromouse(mmouse), startX(1), startY(1){
-    maze = std::make_shared<Maze>(21, 21, "logs/maze.log");
+    maze = std::make_shared<Maze>(3, 3, "logs/maze.log");
     maze->displayMaze();
 }
 
 void Simulator::run() {
     setRandomStartPosition();
-    displayMazeWithMouse();
-    // while (!micromouse->hasReachedGoal()) {
-        micromouse->move();
+    collisionCount=0;
+    while (!hasReachedGoal()) {
+        int previousX = micromouse->getPosX();
+        int previousY = micromouse->getPosY();
         displayMazeWithMouse();
-    // }
+        micromouse->move(); // Move based on the current direction
+        checkAndHandleWallCollision(previousX, previousY); // Check for wall collision
+
+
+        // Delay for 1 second
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+    displayMazeWithMouse();
     // micromouse->saveRouteToFile("logs/mouse_route.txt");
+        std::cout << "Micromouse escaped from the Maze!\n";
 }
 
 void Simulator::setRandomStartPosition() {
@@ -43,6 +54,7 @@ void Simulator::setRandomStartPosition() {
         default:
             throw std::invalid_argument("Invalid corner specified");
     }
+    std::cout << "Micromouse starting at (" << startX << ", " << startY << ").\n";
     micromouse->setPosition(startX, startY);
 }
 
@@ -66,8 +78,29 @@ void Simulator::displayMazeWithMouse() const {
 }
 
 bool Simulator::hasReachedGoal() const {
-    // Implementacja sprawdzenia czy mysz dotarła do celu
-    return false; // Zmienić na odpowiednią logikę
+    auto [exitX, exitY] = maze->readExit();
+    return micromouse->getPosX() == exitX && micromouse->getPosY() == exitY;
+}
+
+void Simulator::checkAndHandleWallCollision(int previousX, int previousY) {
+    int currentX = micromouse->getPosX();
+    int currentY = micromouse->getPosY();
+    
+    // Check if the new position is a wall
+    if (maze->isWall(currentX, currentY)) {
+        std::cout << "Collision with wall at (" << currentX << ", " << currentY << "). Reverting to (" << previousX << ", " << previousY << ").\n";
+        // Revert to the previous position
+        micromouse->setPosition(previousX, previousY);
+        collisionCount++;
+        std::cout << "Collision count: " << collisionCount << "\n";
+    } else {
+        std::cout << "Moved to (" << currentX << ", " << currentY << ").\n";
+    }
+
+    if (collisionCount >= 3) {
+        std::cout << "Micromouse died after 3 collisions with walls.\n";
+        exit(0); // Exit the program
+    }
 }
 
 // void Simulator::reset() {

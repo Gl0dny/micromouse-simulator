@@ -57,6 +57,7 @@ void Maze::createRandomExit() {
         if (isValidExit(exitX, exitY)) {
             mazeGrid[exitX][exitY] = 0;
             logger->logMessage("Created exit at (" + std::to_string(exitX) + ", " + std::to_string(exitY) + ").");
+            exit = {exitX, exitY};  
             exitCreated = true;
         }
     }
@@ -165,4 +166,8 @@ int Maze::getWidth() const {
 
 int Maze::getHeight() const {
     return height;
+}
+
+std::pair<int, int> Maze::readExit() const {
+    return exit;
 }

@@ -5,7 +5,7 @@
 
 class DistanceSensor : public Sensor {
 public:
-    DistanceSensor(std::shared_ptr<Maze> maze, std::shared_ptr<Micromouse> micromouse);
+    DistanceSensor(std::shared_ptr<Maze> maze, std::weak_ptr<Micromouse> micromouse);
     std::vector<std::pair<int, int>> getSensorData() const override;
 };
 

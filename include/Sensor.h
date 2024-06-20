@@ -13,12 +13,20 @@ class Micromouse;
 
 class Sensor {
 public:
-    Sensor(std::shared_ptr<Maze> maze, std::shared_ptr<Micromouse> micromouse);
+    Sensor(std::shared_ptr<Maze> maze, std::weak_ptr<Micromouse> micromouse);
     virtual std::vector<std::pair<int, int>> getSensorData() const = 0;
 
 protected:
     std::shared_ptr<Maze> maze;
-    std::shared_ptr<Micromouse> micromouse;
+
+/*
+Potential Circular Dependency:
+The Sensor class holds a std::shared_ptr<Micromouse>, which can cause a circular dependency issue when combined with shared_from_this().
+
+Pass weak_ptr to Sensor:
+Instead of storing a std::shared_ptr<Micromouse> in the Sensor class, store a std::weak_ptr<Micromouse>. This breaks the circular dependency and avoids potential dangling pointers
+*/
+    std::weak_ptr<Micromouse> micromouse;
 };
 
 #endif // SENSOR_H

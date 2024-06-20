@@ -18,6 +18,7 @@ public:
     Micromouse(std::shared_ptr<Maze> maze);
     virtual ~Micromouse() = default;
 
+    virtual void initialize() = 0;
     virtual void makeDecision() = 0;
 
     int getPosX() const;

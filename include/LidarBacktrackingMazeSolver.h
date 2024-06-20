@@ -7,7 +7,8 @@
 class LidarBacktrackingMazeSolver : public Micromouse {
 public:
     LidarBacktrackingMazeSolver(std::shared_ptr<Maze> maze);
-
+    
+    void initialize() override;
     void makeDecision() override;
 };
 

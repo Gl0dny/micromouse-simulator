@@ -5,7 +5,7 @@
 
 class LaserSensor : public Sensor {
 public:
-    LaserSensor(std::shared_ptr<Maze> maze, std::shared_ptr<Micromouse> micromouse);
+    LaserSensor(std::shared_ptr<Maze> maze, std::weak_ptr<Micromouse> micromouse);
     std::vector<std::pair<int, int>> getSensorData() const override;
 };
 

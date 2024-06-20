@@ -31,8 +31,6 @@ void Micromouse::move() {
     }
 }
 
-
-
 // void Micromouse::logMovement(int newX, int newY) {
 //     route.emplace_back(newX, newY);
 // }

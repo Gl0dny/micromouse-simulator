@@ -1,4 +1,3 @@
-// Maze.h
 #ifndef MAZE_H
 #define MAZE_H
 
@@ -22,7 +21,6 @@ public:
     int getWidth() const;
     int getHeight() const;
     std::pair<int, int> readExit() const;
-
 private:
     int width;
     int height;

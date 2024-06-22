@@ -4,27 +4,23 @@
 #include <thread>
 #include <chrono>
 
-Simulator::Simulator(std::shared_ptr<Micromouse> mmouse) : micromouse(mmouse), startX(1), startY(1){
-    maze = std::make_shared<Maze>(21, 21, "logs/maze.log");
-    maze->displayMaze();
-}
+Simulator::Simulator(std::shared_ptr<Micromouse> micromouse, std::shared_ptr<Maze> maze) : micromouse(micromouse), maze(maze), startX(1), startY(1) {}
 
 void Simulator::run() {
     setRandomStartPosition();
-    collisionCount=0;
+    collisionCount = 0;
     while (!hasReachedGoal()) {
         int previousX = micromouse->getPosX();
         int previousY = micromouse->getPosY();
         displayMazeWithMouse();
-        micromouse->move(); // Move based on the current direction
+        micromouse->move(); 
         checkAndHandleWallCollision(previousX, previousY); // Check for wall collision
 
         // Delay for 1 second
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
     displayMazeWithMouse();
-    // micromouse->saveRouteToFile("logs/mouse_route.txt");
-        std::cout << "Micromouse escaped from the Maze!\n";
+    std::cout << "Micromouse escaped from the Maze!\n";
 }
 
 void Simulator::setRandomStartPosition() {
@@ -57,24 +53,31 @@ void Simulator::setRandomStartPosition() {
     micromouse->setPosition(startX, startY);
 }
 
-
 void Simulator::displayMazeWithMouse() const {
-    auto grid = maze->getMazeGrid();
+    auto grid = micromouse->getKnownMaze();
     int mouseX = micromouse->getPosX();
     int mouseY = micromouse->getPosY();
 
-    for (int y = 0; y < grid[0].size(); ++y) {
+    // Log each row of the maze with mouse position
+    for (int y = grid[0].size() - 1; y >= 0; --y) {
+        std::string rowString;
         for (int x = 0; x < grid.size(); ++x) {
             if (x == mouseX && y == mouseY) {
-                std::cout << 'M' << ' ';
+                rowString += 'M';
+            } else if (grid[x][y] == -1) {
+                rowString += '?';
+            } else if (grid[x][y] == 1) {
+                rowString += '#';
             } else {
-                std::cout << (grid[x][y] ? '#' : ' ') << ' ';
+                rowString += ' ';
             }
+            rowString += ' ';
         }
-        std::cout << '\n';
+        std::cout << rowString << std::endl;
     }
     std::cout << std::endl;
 }
+
 
 bool Simulator::hasReachedGoal() const {
     auto [exitX, exitY] = maze->readExit();
@@ -84,11 +87,8 @@ bool Simulator::hasReachedGoal() const {
 void Simulator::checkAndHandleWallCollision(int previousX, int previousY) {
     int currentX = micromouse->getPosX();
     int currentY = micromouse->getPosY();
-    
-    // Check if the new position is a wall
     if (maze->isWall(currentX, currentY)) {
         std::cout << "Collision with wall at (" << currentX << ", " << currentY << "). Reverting to (" << previousX << ", " << previousY << ").\n";
-        // Revert to the previous position
         micromouse->setPosition(previousX, previousY);
         collisionCount++;
         std::cout << "Collision count: " << collisionCount << "\n";
@@ -98,10 +98,6 @@ void Simulator::checkAndHandleWallCollision(int previousX, int previousY) {
 
     if (collisionCount >= 3) {
         std::cout << "Micromouse died after 3 collisions with walls.\n";
-        exit(0); // Exit the program
+        exit(0);
     }
 }
-
-// void Simulator::reset() {
-//     micromouse->setPosition(startX, tartY);
-// }

@@ -7,7 +7,7 @@
 
 class Simulator {
 public:
-    Simulator(std::shared_ptr<Micromouse> mmouse);
+    Simulator(std::shared_ptr<Micromouse> micromouse, std::shared_ptr<Maze> maze);
     void run();
 
 private:
@@ -19,7 +19,6 @@ private:
     bool hasReachedGoal() const;
     void checkAndHandleWallCollision(int previousX, int previousY);
     int collisionCount;
-    // void reset();
 };
 
 #endif // SIMULATOR_H

@@ -41,17 +41,7 @@ set(SOURCES
     src/Utils.cpp
     src/Micromouse.cpp
     src/Sensor.cpp
-    src/DistanceSensor.cpp
-    src/LaserSensor.cpp
-    src/LidarSensor.cpp
     src/Simulator.cpp
-    src/RightHandRuleMazeSolver.cpp
-    src/BacktrackingMazeSolver.cpp
-    src/LaserBacktrackingMazeSolver.cpp
-    src/LidarBacktrackingMazeSolver.cpp
-    src/GUI.cpp
-    src/MainWindow.cpp
-    src/MazeWidget.cpp
 )
 
 # Main executable

@@ -8,17 +8,20 @@
 #include <vector>
 #include <memory>
 
-// Constructor
+
 Maze::Maze(int width, int height, const std::string& logFileName)
     : width(width), height(height), mazeGrid(width, std::vector<int>(height, 1)), logger(std::make_unique<Logger>(logFileName)) {
-    directionNames = {{{0, -1}, "North"}, {{0, 1}, "South"}, {{-1, 0}, "West"}, {{1, 0}, "East"}};
-    logger->enableFileOutput();
+    std::map<std::pair<int, int>, std::string> directionNames = {
+        {{-1, 0}, "West"},  
+        {{1, 0}, "East"},   
+        {{0, -1}, "South"}, 
+        {{0, 1}, "North"}   
+    };    logger->enableFileOutput();
     logger->clearLogFile();
     logger->logMessage("Maze initialized with all walls.");
     generateMaze();
 }
 
-// Destructor
 Maze::~Maze() {
     logger->disableFileOutput();
 }
@@ -36,12 +39,12 @@ Maze& Maze::generateMaze() {
 void Maze::createRandomExit() {
     std::vector<std::pair<int, int>> borderCells;
     for (int i = 1; i < width - 1; ++i) {
-        borderCells.push_back({i, 0});        // Top border
-        borderCells.push_back({i, height-1}); // Bottom border
+        borderCells.push_back({i, 0});        
+        borderCells.push_back({i, height-1}); 
     }
     for (int i = 1; i < height - 1; ++i) {
-        borderCells.push_back({0, i});        // Left border
-        borderCells.push_back({width-1, i});  // Right border
+        borderCells.push_back({0, i});        
+        borderCells.push_back({width-1, i}); 
     }
 
     std::random_device rd;
@@ -116,9 +119,9 @@ void Maze::printMazeWithCurrentCarve(int cx, int cy) const {
     logger->logMessage("Displaying maze with current position:");
 
     // Log each row of the maze
-    for (int y = 0; y < height; ++y) {
+    for (int y = height - 1; y >= 0; --y) { 
         std::string rowString;
-        for (int x = 0; x < width; ++x) {
+        for (int x = 0; x < width; ++x) { 
             if (x == cx && y == cy) {
                 rowString += "C "; // Current position
             } else {
@@ -140,10 +143,10 @@ void Maze::displayMaze() const {
     logger->logMessage("Displaying maze:");
 
     // Log each row of the maze
-    for (const auto& row : mazeGrid) {
+    for (int y = height - 1; y >= 0; --y) {
         std::string rowString;
-        for (const auto& cell : row) {
-            rowString += (cell ? '#' : ' ');
+        for (int x = 0; x < width; ++x) {
+            rowString += (mazeGrid[x][y] ? '#' : ' ');
             rowString += ' ';
         }
         logger->logMessage(rowString, false);

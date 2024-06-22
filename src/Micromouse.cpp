@@ -1,8 +1,11 @@
 #include "Micromouse.h"
 #include <iostream>
 
-Micromouse::Micromouse()
-    : posX(1), posY(1), direction("North") {}
+Micromouse::Micromouse() : posX(1), posY(1), direction("North") {}
+
+void Micromouse::setSensor(std::shared_ptr<Sensor> sensor) {
+    this->sensor = sensor;
+}
 
 int Micromouse::getPosX() const {
     return posX;
@@ -21,29 +24,52 @@ void Micromouse::move() {
     readSensors();
     makeDecision();
     if (direction == "North") {
-        posY--;
+        posY++;
     } else if (direction == "East") {
         posX++;
     } else if (direction == "South") {
-        posY++;
+        posY--;
     } else if (direction == "West") {
         posX--;
     }
 }
 
+void Micromouse::readSensors() {
+    sensor->getSensorData(posX, posY, knownMaze);
+}
 
+void Micromouse::initializeKnownMaze(int width, int height) {
+    knownMaze = std::vector<std::vector<int>>(width, std::vector<int>(height, -1));
+}
 
-// void Micromouse::logMovement(int newX, int newY) {
-//     route.emplace_back(newX, newY);
-// }
+std::vector<std::vector<int>> Micromouse::getKnownMaze() const {
+    return knownMaze;
+}
 
-// void Micromouse::saveRouteToFile(const std::string& filename) const {
-//     std::ofstream outFile(filename);
-//     if (outFile.is_open()) {
-//         for (const auto& position : route) {
-//             outFile << position.first << "," << position.second << std::endl;
-//         }
-//     }
-//     outFile.close();
-// }
+RightHandRuleMazeSolver::RightHandRuleMazeSolver()
+    : Micromouse() {}
 
+void RightHandRuleMazeSolver::makeDecision() {
+    // Implement the right-hand rule logic
+}
+
+BacktrackingMazeSolver::BacktrackingMazeSolver()
+    : Micromouse() {}
+
+void BacktrackingMazeSolver::makeDecision() {
+    // Implement the backtracking logic
+}
+
+LaserBacktrackingMazeSolver::LaserBacktrackingMazeSolver()
+    : Micromouse() {}
+
+void LaserBacktrackingMazeSolver::makeDecision() {
+    // Implement the laser backtracking logic
+}
+
+LidarBacktrackingMazeSolver::LidarBacktrackingMazeSolver()
+    : Micromouse() {}
+
+void LidarBacktrackingMazeSolver::makeDecision() {
+    // Implement the lidar backtracking logic
+}

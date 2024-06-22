@@ -23,23 +23,25 @@ void Micromouse::setPosition(int x, int y) {
 void Micromouse::move() {
     readSensors();
     makeDecision();
-    if (direction == "North") {
-        posY--;
-    } else if (direction == "East") {
-        posX++;
-    } else if (direction == "South") {
-        posY++;
-    } else if (direction == "West") {
-        posX--;
-    }
+    // if (direction == "North") {
+    //     posY--;
+    // } else if (direction == "East") {
+    //     posX++;
+    // } else if (direction == "South") {
+    //     posY++;
+    // } else if (direction == "West") {
+    //     posX--;
+    // }
 }
 
 void Micromouse::readSensors() {
-    knownMaze = sensor->getSensorData(posX, posY);
+    std::cout << "Pozycja przed readSensors : " << posX << ", " << posY << std::endl;
+    sensor->getSensorData(posX, posY, knownMaze);
 }
 
 void Micromouse::initializeKnownMaze(int width, int height) {
     knownMaze = std::vector<std::vector<int>>(width, std::vector<int>(height, -1));
+    // knownMaze[start][] = 0;
 }
 
 std::vector<std::vector<int>> Micromouse::getKnownMaze() const {

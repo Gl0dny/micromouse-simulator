@@ -15,7 +15,7 @@ int main() {
     auto maze = std::make_shared<Maze>(width, height, maze_log_file);
 
     logger->enableFileOutput(false).clearLogFile().logMessage("Creating the Maze: ");
-    maze->generateMaze().displayMaze();
+    maze->displayMaze();
     maze->setLogger(main_log_file, false).displayMaze();
 
     std::shared_ptr<Micromouse> micromouse;

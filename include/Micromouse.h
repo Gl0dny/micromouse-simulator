@@ -22,14 +22,13 @@ public:
     void readSensors();
 
     std::vector<std::vector<int>> getKnownMaze() const;
+    void initializeKnownMaze(int width, int height);
 
 protected:
     int posX, posY;
     std::string direction;
     std::shared_ptr<Sensor> sensor;
     std::vector<std::vector<int>> knownMaze;
-
-    void initializeKnownMaze(int width, int height);
 };
 
 class RightHandRuleMazeSolver : public Micromouse {

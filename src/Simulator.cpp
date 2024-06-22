@@ -12,9 +12,11 @@ void Simulator::run() {
     while (!hasReachedGoal()) {
         int previousX = micromouse->getPosX();
         int previousY = micromouse->getPosY();
+        std::cout << "Pozycja myszy X: " << previousX << std::endl;
+        std::cout << "Pozycja myszy Y: " << previousY << std::endl;
         displayMazeWithMouse();
-        micromouse->move(); // Move based on the current direction
-        checkAndHandleWallCollision(previousX, previousY); // Check for wall collision
+        micromouse->move(); 
+        // checkAndHandleWallCollision(previousX, previousY); // Check for wall collision
 
         // Delay for 1 second
         std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -58,20 +60,52 @@ void Simulator::displayMazeWithMouse() const {
     int mouseX = micromouse->getPosX();
     int mouseY = micromouse->getPosY();
 
-    for (int y = 0; y < grid[0].size(); ++y) {
+    // Log each row of the maze
+    std::cout << "Simulator" << std::endl;
+    for (int y = grid[0].size() - 1; y >= 0; --y) {
+        std::string rowString;
+        for (int x = 0; x < grid.size(); ++x) {
+            rowString += std::to_string(grid[x][y]) + " ";
+        }
+        std::cout << rowString << std::endl;
+    }
+
+    // Log each row of the maze with mouse position
+    std::cout << "Simulator nakladka" << std::endl;
+    for (int y = grid[0].size() - 1; y >= 0; --y) {
+        std::string rowString;
         for (int x = 0; x < grid.size(); ++x) {
             if (x == mouseX && y == mouseY) {
-                std::cout << 'M' << ' ';
+                rowString += 'M';
             } else if (grid[x][y] == -1) {
-                std::cout << '?' << ' ';
+                rowString += '?';
+            } else if (grid[x][y] == 1) {
+                rowString += '#';
             } else {
-                std::cout << (grid[x][y] ? '#' : ' ') << ' ';
+                rowString += ' ';
             }
+            rowString += ' ';
         }
-        std::cout << '\n';
+        std::cout << rowString << std::endl;
     }
     std::cout << std::endl;
 }
+
+//     for (int y = grid[0].size() - 1; y >= 0; --y) {  // Reverse the y-axis iteration
+//         for (int x = 0; x < grid.size(); ++x) {
+//             if (x == mouseX && y == mouseY) {
+//                 std::cout << 'M' << ' ';
+//             } else if (grid[x][y] == -1) {
+//                 std::cout << '?' << ' ';
+//             } else {
+//                 std::cout << (grid[x][y] ? '#' : ' ') << ' ';
+//             }
+//         }
+//         std::cout << '\n';
+//     }
+//     std::cout << std::endl;
+// }
+
 
 bool Simulator::hasReachedGoal() const {
     auto [exitX, exitY] = maze->readExit();

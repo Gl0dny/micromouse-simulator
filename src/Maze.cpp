@@ -116,9 +116,9 @@ void Maze::printMazeWithCurrentCarve(int cx, int cy) const {
     logger->logMessage("Displaying maze with current position:");
 
     // Log each row of the maze
-    for (int y = 0; y < height; ++y) {
+    for (int y = height - 1; y >= 0; --y) {  // Start from the last row and move upwards
         std::string rowString;
-        for (int x = 0; x < width; ++x) {
+        for (int x = 0; x < width; ++x) {  // Traverse columns as usual
             if (x == cx && y == cy) {
                 rowString += "C "; // Current position
             } else {
@@ -140,10 +140,10 @@ void Maze::displayMaze() const {
     logger->logMessage("Displaying maze:");
 
     // Log each row of the maze
-    for (const auto& row : mazeGrid) {
+    for (int y = height - 1; y >= 0; --y) {
         std::string rowString;
-        for (const auto& cell : row) {
-            rowString += (cell ? '#' : ' ');
+        for (int x = 0; x < width; ++x) {
+            rowString += (mazeGrid[x][y] ? '#' : ' ');
             rowString += ' ';
         }
         logger->logMessage(rowString, false);

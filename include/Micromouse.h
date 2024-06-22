@@ -39,4 +39,38 @@ protected:
     // std::vector<std::pair<int, int>> route; // to store the route taken
 };
 
+
+
+class RightHandRuleMazeSolver : public Micromouse {
+public:
+    RightHandRuleMazeSolver(std::shared_ptr<Maze> maze);
+    
+    void initialize() override;
+    void makeDecision() override;
+};
+
+class BacktrackingMazeSolver : public Micromouse {
+public:
+    BacktrackingMazeSolver(std::shared_ptr<Maze> maze);
+    
+    void initialize() override;
+    void makeDecision() override;
+};
+
+class LaserBacktrackingMazeSolver : public Micromouse {
+public:
+    LaserBacktrackingMazeSolver(std::shared_ptr<Maze> maze);
+    
+    void initialize() override;
+    void makeDecision() override;
+};
+
+class LidarBacktrackingMazeSolver : public Micromouse {
+public:
+    LidarBacktrackingMazeSolver(std::shared_ptr<Maze> maze);
+    
+    void initialize() override;
+    void makeDecision() override;
+};
+
 #endif // MICROMOUSE_H

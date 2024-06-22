@@ -1,8 +1,5 @@
 #include "Simulator.h"
-#include "RightHandRuleMazeSolver.h"
-#include "BacktrackingMazeSolver.h"
-#include "LaserBacktrackingMazeSolver.h"
-#include "LidarBacktrackingMazeSolver.h"
+#include "Micromouse.h"
 #include <memory>
 #include <iostream>
 #include <string>

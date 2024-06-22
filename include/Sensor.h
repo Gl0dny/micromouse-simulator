@@ -29,4 +29,22 @@ Instead of storing a std::shared_ptr<Micromouse> in the Sensor class, store a st
     std::weak_ptr<Micromouse> micromouse;
 };
 
+class DistanceSensor : public Sensor {
+public:
+    DistanceSensor(std::shared_ptr<Maze> maze, std::weak_ptr<Micromouse> micromouse);
+    std::vector<std::pair<int, int>> getSensorData() const override;
+};
+
+class LaserSensor : public Sensor {
+public:
+    LaserSensor(std::shared_ptr<Maze> maze, std::weak_ptr<Micromouse> micromouse);
+    std::vector<std::pair<int, int>> getSensorData() const override;
+};
+
+class LidarSensor : public Sensor {
+public:
+    LidarSensor(std::shared_ptr<Maze> maze, std::weak_ptr<Micromouse> micromouse);
+    std::vector<std::pair<int, int>> getSensorData() const override;
+};
+
 #endif // SENSOR_H

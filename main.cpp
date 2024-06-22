@@ -26,25 +26,21 @@ int main() {
     std::cin >> choice;
     switch (choice) {
         case 1:
-            micromouse = std::make_shared<RightHandRuleMazeSolver>(maze);
+            micromouse = createMicromouse<RightHandRuleMazeSolver, DistanceSensor>(maze);
             break;
         case 2:
-            micromouse = std::make_shared<BacktrackingMazeSolver>(maze);
+            micromouse = createMicromouse<BacktrackingMazeSolver, DistanceSensor>(maze);
             break;
         case 3:
-            micromouse = std::make_shared<LaserBacktrackingMazeSolver>(maze);
+            micromouse = createMicromouse<LaserBacktrackingMazeSolver, LaserSensor>(maze);
             break;
         case 4:
-            micromouse = std::make_shared<LidarBacktrackingMazeSolver>(maze);
+            micromouse = createMicromouse<LidarBacktrackingMazeSolver, LidarSensor>(maze);
             break;
         default:
             std::cerr << "Invalid choice" << std::endl;
             return 1;
     }
-
-    micromouse->initialize(); // Ensure that the sensor is initialized after the object is fully constructed
-
-
     auto simulator = std::make_unique<Simulator>(micromouse, maze);
     simulator->run();
    // Disable file output for logger

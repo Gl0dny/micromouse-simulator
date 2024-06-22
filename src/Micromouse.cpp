@@ -4,6 +4,10 @@
 Micromouse::Micromouse(std::shared_ptr<Maze> maze)
     : maze(maze), posX(1), posY(1), direction("North") {}
 
+void Micromouse::setSensor(std::shared_ptr<Sensor> sensor) {
+    this->sensor = sensor;
+}
+
 int Micromouse::getPosX() const {
     return posX;
 }
@@ -70,10 +74,6 @@ One way to handle this is to avoid calling shared_from_this() directly in the co
 // sensor = std::make_shared<DistanceSensor>(maze, shared_from_this());
 }
 
-void RightHandRuleMazeSolver::initialize() {
-    sensor = std::make_shared<DistanceSensor>(maze, shared_from_this());
-}
-
 void RightHandRuleMazeSolver::makeDecision() {
     // Implement the right-hand rule logic
 }
@@ -82,10 +82,6 @@ void RightHandRuleMazeSolver::makeDecision() {
 
 BacktrackingMazeSolver::BacktrackingMazeSolver(std::shared_ptr<Maze> maze)
     : Micromouse(maze) {}
-
-void BacktrackingMazeSolver::initialize() {
-    sensor = std::make_shared<DistanceSensor>(maze, shared_from_this());
-}
 
 void BacktrackingMazeSolver::makeDecision() {
     // Implement the backtracking logic
@@ -97,10 +93,6 @@ LaserBacktrackingMazeSolver::LaserBacktrackingMazeSolver(std::shared_ptr<Maze> m
     : Micromouse(maze) {
 }
 
-void LaserBacktrackingMazeSolver::initialize() {
-    sensor = std::make_shared<LaserSensor>(maze, shared_from_this());
-}
-
 void LaserBacktrackingMazeSolver::makeDecision() {
     // Implement the laser backtracking logic
 }
@@ -108,10 +100,6 @@ void LaserBacktrackingMazeSolver::makeDecision() {
 
 LidarBacktrackingMazeSolver::LidarBacktrackingMazeSolver(std::shared_ptr<Maze> maze)
     : Micromouse(maze) {
-}
-
-void LidarBacktrackingMazeSolver::initialize() {
-    sensor = std::make_shared<LidarSensor>(maze, shared_from_this());
 }
 
 void LidarBacktrackingMazeSolver::makeDecision() {

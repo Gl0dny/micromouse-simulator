@@ -12,13 +12,12 @@ class Sensor;
 // Circular Inclusion Issue
 // When Micromouse.h includes Sensor.h and Sensor.h includes Micromouse.h, the compiler gets confused about the order of declarations and definitions, leading to the error you're seeing.
 
-
 class Micromouse : public std::enable_shared_from_this<Micromouse> {
 public:
     Micromouse(std::shared_ptr<Maze> maze);
     virtual ~Micromouse() = default;
 
-    virtual void initialize() = 0;
+    void setSensor(std::shared_ptr<Sensor> sensor);
     virtual void makeDecision() = 0;
 
     int getPosX() const;
@@ -44,33 +43,33 @@ protected:
 class RightHandRuleMazeSolver : public Micromouse {
 public:
     RightHandRuleMazeSolver(std::shared_ptr<Maze> maze);
-    
-    void initialize() override;
     void makeDecision() override;
 };
 
 class BacktrackingMazeSolver : public Micromouse {
 public:
     BacktrackingMazeSolver(std::shared_ptr<Maze> maze);
-    
-    void initialize() override;
     void makeDecision() override;
 };
 
 class LaserBacktrackingMazeSolver : public Micromouse {
 public:
     LaserBacktrackingMazeSolver(std::shared_ptr<Maze> maze);
-    
-    void initialize() override;
     void makeDecision() override;
 };
 
 class LidarBacktrackingMazeSolver : public Micromouse {
 public:
     LidarBacktrackingMazeSolver(std::shared_ptr<Maze> maze);
-    
-    void initialize() override;
     void makeDecision() override;
 };
+
+template <typename SolverType, typename SensorType>
+std::shared_ptr<Micromouse> createMicromouse(std::shared_ptr<Maze> maze) {
+    auto micromouse = std::make_shared<SolverType>(maze);
+    auto sensor = std::make_shared<SensorType>(maze, micromouse);
+    micromouse->setSensor(sensor);
+    return micromouse;
+}
 
 #endif // MICROMOUSE_H

@@ -60,16 +60,40 @@ void BacktrackingMazeSolver::makeDecision() {
     // Implement the backtracking logic
 }
 
-LaserBacktrackingMazeSolver::LaserBacktrackingMazeSolver()
-    : Micromouse() {}
+std::shared_ptr<Micromouse> chooseMicromouse(std::shared_ptr<Maze> maze) {
+    int solverChoice, sensorChoice;
+    std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n2. Backtracking\n";
+    std::cin >> solverChoice;
+    std::cout << "Choose Sensor type:\n1. Distance Sensor\n2. Laser Sensor\n3. Lidar Sensor\n";
+    std::cin >> sensorChoice;
 
-void LaserBacktrackingMazeSolver::makeDecision() {
-    // Implement the laser backtracking logic
-}
-
-LidarBacktrackingMazeSolver::LidarBacktrackingMazeSolver()
-    : Micromouse() {}
-
-void LidarBacktrackingMazeSolver::makeDecision() {
-    // Implement the lidar backtracking logic
+    switch (solverChoice) {
+        case 1:
+            switch (sensorChoice) {
+                case 1:
+                    return createMicromouse<RightHandRuleMazeSolver, DistanceSensor>(maze);
+                case 2:
+                    return createMicromouse<RightHandRuleMazeSolver, LaserSensor>(maze);
+                case 3:
+                    return createMicromouse<RightHandRuleMazeSolver, LidarSensor>(maze);
+                default:
+                    std::cerr << "Invalid sensor choice" << std::endl;
+                    return nullptr;
+            }
+        case 2:
+            switch (sensorChoice) {
+                case 1:
+                    return createMicromouse<BacktrackingMazeSolver, DistanceSensor>(maze);
+                case 2:
+                    return createMicromouse<BacktrackingMazeSolver, LaserSensor>(maze);
+                case 3:
+                    return createMicromouse<BacktrackingMazeSolver, LidarSensor>(maze);
+                default:
+                    std::cerr << "Invalid sensor choice" << std::endl;
+                    return nullptr;
+            }
+        default:
+            std::cerr << "Invalid solver choice" << std::endl;
+            return nullptr;
+    }
 }

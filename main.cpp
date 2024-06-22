@@ -18,29 +18,12 @@ int main() {
     maze->displayMaze();
     maze->setLogger(main_log_file, false).displayMaze();
 
-    std::shared_ptr<Micromouse> micromouse;
-
-    // Choose the type of Micromouse
-    int choice;
-    std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n2. Backtracking\n3. Laser Backtracking\n4. Lidar Backtracking\n";
-    std::cin >> choice;
-    switch (choice) {
-        case 1:
-            micromouse = createMicromouse<RightHandRuleMazeSolver, DistanceSensor>(maze);
-            break;
-        case 2:
-            micromouse = createMicromouse<BacktrackingMazeSolver, DistanceSensor>(maze);
-            break;
-        case 3:
-            micromouse = createMicromouse<LaserBacktrackingMazeSolver, LaserSensor>(maze);
-            break;
-        case 4:
-            micromouse = createMicromouse<LidarBacktrackingMazeSolver, LidarSensor>(maze);
-            break;
-        default:
-            std::cerr << "Invalid choice" << std::endl;
-            return 1;
+   // Choose Micromouse and Sensor using the new function
+    auto micromouse = chooseMicromouse(maze);
+    if (!micromouse) {
+        return 1; // Exit if an invalid choice was made
     }
+    
     auto simulator = std::make_unique<Simulator>(micromouse, maze);
     simulator->run();
    // Disable file output for logger

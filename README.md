@@ -5,7 +5,6 @@ Wstępny Opis Projektu: Symulacja Micromouse
 <!-- TODO
 
 Simulator:
-Logika DistanceSensor, LaserSensor, LidarSensor
 Logika decyzji micromouse 1, 2 ,3 ,4
 loggin mouse route
 

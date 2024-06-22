@@ -43,18 +43,6 @@ public:
     void makeDecision() override;
 };
 
-class LaserBacktrackingMazeSolver : public Micromouse {
-public:
-    LaserBacktrackingMazeSolver();
-    void makeDecision() override;
-};
-
-class LidarBacktrackingMazeSolver : public Micromouse {
-public:
-    LidarBacktrackingMazeSolver();
-    void makeDecision() override;
-};
-
 template <typename SolverType, typename SensorType>
 std::shared_ptr<Micromouse> createMicromouse(std::shared_ptr<Maze> maze) {
     auto micromouse = std::make_shared<SolverType>();
@@ -63,5 +51,7 @@ std::shared_ptr<Micromouse> createMicromouse(std::shared_ptr<Maze> maze) {
     micromouse->setSensor(sensor);
     return micromouse;
 }
+
+std::shared_ptr<Micromouse> chooseMicromouse(std::shared_ptr<Maze> maze);
 
 #endif // MICROMOUSE_H

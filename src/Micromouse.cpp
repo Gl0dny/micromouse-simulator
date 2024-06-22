@@ -49,8 +49,7 @@ void Micromouse::move() {
 // }
 
 void Micromouse::readSensors() {
-    sensorData = sensor->getSensorData();
-    // Additional processing of sensor data if needed
+    sensorData = sensor->getSensorData(posX, posY);
 }
 
 

@@ -1,28 +1,24 @@
 #include "Sensor.h"
 
-Sensor::Sensor(std::shared_ptr<Maze> maze, std::weak_ptr<Micromouse> micromouse)
-    : maze(maze), micromouse(micromouse) {}
+Sensor::Sensor(std::shared_ptr<Maze> maze)
+    : maze(maze) {}
 
-DistanceSensor::DistanceSensor(std::shared_ptr<Maze> maze, std::weak_ptr<Micromouse> micromouse)
-    : Sensor(maze, micromouse) {}
+DistanceSensor::DistanceSensor(std::shared_ptr<Maze> maze)
+    : Sensor(maze) {}
 
-std::vector<std::pair<int, int>> DistanceSensor::getSensorData() const {
+std::vector<std::pair<int, int>> DistanceSensor::getSensorData(int x, int y) const {
     // std::vector<std::pair<int, int>> data;
     std::vector<std::pair<int, int>> sensorData;
+    std::vector<std::pair<int, int>> directions = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
 
-    if (auto micromouseShared = micromouse.lock()) { // Lock the weak_ptr to get a shared_ptr
-        int x = micromouseShared->getPosX();
-        int y = micromouseShared->getPosY();
-        std::vector<std::pair<int, int>> directions = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
-
-        for (const auto& dir : directions) {
-            int nx = x + dir.first;
-            int ny = y + dir.second;
-            if (maze->isWall(nx, ny)) {
-                sensorData.push_back(dir);
-            }
+    for (const auto& dir : directions) {
+        int nx = x + dir.first;
+        int ny = y + dir.second;
+        if (maze->isWall(nx, ny)) {
+            sensorData.push_back(dir);
         }
-        return sensorData;
+    }
+    return sensorData;
     }
     //     // Check for walls in four directions: up, down, left, right
     //     if (maze->isWall(x, y - 1)) data.emplace_back(x, y - 1); // Up
@@ -31,19 +27,14 @@ std::vector<std::pair<int, int>> DistanceSensor::getSensorData() const {
     //     if (maze->isWall(x + 1, y)) data.emplace_back(x + 1, y); // Right
     // }
     // return data;
-}
 
-LaserSensor::LaserSensor(std::shared_ptr<Maze> maze, std::weak_ptr<Micromouse> micromouse)
-    : Sensor(maze, micromouse) {}
+LaserSensor::LaserSensor(std::shared_ptr<Maze> maze)
+    : Sensor(maze) {}
 
-std::vector<std::pair<int, int>> LaserSensor::getSensorData() const {
+std::vector<std::pair<int, int>> LaserSensor::getSensorData(int x, int y) const {
     // std::vector<std::pair<int, int>> data;
     std::vector<std::pair<int, int>> sensorData;
     std::vector<std::pair<int, int>> directions = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
-
-    if (auto micromouseShared = micromouse.lock()) { // Lock the weak_ptr to get a shared_ptr
-        int x = micromouseShared->getPosX();
-        int y = micromouseShared->getPosY();
 
     for (const auto& dir : directions) {
         int nx = x + dir.first;
@@ -64,19 +55,14 @@ std::vector<std::pair<int, int>> LaserSensor::getSensorData() const {
     // }
 
     // return data;
-}
 
-LidarSensor::LidarSensor(std::shared_ptr<Maze> maze, std::weak_ptr<Micromouse> micromouse)
-    : Sensor(maze, micromouse) {}
+LidarSensor::LidarSensor(std::shared_ptr<Maze> maze)
+    : Sensor(maze) {}
 
-std::vector<std::pair<int, int>> LidarSensor::getSensorData() const {
+std::vector<std::pair<int, int>> LidarSensor::getSensorData(int x, int y) const {
     // std::vector<std::pair<int, int>> data;
     std::vector<std::pair<int, int>> sensorData;
     std::vector<std::pair<int, int>> directions = {{-1, -1}, {0, -1}, {1, -1}, {-1, 0}, {0, 0}, {1, 0}, {-1, 1}, {0, 1}, {1, 1}};
-
-    if (auto micromouseShared = micromouse.lock()) { // Lock the weak_ptr to get a shared_ptr
-        int x = micromouseShared->getPosX();
-        int y = micromouseShared->getPosY();
 
         for (const auto& dir : directions) {
         int nx = x + dir.first;
@@ -96,4 +82,3 @@ std::vector<std::pair<int, int>> LidarSensor::getSensorData() const {
     // }
 
     // return data;
-}

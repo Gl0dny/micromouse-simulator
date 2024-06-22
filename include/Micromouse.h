@@ -7,12 +7,7 @@
 #include <vector>
 #include <string>
 
-// Forward declaration of Sensor class
-class Sensor;
-// Circular Inclusion Issue
-// When Micromouse.h includes Sensor.h and Sensor.h includes Micromouse.h, the compiler gets confused about the order of declarations and definitions, leading to the error you're seeing.
-
-class Micromouse : public std::enable_shared_from_this<Micromouse> {
+class Micromouse {
 public:
     Micromouse();
     virtual ~Micromouse() = default;
@@ -66,7 +61,7 @@ public:
 template <typename SolverType, typename SensorType>
 std::shared_ptr<Micromouse> createMicromouse(std::shared_ptr<Maze> maze) {
     auto micromouse = std::make_shared<SolverType>();
-    auto sensor = std::make_shared<SensorType>(maze, micromouse);
+    auto sensor = std::make_shared<SensorType>(maze);
     micromouse->setSensor(sensor);
     return micromouse;
 }

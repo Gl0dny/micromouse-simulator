@@ -19,7 +19,6 @@ private:
     bool hasReachedGoal() const;
     void checkAndHandleWallCollision(int previousX, int previousY);
     int collisionCount;
-    // void reset();
 };
 
 #endif // SIMULATOR_H

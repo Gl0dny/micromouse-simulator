@@ -7,9 +7,9 @@ Wstępny Opis Projektu: Symulacja Micromouse
 Simulator:
 Logika DistanceSensor, LaserSensor, LidarSensor
 Logika decyzji micromouse 1, 2 ,3 ,4
+loggin mouse route
 
 Singleton maze?
-Fabryka Micromouse/sensor?
 
 Zaimplementuj interfejs użytkownika: Użyj Qt do stworzenia GUI(?)
 Dokumentacja: Udokumentuj kod przy użyciu doxygen.

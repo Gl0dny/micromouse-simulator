@@ -34,49 +34,24 @@ void Micromouse::move() {
     }
 }
 
-// void Micromouse::logMovement(int newX, int newY) {
-//     route.emplace_back(newX, newY);
-// }
-
-// void Micromouse::saveRouteToFile(const std::string& filename) const {
-//     std::ofstream outFile(filename);
-//     if (outFile.is_open()) {
-//         for (const auto& position : route) {
-//             outFile << position.first << "," << position.second << std::endl;
-//         }
-//     }
-//     outFile.close();
-// }
-
 void Micromouse::readSensors() {
-    sensorData = sensor->getSensorData(posX, posY);
+    knownMaze = sensor->getSensorData(posX, posY);
 }
 
+void Micromouse::initializeKnownMaze(int width, int height) {
+    knownMaze = std::vector<std::vector<int>>(width, std::vector<int>(height, -1));
+}
 
-
+std::vector<std::vector<int>> Micromouse::getKnownMaze() const {
+    return knownMaze;
+}
 
 RightHandRuleMazeSolver::RightHandRuleMazeSolver()
-    : Micromouse() {
-/* 
-Micromouse Constructor and shared_from_this() Usage:
-The Micromouse class inherits from std::enable_shared_from_this<Micromouse>, which allows an object to create a std::shared_ptr instance to itself.
-
-Potential Issue: Calling shared_from_this() in Constructor
-
-When calling shared_from_this() inside the constructor of a class that inherits from std::enable_shared_from_this, it is crucial that the object is already owned by a std::shared_ptr. This is because shared_from_this() relies on the object being managed by a shared_ptr.
-In the current setup, the constructor of RightHandRuleMazeSolver calls shared_from_this() to pass to the DistanceSensor. If this happens too early, shared_from_this() will throw a std::bad_weak_ptr exception because the shared_ptr might not be fully established yet.
-
-Solution: Delayed Initialization
-One way to handle this is to avoid calling shared_from_this() directly in the constructor and use a separate initialization function. This function will be called after the shared_ptr has been established.
-*/
-// sensor = std::make_shared<DistanceSensor>(maze, shared_from_this());
-}
+    : Micromouse() {}
 
 void RightHandRuleMazeSolver::makeDecision() {
     // Implement the right-hand rule logic
 }
-
-
 
 BacktrackingMazeSolver::BacktrackingMazeSolver()
     : Micromouse() {}
@@ -85,20 +60,15 @@ void BacktrackingMazeSolver::makeDecision() {
     // Implement the backtracking logic
 }
 
-
-
 LaserBacktrackingMazeSolver::LaserBacktrackingMazeSolver()
-    : Micromouse() {
-}
+    : Micromouse() {}
 
 void LaserBacktrackingMazeSolver::makeDecision() {
     // Implement the laser backtracking logic
 }
 
-
 LidarBacktrackingMazeSolver::LidarBacktrackingMazeSolver()
-    : Micromouse() {
-}
+    : Micromouse() {}
 
 void LidarBacktrackingMazeSolver::makeDecision() {
     // Implement the lidar backtracking logic

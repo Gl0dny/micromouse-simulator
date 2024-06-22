@@ -21,18 +21,16 @@ public:
     void move();
     void readSensors();
 
-    // void logMovement(int x, int y);
-    // void saveRouteToFile(const std::string& filename) const;
+    std::vector<std::vector<int>> getKnownMaze() const;
 
 protected:
     int posX, posY;
     std::string direction;
     std::shared_ptr<Sensor> sensor;
-    std::vector<std::pair<int, int>> sensorData;
-    // std::vector<std::pair<int, int>> route; // to store the route taken
+    std::vector<std::vector<int>> knownMaze;
+
+    void initializeKnownMaze(int width, int height);
 };
-
-
 
 class RightHandRuleMazeSolver : public Micromouse {
 public:
@@ -62,6 +60,7 @@ template <typename SolverType, typename SensorType>
 std::shared_ptr<Micromouse> createMicromouse(std::shared_ptr<Maze> maze) {
     auto micromouse = std::make_shared<SolverType>();
     auto sensor = std::make_shared<SensorType>(maze);
+    micromouse->initializeKnownMaze(maze->getWidth(), maze->getHeight());
     micromouse->setSensor(sensor);
     return micromouse;
 }

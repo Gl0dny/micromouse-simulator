@@ -8,7 +8,6 @@ Simulator::Simulator(std::shared_ptr<Micromouse> micromouse, std::shared_ptr<Maz
 
 void Simulator::run() {
     setRandomStartPosition();
-    collisionCount = 0;
     while (!hasReachedGoal()) {
         int previousX = micromouse->getPosX();
         int previousY = micromouse->getPosY();
@@ -88,16 +87,8 @@ void Simulator::checkAndHandleWallCollision(int previousX, int previousY) {
     int currentX = micromouse->getPosX();
     int currentY = micromouse->getPosY();
     if (maze->isWall(currentX, currentY)) {
-        std::cout << "Collision with wall at (" << currentX << ", " << currentY << "). Reverting to (" << previousX << ", " << previousY << ").\n";
-        micromouse->setPosition(previousX, previousY);
-        collisionCount++;
-        std::cout << "Collision count: " << collisionCount << "\n";
-    } else {
-        std::cout << "Moved to (" << currentX << ", " << currentY << ").\n";
-    }
-
-    if (collisionCount >= 3) {
-        std::cout << "Micromouse died after 3 collisions with walls.\n";
+        std::cout << "Collision with wall at (" << currentX << ", " << currentY << ").\n";
+        std::cout << "Micromouse died after a collision with walls.\n";
         exit(0);
     }
 }

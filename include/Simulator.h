@@ -18,7 +18,6 @@ private:
     void setRandomStartPosition();
     bool hasReachedGoal() const;
     void checkAndHandleWallCollision(int previousX, int previousY);
-    int collisionCount;
 };
 
 #endif // SIMULATOR_H

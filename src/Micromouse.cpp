@@ -1,8 +1,7 @@
 #include "Micromouse.h"
 #include <iostream>
 
-Micromouse::Micromouse(std::shared_ptr<Maze> maze)
-    : maze(maze), posX(1), posY(1), direction("North") {}
+Micromouse::Micromouse() : posX(1), posY(1), direction("North") {}
 
 void Micromouse::setSensor(std::shared_ptr<Sensor> sensor) {
     this->sensor = sensor;
@@ -57,8 +56,8 @@ void Micromouse::readSensors() {
 
 
 
-RightHandRuleMazeSolver::RightHandRuleMazeSolver(std::shared_ptr<Maze> maze)
-    : Micromouse(maze) {
+RightHandRuleMazeSolver::RightHandRuleMazeSolver()
+    : Micromouse() {
 /* 
 Micromouse Constructor and shared_from_this() Usage:
 The Micromouse class inherits from std::enable_shared_from_this<Micromouse>, which allows an object to create a std::shared_ptr instance to itself.
@@ -80,8 +79,8 @@ void RightHandRuleMazeSolver::makeDecision() {
 
 
 
-BacktrackingMazeSolver::BacktrackingMazeSolver(std::shared_ptr<Maze> maze)
-    : Micromouse(maze) {}
+BacktrackingMazeSolver::BacktrackingMazeSolver()
+    : Micromouse() {}
 
 void BacktrackingMazeSolver::makeDecision() {
     // Implement the backtracking logic
@@ -89,8 +88,8 @@ void BacktrackingMazeSolver::makeDecision() {
 
 
 
-LaserBacktrackingMazeSolver::LaserBacktrackingMazeSolver(std::shared_ptr<Maze> maze)
-    : Micromouse(maze) {
+LaserBacktrackingMazeSolver::LaserBacktrackingMazeSolver()
+    : Micromouse() {
 }
 
 void LaserBacktrackingMazeSolver::makeDecision() {
@@ -98,8 +97,8 @@ void LaserBacktrackingMazeSolver::makeDecision() {
 }
 
 
-LidarBacktrackingMazeSolver::LidarBacktrackingMazeSolver(std::shared_ptr<Maze> maze)
-    : Micromouse(maze) {
+LidarBacktrackingMazeSolver::LidarBacktrackingMazeSolver()
+    : Micromouse() {
 }
 
 void LidarBacktrackingMazeSolver::makeDecision() {

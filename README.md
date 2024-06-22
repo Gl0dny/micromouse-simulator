@@ -11,16 +11,7 @@ Logika decyzji micromouse 1, 2 ,3 ,4
 Singleton maze?
 Fabryka Micromouse/sensor?
 
-Scal klasy dziedziczace do plikow z bazowymi
-
-micromouse Simple algorithm: follow the right-hand rule
-micromouse that knows that its in the corner
-micromouse with memory
-intelligent micromouse ( memory + she knows that its in the corner )
-
-Zrozum gtest config zakomentowany
-Rozdziel testy
-Zaimplementuj interfejs użytkownika: Użyj Qt do stworzenia GUI.
+Zaimplementuj interfejs użytkownika: Użyj Qt do stworzenia GUI(?)
 Dokumentacja: Udokumentuj kod przy użyciu doxygen.
 
 Napraw pojawianie się walli dodatkowych w maze: parzysta liczba w ścianie;

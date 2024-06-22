@@ -32,7 +32,7 @@ TEST_F(MazeTest, MazeGenerationMultipleTimes) {
         std::string logFileName = "./tests/logs/maze_test_log_file_" + std::to_string(i + 1) + ".log";
         std::unique_ptr<Maze> maze = std::make_unique<Maze>(width, height, logFileName);
         
-        std::cout << "Generated Maze " << i + 1 << ":\n";
+        std::cout << "Generated Maze " << i + 1 << "\n";
         
         if (hasAdditionalWalls(*maze, width, height)) {
             std::cout << "Additional walls found in the maze on trial " << i + 1 << ":\n";

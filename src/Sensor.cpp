@@ -2,35 +2,21 @@
 #include <iostream>
 
 Sensor::Sensor(std::shared_ptr<Maze> maze)
-    : maze(maze) {}
+    : maze(maze) {     
+        directionNames = {
+        {{-1, 0}, "West"},  
+        {{1, 0}, "East"},   
+        {{0, -1}, "South"}, 
+        {{0, 1}, "North"}   
+    }; 
+    }
+    
 
 DistanceSensor::DistanceSensor(std::shared_ptr<Maze> maze)
     : Sensor(maze) {}
 
-std::vector<std::vector<int>> DistanceSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze) const {
-
-    // Corrected direction mappings: {dx, dy}
-    std::map<std::pair<int, int>, std::string> directionNames = {
-        {{-1, 0}, "West"},  // Moving left
-        {{1, 0}, "East"},   // Moving right
-        {{0, -1}, "South"}, // Moving down
-        {{0, 1}, "North"}   // Moving up
-    };
-
-    // Temporary test coordinates
-    x = 1;
-    y = 1;
+void DistanceSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze) const {
     knownMaze[x][y] = 0;
-
-    // Log each row of the maze
-    std::cout << "Maze raw" << std::endl;
-    for (auto it = knownMaze.rbegin(); it != knownMaze.rend(); ++it) {
-        std::string rowString;
-        for (const auto& cell : *it) {
-            rowString += std::to_string(cell) + " ";
-        }
-        std::cout << rowString << std::endl;
-    }
 
     // Check for walls in each direction
     for (const auto& [coordinates, direction] : directionNames) {
@@ -52,14 +38,13 @@ std::vector<std::vector<int>> DistanceSensor::getSensorData(int x, int y, std::v
             std::cout << "Out of bounds to the " << direction << " at (" << nx << ", " << ny << ")" << std::endl;
         }
     }
-
-    return knownMaze;
 }
+
 
 LaserSensor::LaserSensor(std::shared_ptr<Maze> maze)
     : Sensor(maze) {}
 
-std::vector<std::vector<int>> LaserSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze) const {
+void LaserSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze) const {
     std::vector<std::pair<int, int>> directions = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
 
     for (const auto& dir : directions) {
@@ -74,13 +59,12 @@ std::vector<std::vector<int>> LaserSensor::getSensorData(int x, int y, std::vect
             knownMaze[nx + dir.first][ny + dir.second] = 1;
         }
     }
-    return knownMaze;
 }
 
 LidarSensor::LidarSensor(std::shared_ptr<Maze> maze)
     : Sensor(maze) {}
 
-std::vector<std::vector<int>> LidarSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze) const {
+void LidarSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze) const {
     std::vector<std::pair<int, int>> directions = {
         {-1, -1}, {0, -1}, {1, -1}, 
         {-1, 0},           {1, 0}, 
@@ -99,5 +83,4 @@ std::vector<std::vector<int>> LidarSensor::getSensorData(int x, int y, std::vect
             }
         }
     }
-    return knownMaze;
 }

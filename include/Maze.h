@@ -21,11 +21,10 @@ public:
     int getWidth() const;
     int getHeight() const;
     std::pair<int, int> readExit() const;
-    std::vector<std::vector<int>> mazeGrid;
 private:
     int width;
     int height;
-
+    std::vector<std::vector<int>> mazeGrid;
     std::unique_ptr<Logger> logger;
     std::map<std::pair<int, int>, std::string> directionNames;
 

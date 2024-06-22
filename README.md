@@ -4,9 +4,6 @@ Wstępny Opis Projektu: Symulacja Micromouse
 
 <!-- TODO
 
-starting position inside the sensor is known and set to no wall
-
-
 Simulator:
 Logika DistanceSensor, LaserSensor, LidarSensor
 Logika decyzji micromouse 1, 2 ,3 ,4

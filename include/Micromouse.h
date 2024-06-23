@@ -20,6 +20,7 @@ public:
     void setPosition(int x, int y);
     void move();
     void readSensors();
+    int getSteps() const;
 
     std::vector<std::vector<int>> getKnownMaze() const;
     void initializeKnownMaze(int width, int height);
@@ -40,6 +41,7 @@ protected:
     const std::map<std::string, std::string> leftTurns = {
         {"North", "West"}, {"West", "South"}, {"South", "East"}, {"East", "North"}
     };
+    int steps;
 };
 
 class RightHandRuleBacktrackingMazeSolver : public Micromouse {

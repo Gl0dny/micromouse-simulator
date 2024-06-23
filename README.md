@@ -5,6 +5,7 @@ Wstępny Opis Projektu: Symulacja Micromouse
 <!-- TODO
 
 Logika decyzji micromouse + dwa more complex
+segmetnatation fault dla Laser Sensor?
 
 loggin mouse route to a file
 

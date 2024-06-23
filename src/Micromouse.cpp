@@ -1,7 +1,7 @@
 #include "Micromouse.h"
 #include <iostream>
 
-Micromouse::Micromouse() : posX(1), posY(1), direction("North") {}
+Micromouse::Micromouse() : posX(1), posY(1), direction("North"), steps(0) {}
 
 void Micromouse::setSensor(std::shared_ptr<Sensor> sensor) {
     this->sensor = sensor;
@@ -21,6 +21,7 @@ void Micromouse::setPosition(int x, int y) {
 }
 
 void Micromouse::move() {
+    steps++;
     readSensors();
     makeDecision();
     if (direction == "North") {
@@ -35,7 +36,11 @@ void Micromouse::move() {
 }
 
 void Micromouse::readSensors() {
-    sensor->getSensorData(posX, posY, knownMaze);
+    sensor->getSensorData(posX, posY, knownMaze, steps);
+}
+
+int Micromouse::getSteps() const{
+    return steps;
 }
 
 void Micromouse::initializeKnownMaze(int width, int height) {

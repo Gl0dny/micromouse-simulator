@@ -5,11 +5,11 @@ Wstępny Opis Projektu: Symulacja Micromouse
 <!-- TODO
 
 Logika decyzji micromouse + dwa more complex
-segmetnatation fault dla Laser Sensor?
 
-loggin mouse route to a file
+segmetnatation fault dla Laser Sensor? 
 
-add logging in micromouse, simulation
+add logging in simulation
+simulation thread return
 
 Zaimplementuj interfejs użytkownika: Użyj Qt do stworzenia GUI(?)
 Dokumentacja: Udokumentuj kod przy użyciu doxygen.

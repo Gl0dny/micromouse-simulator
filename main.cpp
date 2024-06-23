@@ -9,21 +9,23 @@
 int main() {
     auto main_log_file = "./logs/main.log";
     auto logger = std::make_unique<Logger>(main_log_file);
-    logger->enableFileOutput(false).clearLogFile().logMessage("Creating the Maze: ");
+    logger->enableFileOutput(false).clearLogFile().logMessage("Creating the Maze...");
     Maze* maze = Maze::getInstance();
     maze->displayMaze();
     maze->setLogger(main_log_file, false).displayMaze();
 
+    logger->logMessage("Creating the Micromouse...");
     auto micromouse = chooseMicromouse(maze);
     if (!micromouse) {
         return 1;
     }
     
+    logger->logMessage("Creating the Simulator...");
     auto simulator = std::make_unique<Simulator>(micromouse, maze);
 
     std::atomic<bool> exitFlag(false);
     
-    // Start a thread to handle user input for start/pause/reset/exit
+    logger->logMessage("Started a thread to handle user input for start/pause/reset/exit");
     std::thread inputThread([&simulator, &exitFlag]() {
         std::string command;
         std::cout << "Enter 'start' to start the simulation, 'pause' to pause it, 'reset' to reset it, or 'exit' to exit: \n";
@@ -48,7 +50,7 @@ int main() {
     });
 
     inputThread.join();  // Wait for the input thread to finish
-
+    logger->logMessage("Simulation finished.");
     logger->disableFileOutput();
     return 0;
 }

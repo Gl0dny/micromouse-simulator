@@ -3,16 +3,21 @@
 
 #include <vector>
 #include <memory>
+#include <map>
+#include <string>
+#include <utility>
 #include "Maze.h"
+#include "Logger.h"
 
 class Sensor {
 public:
-    Sensor(Maze* maze);
+    Sensor(Maze* maze, const std::string& name);
     virtual void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze) const = 0;
 
 protected:
     Maze* maze;
     std::map<std::pair<int, int>, std::string> directionNames;
+    std::unique_ptr<Logger> logger;
 };
 
 class DistanceSensor : public Sensor {

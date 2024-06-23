@@ -1,8 +1,8 @@
 #include "Sensor.h"
 #include <iostream>
 
-Sensor::Sensor(Maze* maze)
-    : maze(maze) {
+Sensor::Sensor(Maze* maze, const std::string& name)
+    : maze(maze), logger(std::make_unique<Logger>("logs/" + name + ".log")) {
     directionNames = {
         {{-1, 0}, "West"},
         {{1, 0}, "East"},
@@ -13,14 +13,14 @@ Sensor::Sensor(Maze* maze)
         {{-1, 1}, "North-West"},
         {{1, 1}, "North-East"}
     };
+    logger->enableFileOutput();
 }
 
 DistanceSensor::DistanceSensor(Maze* maze)
-    : Sensor(maze) {}
+    : Sensor(maze, "distance_sensor") {}
 
 void DistanceSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze) const {
     knownMaze[x][y] = 0;
-    // Only use the four basic directions
     for (const auto& [coordinates, direction] : directionNames) {
         if (direction == "West" || direction == "East" || direction == "South" || direction == "North") {
             int nx = x + coordinates.first;
@@ -29,24 +29,23 @@ void DistanceSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& 
             if (nx >= 0 && ny >= 0 && nx < knownMaze.size() && ny < knownMaze[0].size()) {
                 if (maze->isWall(nx, ny)) {
                     knownMaze[nx][ny] = 1;
-                    // std::cout << "Wall detected to the " << direction << " at (" << nx << ", " << ny << ")" << std::endl;
+                    logger->logMessage("Wall detected to the " + direction + " at (" + std::to_string(nx) + ", " + std::to_string(ny) + ")");
                 } else {
                     knownMaze[nx][ny] = 0;
-                    // std::cout << "No wall detected to the " << direction << " at (" << nx << ", " << ny << ")" << std::endl;
+                    logger->logMessage("No wall detected to the " + direction + " at (" + std::to_string(nx) + ", " + std::to_string(ny) + ")");
                 }
             } else {
-                // std::cout << "Out of bounds to the " << direction << " at (" << nx << ", " << ny << ")" << std::endl;
+                logger->logMessage("Out of bounds to the " + direction + " at (" + std::to_string(nx) + ", " + std::to_string(ny) + ")");
             }
         }
     }
 }
 
 LaserSensor::LaserSensor(Maze* maze)
-    : Sensor(maze) {}
+    : Sensor(maze, "laser_sensor") {}
 
 void LaserSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze) const {
     knownMaze[x][y] = 0;
-    // Only use the four basic directions
     for (const auto& [dir, direction] : directionNames) {
         if (direction == "West" || direction == "East" || direction == "South" || direction == "North") {
             int nx = x;
@@ -56,22 +55,22 @@ void LaserSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& kno
                 nx += dir.first;
                 ny += dir.second;
                 knownMaze[nx][ny] = 0;
-                std::cout << "Laser detected no wall to the " << direction << " at (" << nx << ", " << ny << ")" << std::endl;
+                logger->logMessage("Laser detected no wall to the " + direction + " at (" + std::to_string(nx) + ", " + std::to_string(ny) + ")");
             }
             if (nx < 0 || ny < 0 || nx >= maze->getWidth() || ny >= maze->getHeight()) {
                 outOfBounds = true;
-                std::cout << "Out of bounds to the " << direction << " at (" << nx + dir.first << ", " << ny + dir.second << ")" << std::endl;
+                logger->logMessage("Out of bounds to the " + direction + " at (" + std::to_string(nx + dir.first) + ", " + std::to_string(ny + dir.second) + ")");
             }
             if (!outOfBounds && maze->isWall(nx + dir.first, ny + dir.second)) {
                 knownMaze[nx + dir.first][ny + dir.second] = 1;
-                std::cout << "Laser detected wall to the " << direction << " at (" << nx + dir.first << ", " << ny + dir.second << ")" << std::endl;
+                logger->logMessage("Laser detected wall to the " + direction + " at (" + std::to_string(nx + dir.first) + ", " + std::to_string(ny + dir.second) + ")");
             }
         }
     }
 }
 
 LidarSensor::LidarSensor(Maze* maze)
-    : Sensor(maze) {}
+    : Sensor(maze, "lidar_sensor") {}
 
 void LidarSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze) const {
     knownMaze[x][y] = 0;
@@ -84,10 +83,10 @@ void LidarSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& kno
             if (nx >= 0 && ny >= 0 && nx < maze->getWidth() && ny < maze->getHeight()) {
                 if (maze->isWall(nx, ny)) {
                     knownMaze[nx][ny] = 1;
-                    std::cout << "Lidar detected wall at (" << nx << ", " << ny << ")";
+                    logger->logMessage("Lidar detected wall at (" + std::to_string(nx) + ", " + std::to_string(ny) + ")");
                 } else {
                     knownMaze[nx][ny] = 0;
-                    std::cout << "Lidar detected no wall at (" << nx << ", " << ny << ")";
+                    logger->logMessage("Lidar detected no wall at (" + std::to_string(nx) + ", " + std::to_string(ny) + ")");
                 }
 
                 std::string direction;
@@ -106,9 +105,8 @@ void LidarSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& kno
                 } else if (dx < 0 && dy < 0) {
                     direction = "South-West";
                 }
-                std::cout << " to the " << direction << std::endl;
+                logger->logMessage(" to the " + direction);
             } else {
-                std::cout << "Out of bounds at (" << nx << ", " << ny << ")";
                 std::string direction;
                 if (dx == 0 && dy == 0) {
                     direction = "Current position";
@@ -125,7 +123,7 @@ void LidarSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& kno
                 } else if (dx < 0 && dy < 0) {
                     direction = "South-West";
                 }
-                std::cout << " to the " << direction << std::endl;
+                logger->logMessage("Out of bounds at (" + std::to_string(nx) + ", " + std::to_string(ny) + ") to the " + direction);
             }
         }
     }

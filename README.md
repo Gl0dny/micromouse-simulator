@@ -4,14 +4,11 @@ Wstępny Opis Projektu: Symulacja Micromouse
 
 <!-- TODO
 
-Logika decyzji micromouse right hand, backtracking  + dwa more complex
-loggin mouse route to a file
-fix loggin in the maze/logger classes
-number of steps mouse takes
-time of the simulation
-stop + reset simulation
-logger function overload -> log() i log(file) , logBoth?
+Logika decyzji micromouse + dwa more complex
 
+loggin mouse route to a file
+
+add logging in micromouse, simulation
 
 Zaimplementuj interfejs użytkownika: Użyj Qt do stworzenia GUI(?)
 Dokumentacja: Udokumentuj kod przy użyciu doxygen.

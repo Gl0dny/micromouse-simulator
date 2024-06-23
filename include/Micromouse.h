@@ -23,6 +23,8 @@ public:
 
     std::vector<std::vector<int>> getKnownMaze() const;
     void initializeKnownMaze(int width, int height);
+    
+    void reset();
 
 protected:
     int posX, posY;

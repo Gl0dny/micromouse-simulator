@@ -29,13 +29,13 @@ void DistanceSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& 
             if (nx >= 0 && ny >= 0 && nx < knownMaze.size() && ny < knownMaze[0].size()) {
                 if (maze->isWall(nx, ny)) {
                     knownMaze[nx][ny] = 1;
-                    std::cout << "Wall detected to the " << direction << " at (" << nx << ", " << ny << ")" << std::endl;
+                    // std::cout << "Wall detected to the " << direction << " at (" << nx << ", " << ny << ")" << std::endl;
                 } else {
                     knownMaze[nx][ny] = 0;
-                    std::cout << "No wall detected to the " << direction << " at (" << nx << ", " << ny << ")" << std::endl;
+                    // std::cout << "No wall detected to the " << direction << " at (" << nx << ", " << ny << ")" << std::endl;
                 }
             } else {
-                std::cout << "Out of bounds to the " << direction << " at (" << nx << ", " << ny << ")" << std::endl;
+                // std::cout << "Out of bounds to the " << direction << " at (" << nx << ", " << ny << ")" << std::endl;
             }
         }
     }

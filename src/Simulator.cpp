@@ -7,15 +7,21 @@
 #include <ctime>
 
 Simulator::Simulator(std::shared_ptr<Micromouse> micromouse, Maze* maze) 
-    : micromouse(micromouse), maze(maze), startX(1), startY(1), steps(0), isRunning(false) {}
+    : micromouse(micromouse), maze(maze), startX(1), startY(1), steps(0), running(false) {
+        totalSeconds = std::chrono::duration<double>::zero(); 
+        startTime = std::chrono::steady_clock::time_point::min(); // Initialize with "zero" time
+        setRandomStartPosition();
+    }
 
 void Simulator::run() {
-    setRandomStartPosition();
-    steps = 0;
-    isRunning = true;
-    startTime = std::chrono::steady_clock::now();
+    running = true;
 
-    while (isRunning && !hasReachedGoal()) {
+    // Only set startTime if it is not already set
+    if (startTime == std::chrono::steady_clock::time_point::min()) {
+        startTime = std::chrono::steady_clock::now();
+    }
+
+    while (running && !hasReachedGoal()) {
         int previousX = micromouse->getPosX();
         int previousY = micromouse->getPosY();
         displayMazeWithMouse();
@@ -25,13 +31,18 @@ void Simulator::run() {
 
         std::this_thread::sleep_for(std::chrono::milliseconds(250));
     }
-
-    displayMazeWithMouse();
-    auto endTime = std::chrono::steady_clock::now();
-    std::chrono::duration<double> elapsedSeconds = endTime - startTime;
-    std::cout << "Micromouse escaped from the Maze!\n";
-    std::cout << "Total steps taken: " << steps << "\n";
-    std::cout << "Total time: " << elapsedSeconds.count() << " seconds\n";
+    
+    if (hasReachedGoal()) {
+        std::cout << "Micromouse escaped from the Maze!\n";
+        displayMazeWithMouse();
+        auto endTime = std::chrono::steady_clock::now();
+        totalSeconds = endTime - startTime;
+        std::cout << "Total steps taken: " << steps << "\n";
+        std::cout << "Total simulation time: " << totalSeconds.count() << " seconds\n";
+        exit(0);
+    } else {
+        std::cout << "Simulation paused before the Micromouse could escape.\n";
+    }
 }
 
 void Simulator::setRandomStartPosition() {
@@ -62,6 +73,7 @@ void Simulator::setRandomStartPosition() {
     }
     std::cout << "Micromouse starting at (" << startX << ", " << startY << ").\n";
     micromouse->setPosition(startX, startY);
+    displayMazeWithMouse();
 }
 
 void Simulator::displayMazeWithMouse() const {
@@ -88,8 +100,8 @@ void Simulator::displayMazeWithMouse() const {
     }
     std::cout << "Steps taken: " << steps << "\n";
     auto currentTime = std::chrono::steady_clock::now();
-    std::chrono::duration<double> elapsedSeconds = currentTime - startTime;
-    std::cout << "Elapsed time: " << elapsedSeconds.count() << " seconds\n";
+    std::chrono::duration<double> totalSeconds = currentTime - startTime;
+    std::cout << "Simulation time: " << totalSeconds.count() << " seconds\n";
     std::cout << std::endl;
 }
 
@@ -104,16 +116,30 @@ void Simulator::checkAndHandleWallCollision(int previousX, int previousY) {
     if (maze->isWall(currentX, currentY)) {
         std::cout << "Collision with wall at (" << currentX << ", " << currentY << ").\n";
         std::cout << "Micromouse died after a collision with walls.\n";
-        exit(0);
+        running = false;
     }
 }
 
 void Simulator::start() {
-    if (!isRunning) {
+    if (!running) {
         std::thread(&Simulator::run, this).detach();
     }
 }
 
-void Simulator::stop() {
-    isRunning = false;
+void Simulator::pause() {
+    running = false;
+    std::cout << "Simulation paused. You can reset it by entering 'reset' or unpause by entering 'start'\n";
+}
+
+void Simulator::reset() {
+    if (!running) {
+        steps = 0;
+        startTime = std::chrono::steady_clock::time_point::min();
+        totalSeconds = std::chrono::duration<double>::zero(); 
+        micromouse->reset(); 
+        setRandomStartPosition();
+        std::cout << "Simulation has been reset. You can start with 'start'.\n";
+    } else {
+        std::cout << "Cannot reset while the simulation is running. Please pause the simulation first.\n";
+    }
 }

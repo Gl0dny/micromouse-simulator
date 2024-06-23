@@ -46,6 +46,15 @@ std::vector<std::vector<int>> Micromouse::getKnownMaze() const {
     return knownMaze;
 }
 
+void Micromouse::reset() {
+    posX = 1;
+    posY = 1;
+    direction = "North";
+    for (auto& row : knownMaze) {
+        std::fill(row.begin(), row.end(), -1);
+    }
+}
+
 RightHandRuleBacktrackingMazeSolver::RightHandRuleBacktrackingMazeSolver()
     : Micromouse() {}
 

@@ -4,9 +4,13 @@ Wstępny Opis Projektu: Symulacja Micromouse
 
 <!-- TODO
 
-Simulator:
-Logika decyzji micromouse 1, 2 ,3 ,4
-loggin mouse route
+Logika decyzji micromouse right hand, backtracking  + dwa more complex
+loggin mouse route to a file
+fix loggin in the maze/logger classes
+number of steps mouse takes
+time of the simulation
+stop + reset simulation
+
 
 Singleton maze?
 

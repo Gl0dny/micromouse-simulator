@@ -26,7 +26,7 @@ void Simulator::run() {
         int previousY = micromouse->getPosY();
         displayMazeWithMouse();
         micromouse->move();
-        steps=micromouse->getSteps();
+        steps=micromouse->getStep();
         checkAndHandleWallCollision(previousX, previousY);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(250));

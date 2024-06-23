@@ -1,10 +1,15 @@
 #include "Micromouse.h"
 #include <iostream>
 
-Micromouse::Micromouse() : posX(1), posY(1), direction("North"), steps(0) {}
+Micromouse::Micromouse(const std::string& logFileName)
+    : posX(1), posY(1), direction("North"), step(0), logger(std::make_unique<Logger>("logs/" + logFileName + ".log")) {
+    logger->enableFileOutput();
+    logger->clearLogFile();
+}
 
 void Micromouse::setSensor(std::shared_ptr<Sensor> sensor) {
     this->sensor = sensor;
+    logger->logMessage("Sensor set for Micromouse");
 }
 
 int Micromouse::getPosX() const {
@@ -18,10 +23,11 @@ int Micromouse::getPosY() const {
 void Micromouse::setPosition(int x, int y) {
     posX = x;
     posY = y;
+    logger->logMessage("Step " + std::to_string(step) + ": Micromouse position set to (" + std::to_string(x) + "," + std::to_string(y) + ")");
 }
 
 void Micromouse::move() {
-    steps++;
+    step++;
     readSensors();
     makeDecision();
     if (direction == "North") {
@@ -33,18 +39,21 @@ void Micromouse::move() {
     } else if (direction == "West") {
         posX--;
     }
+    logger->logMessage("Step " + std::to_string(step) + ": Micromouse moved to (" + std::to_string(posX) + "," + std::to_string(posY) + ") facing " + direction);
 }
 
 void Micromouse::readSensors() {
-    sensor->getSensorData(posX, posY, knownMaze, steps);
+    sensor->getSensorData(posX, posY, knownMaze, step);
+    logger->logMessage("Step " + std::to_string(step) + ": Sensors read at position (" + std::to_string(posX) + "," + std::to_string(posY) + ")");
 }
 
-int Micromouse::getSteps() const{
-    return steps;
+int Micromouse::getStep() const {
+    return step;
 }
 
 void Micromouse::initializeKnownMaze(int width, int height) {
     knownMaze = std::vector<std::vector<int>>(width, std::vector<int>(height, -1));
+    logger->logMessage("Known maze initialized with dimensions (" + std::to_string(width) + "," + std::to_string(height) + ")");
 }
 
 std::vector<std::vector<int>> Micromouse::getKnownMaze() const {
@@ -58,13 +67,13 @@ void Micromouse::reset() {
     for (auto& row : knownMaze) {
         std::fill(row.begin(), row.end(), -1);
     }
+    logger->logMessage("Micromouse reset to initial state");
 }
 
 RightHandRuleBacktrackingMazeSolver::RightHandRuleBacktrackingMazeSolver()
-    : Micromouse() {}
+    : Micromouse("rhrb_maze_solver") {}
 
 void RightHandRuleBacktrackingMazeSolver::makeDecision() {
-
     std::string newDirection = rightTurns.at(direction);
     auto [dx, dy] = directions.at(newDirection);
 
@@ -87,6 +96,7 @@ void RightHandRuleBacktrackingMazeSolver::makeDecision() {
             }
         }
     }
+    logger->logMessage("Step " + std::to_string(step) + ": Micromouse made a decision to turn " + direction);
 }
 
 std::shared_ptr<Micromouse> chooseMicromouse(Maze* maze) {

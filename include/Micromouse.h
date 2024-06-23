@@ -3,13 +3,14 @@
 
 #include "Maze.h"
 #include "Sensor.h"
+#include "Logger.h"
 #include <memory>
 #include <vector>
 #include <string>
 
 class Micromouse {
 public:
-    Micromouse();
+    Micromouse(const std::string& logFileName);
     virtual ~Micromouse() = default;
 
     void setSensor(std::shared_ptr<Sensor> sensor);
@@ -20,7 +21,7 @@ public:
     void setPosition(int x, int y);
     void move();
     void readSensors();
-    int getSteps() const;
+    int getStep() const;
 
     std::vector<std::vector<int>> getKnownMaze() const;
     void initializeKnownMaze(int width, int height);
@@ -32,6 +33,7 @@ protected:
     std::string direction;
     std::shared_ptr<Sensor> sensor;
     std::vector<std::vector<int>> knownMaze;
+    std::unique_ptr<Logger> logger;
     const std::map<std::string, std::pair<int, int>> directions = {
         {"North", {0, 1}}, {"East", {1, 0}}, {"South", {0, -1}}, {"West", {-1, 0}}
     };
@@ -41,7 +43,7 @@ protected:
     const std::map<std::string, std::string> leftTurns = {
         {"North", "West"}, {"West", "South"}, {"South", "East"}, {"East", "North"}
     };
-    int steps;
+    int step;
 };
 
 class RightHandRuleBacktrackingMazeSolver : public Micromouse {
@@ -53,7 +55,7 @@ public:
 template <typename SolverType, typename SensorType>
 std::shared_ptr<Micromouse> createMicromouse(Maze* maze) {
     auto micromouse = std::make_shared<SolverType>();
-    auto sensor = std::make_shared<SensorType>(maze);
+    auto sensor = std::make_shared<SensorType>(maze); //sensor unique?
     micromouse->initializeKnownMaze(maze->getWidth(), maze->getHeight());
     micromouse->setSensor(sensor);
     return micromouse;

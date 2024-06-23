@@ -1,7 +1,7 @@
 #include "Sensor.h"
 #include <iostream>
 
-Sensor::Sensor(std::shared_ptr<Maze> maze)
+Sensor::Sensor(Maze* maze)
     : maze(maze) {
     directionNames = {
         {{-1, 0}, "West"},
@@ -15,7 +15,7 @@ Sensor::Sensor(std::shared_ptr<Maze> maze)
     };
 }
 
-DistanceSensor::DistanceSensor(std::shared_ptr<Maze> maze)
+DistanceSensor::DistanceSensor(Maze* maze)
     : Sensor(maze) {}
 
 void DistanceSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze) const {
@@ -41,7 +41,7 @@ void DistanceSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& 
     }
 }
 
-LaserSensor::LaserSensor(std::shared_ptr<Maze> maze)
+LaserSensor::LaserSensor(Maze* maze)
     : Sensor(maze) {}
 
 void LaserSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze) const {
@@ -70,7 +70,7 @@ void LaserSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& kno
     }
 }
 
-LidarSensor::LidarSensor(std::shared_ptr<Maze> maze)
+LidarSensor::LidarSensor(Maze* maze)
     : Sensor(maze) {}
 
 void LidarSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze) const {

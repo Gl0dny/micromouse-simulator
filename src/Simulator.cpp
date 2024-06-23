@@ -4,7 +4,7 @@
 #include <thread>
 #include <chrono>
 
-Simulator::Simulator(std::shared_ptr<Micromouse> micromouse, std::shared_ptr<Maze> maze) : micromouse(micromouse), maze(maze), startX(1), startY(1) {}
+Simulator::Simulator(std::shared_ptr<Micromouse> micromouse, Maze* maze) : micromouse(micromouse), maze(maze), startX(1), startY(1) {}
 
 void Simulator::run() {
     setRandomStartPosition();

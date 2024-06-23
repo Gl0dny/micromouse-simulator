@@ -29,34 +29,25 @@ protected:
     std::string direction;
     std::shared_ptr<Sensor> sensor;
     std::vector<std::vector<int>> knownMaze;
+    const std::map<std::string, std::pair<int, int>> directions = {
+        {"North", {0, 1}}, {"East", {1, 0}}, {"South", {0, -1}}, {"West", {-1, 0}}
+    };
+    const std::map<std::string, std::string> rightTurns = {
+        {"North", "East"}, {"East", "South"}, {"South", "West"}, {"West", "North"}
+    };
+    const std::map<std::string, std::string> leftTurns = {
+        {"North", "West"}, {"West", "South"}, {"South", "East"}, {"East", "North"}
+    };
 };
 
 class RightHandRuleBacktrackingMazeSolver : public Micromouse {
 public:
     RightHandRuleBacktrackingMazeSolver();
     void makeDecision() override;
-private:
-    const std::map<std::string, std::pair<int, int>> directions = {
-        {"North", {0, 1}}, {"East", {1, 0}}, {"South", {0, -1}}, {"West", {-1, 0}}
-    };
-
-    const std::map<std::string, std::string> rightTurns = {
-        {"North", "East"}, {"East", "South"}, {"South", "West"}, {"West", "North"}
-    };
-
-    const std::map<std::string, std::string> leftTurns = {
-        {"North", "West"}, {"West", "South"}, {"South", "East"}, {"East", "North"}
-    };
-};
-
-class BacktrackingMazeSolver : public Micromouse {
-public:
-    BacktrackingMazeSolver();
-    void makeDecision() override;
 };
 
 template <typename SolverType, typename SensorType>
-std::shared_ptr<Micromouse> createMicromouse(std::shared_ptr<Maze> maze) {
+std::shared_ptr<Micromouse> createMicromouse(Maze* maze) {
     auto micromouse = std::make_shared<SolverType>();
     auto sensor = std::make_shared<SensorType>(maze);
     micromouse->initializeKnownMaze(maze->getWidth(), maze->getHeight());
@@ -64,6 +55,6 @@ std::shared_ptr<Micromouse> createMicromouse(std::shared_ptr<Maze> maze) {
     return micromouse;
 }
 
-std::shared_ptr<Micromouse> chooseMicromouse(std::shared_ptr<Maze> maze);
+std::shared_ptr<Micromouse> chooseMicromouse(Maze* maze);
 
 #endif // MICROMOUSE_H

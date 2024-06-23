@@ -10,9 +10,8 @@ fix loggin in the maze/logger classes
 number of steps mouse takes
 time of the simulation
 stop + reset simulation
+logger function overload -> log() i log(file) , logBoth?
 
-
-Singleton maze?
 
 Zaimplementuj interfejs użytkownika: Użyj Qt do stworzenia GUI(?)
 Dokumentacja: Udokumentuj kod przy użyciu doxygen.

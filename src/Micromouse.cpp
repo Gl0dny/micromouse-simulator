@@ -75,7 +75,7 @@ void RightHandRuleBacktrackingMazeSolver::makeDecision() {
     }
 }
 
-std::shared_ptr<Micromouse> chooseMicromouse(std::shared_ptr<Maze> maze) {
+std::shared_ptr<Micromouse> chooseMicromouse(Maze* maze) {
     int solverChoice, sensorChoice;
     std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n";
     std::cin >> solverChoice;

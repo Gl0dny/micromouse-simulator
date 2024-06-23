@@ -46,10 +46,10 @@ std::vector<std::vector<int>> Micromouse::getKnownMaze() const {
     return knownMaze;
 }
 
-RightHandRuleMazeSolver::RightHandRuleMazeSolver()
+RightHandRuleBacktrackingMazeSolver::RightHandRuleBacktrackingMazeSolver()
     : Micromouse() {}
 
-void RightHandRuleMazeSolver::makeDecision() {
+void RightHandRuleBacktrackingMazeSolver::makeDecision() {
 
     std::string newDirection = rightTurns.at(direction);
     auto [dx, dy] = directions.at(newDirection);
@@ -75,17 +75,9 @@ void RightHandRuleMazeSolver::makeDecision() {
     }
 }
 
-
-BacktrackingMazeSolver::BacktrackingMazeSolver()
-    : Micromouse() {}
-
-void BacktrackingMazeSolver::makeDecision() {
-    // Implement the backtracking logic
-}
-
 std::shared_ptr<Micromouse> chooseMicromouse(std::shared_ptr<Maze> maze) {
     int solverChoice, sensorChoice;
-    std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n2. Backtracking\n";
+    std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n";
     std::cin >> solverChoice;
     std::cout << "Choose Sensor type:\n1. Distance Sensor\n2. Laser Sensor\n3. Lidar Sensor\n";
     std::cin >> sensorChoice;
@@ -94,23 +86,11 @@ std::shared_ptr<Micromouse> chooseMicromouse(std::shared_ptr<Maze> maze) {
         case 1:
             switch (sensorChoice) {
                 case 1:
-                    return createMicromouse<RightHandRuleMazeSolver, DistanceSensor>(maze);
+                    return createMicromouse<RightHandRuleBacktrackingMazeSolver, DistanceSensor>(maze);
                 case 2:
-                    return createMicromouse<RightHandRuleMazeSolver, LaserSensor>(maze);
+                    return createMicromouse<RightHandRuleBacktrackingMazeSolver, LaserSensor>(maze);
                 case 3:
-                    return createMicromouse<RightHandRuleMazeSolver, LidarSensor>(maze);
-                default:
-                    std::cerr << "Invalid sensor choice" << std::endl;
-                    return nullptr;
-            }
-        case 2:
-            switch (sensorChoice) {
-                case 1:
-                    return createMicromouse<BacktrackingMazeSolver, DistanceSensor>(maze);
-                case 2:
-                    return createMicromouse<BacktrackingMazeSolver, LaserSensor>(maze);
-                case 3:
-                    return createMicromouse<BacktrackingMazeSolver, LidarSensor>(maze);
+                    return createMicromouse<RightHandRuleBacktrackingMazeSolver, LidarSensor>(maze);
                 default:
                     std::cerr << "Invalid sensor choice" << std::endl;
                     return nullptr;

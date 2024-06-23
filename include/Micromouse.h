@@ -31,9 +31,9 @@ protected:
     std::vector<std::vector<int>> knownMaze;
 };
 
-class RightHandRuleMazeSolver : public Micromouse {
+class RightHandRuleBacktrackingMazeSolver : public Micromouse {
 public:
-    RightHandRuleMazeSolver();
+    RightHandRuleBacktrackingMazeSolver();
     void makeDecision() override;
 private:
     const std::map<std::string, std::pair<int, int>> directions = {

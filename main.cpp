@@ -25,7 +25,7 @@ int main() {
 
     std::atomic<bool> exitFlag(false);
     
-    logger->logMessage("Started a thread to handle user input for start/pause/reset/exit");
+    logger->logMessage("Running the simulation. Started a thread to handle user input for start/pause/reset/exit");
     std::thread inputThread([&simulator, &exitFlag]() {
         std::string command;
         std::cout << "Enter 'start' to start the simulation, 'pause' to pause it, 'reset' to reset it, or 'exit' to exit: \n";

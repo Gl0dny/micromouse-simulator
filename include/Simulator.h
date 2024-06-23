@@ -3,6 +3,7 @@
 
 #include "Micromouse.h"
 #include "Maze.h"
+#include "Logger.h"
 #include <memory>
 #include <chrono>
 #include <atomic>
@@ -29,6 +30,7 @@ private:
     std::chrono::steady_clock::time_point startTime;
     std::chrono::duration<double> totalSeconds;
     std::atomic<bool> running;
+    std::unique_ptr<Logger> logger;
 };
 
 #endif // SIMULATOR_H

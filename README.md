@@ -8,8 +8,8 @@ Logika decyzji micromouse + dwa more complex
 
 segmetnatation fault dla Laser Sensor? 
 
-add logging in simulation
 simulation thread return
+singleton simulator
 
 Dokumentacja: Udokumentuj kod przy użyciu doxygen.
   -->

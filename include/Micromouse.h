@@ -35,6 +35,18 @@ class RightHandRuleMazeSolver : public Micromouse {
 public:
     RightHandRuleMazeSolver();
     void makeDecision() override;
+private:
+    const std::map<std::string, std::pair<int, int>> directions = {
+        {"North", {0, 1}}, {"East", {1, 0}}, {"South", {0, -1}}, {"West", {-1, 0}}
+    };
+
+    const std::map<std::string, std::string> rightTurns = {
+        {"North", "East"}, {"East", "South"}, {"South", "West"}, {"West", "North"}
+    };
+
+    const std::map<std::string, std::string> leftTurns = {
+        {"North", "West"}, {"West", "South"}, {"South", "East"}, {"East", "North"}
+    };
 };
 
 class BacktrackingMazeSolver : public Micromouse {

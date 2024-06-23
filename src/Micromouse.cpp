@@ -50,17 +50,6 @@ RightHandRuleMazeSolver::RightHandRuleMazeSolver()
     : Micromouse() {}
 
 void RightHandRuleMazeSolver::makeDecision() {
-    static const std::map<std::string, std::pair<int, int>> directions = {
-        {"North", {0, 1}}, {"East", {1, 0}}, {"South", {0, -1}}, {"West", {-1, 0}}
-    };
-
-    static const std::map<std::string, std::string> rightTurns = {
-        {"North", "East"}, {"East", "South"}, {"South", "West"}, {"West", "North"}
-    };
-
-    static const std::map<std::string, std::string> leftTurns = {
-        {"North", "West"}, {"West", "South"}, {"South", "East"}, {"East", "North"}
-    };
 
     std::string newDirection = rightTurns.at(direction);
     auto [dx, dy] = directions.at(newDirection);
@@ -74,8 +63,8 @@ void RightHandRuleMazeSolver::makeDecision() {
         if (knownMaze[posX + dx][posY + dy] == 1) {
             // Check left-hand side
             newDirection = leftTurns.at(direction);
-            auto [ldx, ldy] = directions.at(newDirection);
-            if (knownMaze[posX + ldx][posY + ldy] != 1) {
+            auto [dx, dy] = directions.at(newDirection);
+            if (knownMaze[posX + dx][posY + dy] != 1) {
                 direction = newDirection;
             } else {
                 // Turn around

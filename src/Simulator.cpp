@@ -3,22 +3,35 @@
 #include <random>
 #include <thread>
 #include <chrono>
+#include <atomic>
+#include <ctime>
 
-Simulator::Simulator(std::shared_ptr<Micromouse> micromouse, Maze* maze) : micromouse(micromouse), maze(maze), startX(1), startY(1) {}
+Simulator::Simulator(std::shared_ptr<Micromouse> micromouse, Maze* maze) 
+    : micromouse(micromouse), maze(maze), startX(1), startY(1), steps(0), isRunning(false) {}
 
 void Simulator::run() {
     setRandomStartPosition();
-    while (!hasReachedGoal()) {
+    steps = 0;
+    isRunning = true;
+    startTime = std::chrono::steady_clock::now();
+
+    while (isRunning && !hasReachedGoal()) {
         int previousX = micromouse->getPosX();
         int previousY = micromouse->getPosY();
         displayMazeWithMouse();
-        micromouse->move(); 
-        checkAndHandleWallCollision(previousX, previousY); // Check for wall collision
+        micromouse->move();
+        steps++;
+        checkAndHandleWallCollision(previousX, previousY);
 
         std::this_thread::sleep_for(std::chrono::milliseconds(250));
     }
+
     displayMazeWithMouse();
+    auto endTime = std::chrono::steady_clock::now();
+    std::chrono::duration<double> elapsedSeconds = endTime - startTime;
     std::cout << "Micromouse escaped from the Maze!\n";
+    std::cout << "Total steps taken: " << steps << "\n";
+    std::cout << "Total time: " << elapsedSeconds.count() << " seconds\n";
 }
 
 void Simulator::setRandomStartPosition() {
@@ -73,9 +86,12 @@ void Simulator::displayMazeWithMouse() const {
         }
         std::cout << rowString << std::endl;
     }
+    std::cout << "Steps taken: " << steps << "\n";
+    auto currentTime = std::chrono::steady_clock::now();
+    std::chrono::duration<double> elapsedSeconds = currentTime - startTime;
+    std::cout << "Elapsed time: " << elapsedSeconds.count() << " seconds\n";
     std::cout << std::endl;
 }
-
 
 bool Simulator::hasReachedGoal() const {
     auto [exitX, exitY] = maze->readExit();
@@ -90,4 +106,14 @@ void Simulator::checkAndHandleWallCollision(int previousX, int previousY) {
         std::cout << "Micromouse died after a collision with walls.\n";
         exit(0);
     }
+}
+
+void Simulator::start() {
+    if (!isRunning) {
+        std::thread(&Simulator::run, this).detach();
+    }
+}
+
+void Simulator::stop() {
+    isRunning = false;
 }

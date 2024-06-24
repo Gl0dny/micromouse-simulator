@@ -7,6 +7,9 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <set>
+#include <stack>
+#include <utility>
 
 class Micromouse {
 public:
@@ -52,10 +55,25 @@ public:
     void makeDecision() override;
 };
 
+
+class TeleportingUndecidedSolver : public Micromouse {
+public:
+    TeleportingUndecidedSolver();
+    void makeDecision() override;
+
+private:
+    std::map<std::pair<int, int>, int> visited; // Tracks visited cells
+    std::map<std::pair<int, int>, std::set<std::string>> triedDirections; // Tracks tried directions from each cell
+    std::stack<std::pair<int, int>> backtrackStack; // Stack for backtracking
+
+    bool hasUntriedDirection(int x, int y);
+    std::string getNextDirection(int x, int y);
+};
+
 template <typename SolverType, typename SensorType>
 std::shared_ptr<Micromouse> createMicromouse(Maze* maze) {
     auto micromouse = std::make_shared<SolverType>();
-    auto sensor = std::make_shared<SensorType>(maze); //sensor unique?
+    auto sensor = std::make_shared<SensorType>(maze);
     micromouse->initializeKnownMaze(maze->getWidth(), maze->getHeight());
     micromouse->setSensor(sensor);
     return micromouse;

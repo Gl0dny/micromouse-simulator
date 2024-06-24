@@ -4,12 +4,11 @@ Wstępny Opis Projektu: Symulacja Micromouse
 
 <!-- TODO
 
-Logika decyzji micromouse + dwa more complex
+one new solvers - smart lazy
 
-segmetnatation fault dla Laser Sensor? 
+pola zawsze prywatne chyba ze pole jest obiektem ktory sam sie chroni to moze byc protected/public  
 
-simulation thread return
-singleton simulator
+segm laser sensor?
 
 Dokumentacja: Udokumentuj kod przy użyciu doxygen.
   -->

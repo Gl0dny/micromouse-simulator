@@ -99,9 +99,68 @@ void RightHandRuleBacktrackingMazeSolver::makeDecision() {
     logger->logMessage("Step " + std::to_string(step) + ": Micromouse made a decision to turn " + direction);
 }
 
+TeleportingUndecidedSolver::TeleportingUndecidedSolver()
+    : Micromouse("exploring_solver") {}
+
+bool TeleportingUndecidedSolver::hasUntriedDirection(int x, int y) {
+    for (const auto& dir : directions) {
+        int newX = x + dir.second.first;
+        int newY = y + dir.second.second;
+        if (knownMaze[newX][newY] != 1 && triedDirections[{x, y}].find(dir.first) == triedDirections[{x, y}].end()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+std::string TeleportingUndecidedSolver::getNextDirection(int x, int y) {
+    for (const auto& dir : directions) {
+        int newX = x + dir.second.first;
+        int newY = y + dir.second.second;
+        if (knownMaze[newX][newY] != 1 && triedDirections[{x, y}].find(dir.first) == triedDirections[{x, y}].end()) {
+            triedDirections[{x, y}].insert(dir.first);
+            return dir.first;
+        }
+    }
+    return "";
+}
+
+void TeleportingUndecidedSolver::makeDecision() {
+    // Current position
+    int x = getPosX();
+    int y = getPosY();
+    visited[{x, y}] = 1;
+
+    // Push current position to backtrack stack
+    if (backtrackStack.empty() || backtrackStack.top() != std::make_pair(x, y)) {
+        backtrackStack.push({x, y});
+    }
+
+    // Check for untried directions
+    if (hasUntriedDirection(x, y)) {
+        direction = getNextDirection(x, y);
+        return;
+    }
+
+    // If no untried directions, backtrack
+    while (!backtrackStack.empty()) {
+        auto [backX, backY] = backtrackStack.top();
+        backtrackStack.pop();
+
+        if (hasUntriedDirection(backX, backY)) {
+            direction = getNextDirection(backX, backY);
+            setPosition(backX, backY);
+            return;
+        }
+    }
+
+    // If completely stuck, stay in place
+    logger->logMessage("Step " + std::to_string(step) + ": Micromouse is stuck with no untried directions available.");
+}
+
 std::shared_ptr<Micromouse> chooseMicromouse(Maze* maze) {
     int solverChoice, sensorChoice;
-    std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n";
+    std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n2. TeleportingUndecidedSolver\n";
     std::cin >> solverChoice;
     std::cout << "Choose Sensor type:\n1. Distance Sensor\n2. Laser Sensor\n3. Lidar Sensor\n";
     std::cin >> sensorChoice;
@@ -115,6 +174,18 @@ std::shared_ptr<Micromouse> chooseMicromouse(Maze* maze) {
                     return createMicromouse<RightHandRuleBacktrackingMazeSolver, LaserSensor>(maze);
                 case 3:
                     return createMicromouse<RightHandRuleBacktrackingMazeSolver, LidarSensor>(maze);
+                default:
+                    std::cerr << "Invalid sensor choice" << std::endl;
+                    return nullptr;
+            }
+        case 2:
+            switch (sensorChoice) {
+                case 1:
+                    return createMicromouse<TeleportingUndecidedSolver, DistanceSensor>(maze);
+                case 2:
+                    return createMicromouse<TeleportingUndecidedSolver, LaserSensor>(maze);
+                case 3:
+                    return createMicromouse<TeleportingUndecidedSolver, LidarSensor>(maze);
                 default:
                     std::cerr << "Invalid sensor choice" << std::endl;
                     return nullptr;

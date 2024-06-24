@@ -8,6 +8,8 @@ one new solvers - cornerdetection
 
 check the teleporting one
 
+signleton simulator
+
 pola zawsze prywatne chyba ze pole jest obiektem ktory sam sie chroni to moze byc protected/public  
 
 segm laser sensor?

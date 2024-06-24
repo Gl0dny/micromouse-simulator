@@ -21,7 +21,7 @@ private:
     void setRandomStartPosition();
     void displayMazeWithMouse() const;
     bool hasReachedGoal() const;
-    void checkAndHandleWallCollision(int previousX, int previousY);
+    void checkAndHandleWallCollision();
 
     std::shared_ptr<Micromouse> micromouse;
     Maze* maze;

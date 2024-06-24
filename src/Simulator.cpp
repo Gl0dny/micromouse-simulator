@@ -24,12 +24,10 @@ void Simulator::run() {
     }
 
     while (running && !hasReachedGoal()) {
-        int previousX = micromouse->getPosX();
-        int previousY = micromouse->getPosY();
         micromouse->move();
         steps = micromouse->getStep();
         displayMazeWithMouse();
-        checkAndHandleWallCollision(previousX, previousY);
+        checkAndHandleWallCollision();
 
         std::this_thread::sleep_for(std::chrono::milliseconds(250));
     }
@@ -109,7 +107,7 @@ bool Simulator::hasReachedGoal() const {
     return micromouse->getPosX() == exitX && micromouse->getPosY() == exitY;
 }
 
-void Simulator::checkAndHandleWallCollision(int previousX, int previousY) {
+void Simulator::checkAndHandleWallCollision() {
     int currentX = micromouse->getPosX();
     int currentY = micromouse->getPosY();
     if (maze->isWall(currentX, currentY)) {

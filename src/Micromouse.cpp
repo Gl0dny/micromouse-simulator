@@ -167,7 +167,7 @@ void TeleportingUndecidedMazeSolver::makeDecision() {
 
 std::shared_ptr<Micromouse> chooseMicromouse(Maze* maze) {
     int solverChoice, sensorChoice;
-    std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n2. LazySmartSolver\n3. TeleportingUndecidedSolver\n";
+    std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n2. CornerDetectionMazeSolver\n3. TeleportingUndecidedSolver\n";
     std::cin >> solverChoice;
     std::cout << "Choose Sensor type:\n1. Distance Sensor\n2. Laser Sensor\n3. Lidar Sensor\n";
     std::cin >> sensorChoice;

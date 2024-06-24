@@ -4,7 +4,9 @@ Wstępny Opis Projektu: Symulacja Micromouse
 
 <!-- TODO
 
-one new solvers - smart lazy
+one new solvers - cornerdetection
+
+check the teleporting one
 
 pola zawsze prywatne chyba ze pole jest obiektem ktory sam sie chroni to moze byc protected/public  
 

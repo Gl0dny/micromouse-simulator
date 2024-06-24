@@ -99,10 +99,17 @@ void RightHandRuleBacktrackingMazeSolver::makeDecision() {
     logger->logMessage("Step " + std::to_string(step) + ": Micromouse made a decision to turn " + direction);
 }
 
-TeleportingUndecidedSolver::TeleportingUndecidedSolver()
+
+CornerDetectionMazeSolver::CornerDetectionMazeSolver()
+    : Micromouse("lazy_smart_maze_solver") {}
+
+void CornerDetectionMazeSolver::makeDecision() {
+}
+
+TeleportingUndecidedMazeSolver::TeleportingUndecidedMazeSolver()
     : Micromouse("exploring_solver") {}
 
-bool TeleportingUndecidedSolver::hasUntriedDirection(int x, int y) {
+bool TeleportingUndecidedMazeSolver::hasUntriedDirection(int x, int y) {
     for (const auto& dir : directions) {
         int newX = x + dir.second.first;
         int newY = y + dir.second.second;
@@ -113,7 +120,7 @@ bool TeleportingUndecidedSolver::hasUntriedDirection(int x, int y) {
     return false;
 }
 
-std::string TeleportingUndecidedSolver::getNextDirection(int x, int y) {
+std::string TeleportingUndecidedMazeSolver::getNextDirection(int x, int y) {
     for (const auto& dir : directions) {
         int newX = x + dir.second.first;
         int newY = y + dir.second.second;
@@ -125,7 +132,7 @@ std::string TeleportingUndecidedSolver::getNextDirection(int x, int y) {
     return "";
 }
 
-void TeleportingUndecidedSolver::makeDecision() {
+void TeleportingUndecidedMazeSolver::makeDecision() {
     // Current position
     int x = getPosX();
     int y = getPosY();
@@ -160,7 +167,7 @@ void TeleportingUndecidedSolver::makeDecision() {
 
 std::shared_ptr<Micromouse> chooseMicromouse(Maze* maze) {
     int solverChoice, sensorChoice;
-    std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n2. TeleportingUndecidedSolver\n";
+    std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n2. LazySmartSolver\n3. TeleportingUndecidedSolver\n";
     std::cin >> solverChoice;
     std::cout << "Choose Sensor type:\n1. Distance Sensor\n2. Laser Sensor\n3. Lidar Sensor\n";
     std::cin >> sensorChoice;
@@ -181,11 +188,23 @@ std::shared_ptr<Micromouse> chooseMicromouse(Maze* maze) {
         case 2:
             switch (sensorChoice) {
                 case 1:
-                    return createMicromouse<TeleportingUndecidedSolver, DistanceSensor>(maze);
+                    return createMicromouse<CornerDetectionMazeSolver, DistanceSensor>(maze);
                 case 2:
-                    return createMicromouse<TeleportingUndecidedSolver, LaserSensor>(maze);
+                    return createMicromouse<CornerDetectionMazeSolver, LaserSensor>(maze);
                 case 3:
-                    return createMicromouse<TeleportingUndecidedSolver, LidarSensor>(maze);
+                    return createMicromouse<CornerDetectionMazeSolver, LidarSensor>(maze);
+                default:
+                    std::cerr << "Invalid sensor choice" << std::endl;
+                    return nullptr;
+            }
+        case 3:
+            switch (sensorChoice) {
+                case 1:
+                    return createMicromouse<TeleportingUndecidedMazeSolver, DistanceSensor>(maze);
+                case 2:
+                    return createMicromouse<TeleportingUndecidedMazeSolver, LaserSensor>(maze);
+                case 3:
+                    return createMicromouse<TeleportingUndecidedMazeSolver, LidarSensor>(maze);
                 default:
                     std::cerr << "Invalid sensor choice" << std::endl;
                     return nullptr;

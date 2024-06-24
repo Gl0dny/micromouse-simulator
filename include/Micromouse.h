@@ -55,10 +55,16 @@ public:
     void makeDecision() override;
 };
 
-
-class TeleportingUndecidedSolver : public Micromouse {
+class CornerDetectionMazeSolver : public Micromouse {
 public:
-    TeleportingUndecidedSolver();
+    CornerDetectionMazeSolver();
+    void makeDecision() override;
+};
+
+
+class TeleportingUndecidedMazeSolver : public Micromouse {
+public:
+    TeleportingUndecidedMazeSolver();
     void makeDecision() override;
 
 private:

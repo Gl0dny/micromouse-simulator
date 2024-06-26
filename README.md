@@ -674,3 +674,67 @@ Summary
 The main function orchestrates the Micromouse simulation by managing user input through CommandQueue, initializing and interacting with the Maze and Micromouse objects, and controlling simulation flow through threads (inputThread and simulationThread). It ensures thread-safe command handling and logging of simulation activities, providing a structured approach to simulate and control Micromouse behavior in a maze environment.
 
 This setup facilitates real-time interaction with the simulation and maintains clear logging for debugging and analysis purposes, enhancing the overall simulation experience and functionality.
+
+
+maze_test
+
+
+MazeTest Class
+Test Fixture
+
+    Class: MazeTest (inherits from ::testing::Test)
+        Purpose: Provides a test fixture for testing the Maze class.
+        Setup: Overrides SetUp() method to initialize test environment if needed (currently unused in the provided code).
+
+Test Methods
+
+    bool hasAdditionalWalls(const Maze* maze):
+        Purpose: Checks if the maze contains any 2x2 blocks of walls.
+        Parameters: maze - Pointer to the Maze object being tested.
+        Implementation:
+            Iterates through the maze excluding borders (getWidth() - 1 and getHeight() - 1).
+            Checks if four consecutive cells ((x, y), (x+1, y), (x, y+1), (x+1, y+1)) are all walls (isWall()).
+            Returns true if such a block is found, otherwise false.
+
+Test Cases
+
+    MazeGenerationMultipleTimes:
+        Purpose: Tests maze generation to ensure no 2x2 blocks of walls exist.
+        Implementation:
+            Retrieves a singleton instance of Maze.
+            Checks for additional walls using hasAdditionalWalls().
+            Logs maze state if additional walls are found and asserts that none are present using EXPECT_FALSE().
+
+    Singleton:
+        Purpose: Tests the singleton property of the Maze class.
+        Implementation:
+            Retrieves two instances (maze1 and maze2) of the singleton Maze.
+            Asserts that both instances (maze1 and maze2) are the same object using EXPECT_EQ().
+
+main Function
+
+    Purpose: Entry point for running all tests using Google Test.
+
+Functionality
+
+    Initialization:
+        Uses ::testing::InitGoogleTest(&argc, argv) to initialize Google Test with command-line arguments.
+    Execution:
+        Calls RUN_ALL_TESTS() to execute all registered test cases (MazeGenerationMultipleTimes, Singleton).
+
+Return Value
+
+    Return: Returns the result of the test run (0 for success, non-zero for failure).
+
+Summary
+
+The provided code demonstrates a structured approach to testing the Maze class using Google Test framework:
+
+    MazeTest class serves as a test fixture providing reusable setup and utility methods (hasAdditionalWalls()).
+    Test Cases (MazeGenerationMultipleTimes, Singleton) validate specific aspects of the Maze class behavior (maze generation and singleton property).
+    main function utilizes Google Test infrastructure to automate test execution, providing clear and concise output regarding test outcomes.
+
+This setup ensures robust testing of the Maze class across different scenarios, enhancing reliability and correctness in maze generation and singleton behavior validation.
+
+
+

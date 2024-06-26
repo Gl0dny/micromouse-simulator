@@ -25,7 +25,7 @@ public:
     /**
      * @brief Virtual destructor for Micromouse.
      */
-    virtual ~Micromouse() = default;
+    virtual ~Micromouse();
 
     /**
      * @brief Sets the sensor for the Micromouse.

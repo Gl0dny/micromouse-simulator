@@ -6,9 +6,8 @@
 #include <map>
 #include <string>
 #include <utility>
-
-class Maze;
-class Logger;
+#include "Maze.h"
+#include "Logger.h"
 
 /**
  * @brief Base class for sensors.
@@ -21,6 +20,11 @@ public:
      * @param name Name of the sensor.
      */
     Sensor(Maze* maze, const std::string& name);
+
+    /**
+     * @brief Virtual destructor for Sensor.
+     */
+    virtual ~Sensor();
 
     /**
      * @brief Pure virtual function to get sensor data.

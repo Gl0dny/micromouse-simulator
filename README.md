@@ -3,13 +3,15 @@ Wstępny Opis Projektu: Symulacja Micromouse
 1. Opis Projektu
 
 <!-- TODO
+Done:
+Logger, Utils, Maze, Simulator
+
+
 check the teleporting one + main threading
 
 Patterns collaborate class 
 GL course
 pola zawsze prywatne chyba ze pole jest obiektem ktory sam sie chroni to moze byc protected/public  
-
-Utiils + test_maze
 
 Check the documentation
 setup doc generation
@@ -43,17 +45,6 @@ Projekt zakłada stworzenie symulacji robota typu micromouse, którego zadaniem 
     Simulator: Klasa odpowiedzialna za symulację, zawierająca metody do uruchamiania, pauzowania i resetowania symulacji oraz integrująca klasę Micromouse i Maze.
     GUI: Klasa obsługująca graficzny interfejs użytkownika, odpowiedzialna za rysowanie labiryntu i robota oraz obsługę interakcji użytkownika.
 
-    --------------------------------------------------------
-    |                         Panel Kontrolny              |
-    |------------------------------------------------------|
-    | Start | Pauza | Reset | Opcje                        |
-    --------------------------------------------------------
-    |                                                      |
-    |                                                      |
-    |               Obszar wyświetlania labiryntu          |
-    |                                                      |
-    |                                                      |
-    --------------------------------------------------------
 
 1. Struktura katalogów projektu
 

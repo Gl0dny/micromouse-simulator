@@ -19,6 +19,10 @@ Sensor::Sensor(Maze* maze, const std::string& name)
     logger->clearLogFile();
 }
 
+Sensor::~Sensor() {
+    logger->disableFileOutput();
+}
+
 DistanceSensor::DistanceSensor(Maze* maze)
     : Sensor(maze, "distance_sensor") {}
 

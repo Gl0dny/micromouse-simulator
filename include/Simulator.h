@@ -22,6 +22,11 @@ public:
     Simulator(std::shared_ptr<Micromouse> micromouse, Maze* maze);
 
     /**
+     * @brief Destructor for Simulator.
+     */
+    ~Simulator();
+
+    /**
      * @brief Runs the simulation.
      */
     void run();

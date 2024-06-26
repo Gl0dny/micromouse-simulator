@@ -14,16 +14,6 @@ namespace Utils {
         return dis(gen);
     }
 
-    void clearFile(const std::string &filePath) {
-        std::ofstream ofs(filePath, std::ios::trunc);
-        if (ofs) {
-#ifdef DEBUG_MODE
-            std::cout << "File cleared: " << filePath << std::endl;
-#endif
-        } else {
-            std::cerr << "Failed to clear file: " << filePath << std::endl;
-        }
-    }
 
     std::string getCurrentDateTime() {
         std::time_t now = std::time(nullptr);
@@ -46,6 +36,17 @@ namespace Utils {
             }
         } else if (!(info.st_mode & S_IFDIR)) {
             std::cerr << dirPath << " is not a directory" << std::endl;
+        }
+    }
+
+    void clearFile(const std::string &filePath) {
+        std::ofstream ofs(filePath, std::ios::trunc);
+        if (ofs) {
+#ifdef DEBUG_MODE
+            std::cout << "File cleared: " << filePath << std::endl;
+#endif
+        } else {
+            std::cerr << "Failed to clear file: " << filePath << std::endl;
         }
     }
 

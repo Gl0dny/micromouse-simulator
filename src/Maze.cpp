@@ -8,15 +8,17 @@
 #include <vector>
 #include <memory>
 
+Maze* Maze::instance = nullptr;
 
-Maze::Maze(int width, int height, const std::string& logFileName)
-    : width(width), height(height), mazeGrid(width, std::vector<int>(height, 1)), logger(std::make_unique<Logger>(logFileName)) {
+Maze::Maze()
+    : width(21), height(21), mazeGrid(width, std::vector<int>(height, 1)), logger(std::make_unique<Logger>("./logs/maze.log")) {
     std::map<std::pair<int, int>, std::string> directionNames = {
         {{-1, 0}, "West"},  
         {{1, 0}, "East"},   
         {{0, -1}, "South"}, 
         {{0, 1}, "North"}   
-    };    logger->enableFileOutput();
+    };    
+    logger->enableFileOutput();
     logger->clearLogFile();
     logger->logMessage("Maze initialized with all walls.");
     generateMaze();
@@ -24,15 +26,23 @@ Maze::Maze(int width, int height, const std::string& logFileName)
 
 Maze::~Maze() {
     logger->disableFileOutput();
+    delete instance;
 }
 
+Maze* Maze::getInstance()
+    {
+        if (!instance) {
+            instance = new Maze();
+        }
+        return instance;
+    }
+
 // Function to generate the maze
-Maze& Maze::generateMaze() {
+void Maze::generateMaze() {
     logger->logMessage("Starting maze generation.");
     carvePassage(1, 1);
     createRandomExit();
     logger->logMessage("Maze generation completed.");
-    return *this;
 }
 
 // Function to create a random exit on the maze border (excluding corners and ensuring no adjacent inner walls)

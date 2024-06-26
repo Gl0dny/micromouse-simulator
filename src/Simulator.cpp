@@ -4,23 +4,67 @@
 #include <thread>
 #include <chrono>
 
-Simulator::Simulator(std::shared_ptr<Micromouse> micromouse, std::shared_ptr<Maze> maze) : micromouse(micromouse), maze(maze), startX(1), startY(1) {}
+Simulator::Simulator(std::shared_ptr<Micromouse> micromouse, Maze* maze)
+    : micromouse(micromouse), maze(maze), startX(1), startY(1), steps(0), running(false), logger(std::make_unique<Logger>("logs/simulator.log")) {
+    totalSeconds = std::chrono::duration<double>::zero();
+    startTime = std::chrono::steady_clock::time_point::min(); // Initialize with "zero" time
+    setRandomStartPosition();
+    logger->enableFileOutput(false);
+    logger->clearLogFile();
+    logger->logMessage("Simulator initialized.");
+}
 
 void Simulator::run() {
-    setRandomStartPosition();
-    collisionCount = 0;
-    while (!hasReachedGoal()) {
-        int previousX = micromouse->getPosX();
-        int previousY = micromouse->getPosY();
-        displayMazeWithMouse();
-        micromouse->move(); 
-        checkAndHandleWallCollision(previousX, previousY); // Check for wall collision
+    running = true;
 
-        // Delay for 1 second
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+    if (startTime == std::chrono::steady_clock::time_point::min()) {
+        startTime = std::chrono::steady_clock::now();
     }
-    displayMazeWithMouse();
-    std::cout << "Micromouse escaped from the Maze!\n";
+
+    while (running && !hasReachedGoal()) {
+        micromouse->move();
+        steps = micromouse->getStep();
+        displayMazeWithMouse();
+        checkAndHandleWallCollision();
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
+
+    if (hasReachedGoal()) {
+        auto endTime = std::chrono::steady_clock::now();
+        totalSeconds = endTime - startTime;
+        logger->logMessage("Micromouse escaped from the Maze!");
+        logger->logMessage("Total steps taken: " + std::to_string(steps));
+        logger->logMessage("Total simulation time: " + std::to_string(totalSeconds.count()) + " seconds");
+        exit(0);
+    } else {
+        logger->logMessage("Simulation paused before the Micromouse could escape.");
+    }
+}
+
+void Simulator::start() {
+    if (!running) {
+        std::thread(&Simulator::run, this).detach();
+        logger->logMessage("Simulation started.");
+    }
+}
+
+void Simulator::pause() {
+    running = false;
+    logger->logMessage("Simulation paused.");
+}
+
+void Simulator::reset() {
+    if (!running) {
+        steps = 0;
+        startTime = std::chrono::steady_clock::time_point::min();
+        totalSeconds = std::chrono::duration<double>::zero();
+        micromouse->reset();
+        setRandomStartPosition();
+        logger->logMessage("Simulation has been reset.");
+    } else {
+        logger->logMessage("Cannot reset while the simulation is running. Please pause the simulation first.");
+    }
 }
 
 void Simulator::setRandomStartPosition() {
@@ -49,8 +93,9 @@ void Simulator::setRandomStartPosition() {
         default:
             throw std::invalid_argument("Invalid corner specified");
     }
-    std::cout << "Micromouse starting at (" << startX << ", " << startY << ").\n";
     micromouse->setPosition(startX, startY);
+    logger->logMessage("Micromouse starting at (" + std::to_string(startX) + ", " + std::to_string(startY) + ")");
+    displayMazeWithMouse();
 }
 
 void Simulator::displayMazeWithMouse() const {
@@ -58,7 +103,6 @@ void Simulator::displayMazeWithMouse() const {
     int mouseX = micromouse->getPosX();
     int mouseY = micromouse->getPosY();
 
-    // Log each row of the maze with mouse position
     for (int y = grid[0].size() - 1; y >= 0; --y) {
         std::string rowString;
         for (int x = 0; x < grid.size(); ++x) {
@@ -73,31 +117,25 @@ void Simulator::displayMazeWithMouse() const {
             }
             rowString += ' ';
         }
-        std::cout << rowString << std::endl;
+        logger->logMessage(rowString, false);
     }
-    std::cout << std::endl;
+    logger->logMessage("Steps taken: " + std::to_string(steps));
+    auto currentTime = std::chrono::steady_clock::now();
+    std::chrono::duration<double> totalSeconds = currentTime - startTime;
+    logger->logMessage("Simulation time: " + std::to_string(totalSeconds.count()) + " seconds");
 }
-
 
 bool Simulator::hasReachedGoal() const {
     auto [exitX, exitY] = maze->readExit();
     return micromouse->getPosX() == exitX && micromouse->getPosY() == exitY;
 }
 
-void Simulator::checkAndHandleWallCollision(int previousX, int previousY) {
+void Simulator::checkAndHandleWallCollision() {
     int currentX = micromouse->getPosX();
     int currentY = micromouse->getPosY();
     if (maze->isWall(currentX, currentY)) {
-        std::cout << "Collision with wall at (" << currentX << ", " << currentY << "). Reverting to (" << previousX << ", " << previousY << ").\n";
-        micromouse->setPosition(previousX, previousY);
-        collisionCount++;
-        std::cout << "Collision count: " << collisionCount << "\n";
-    } else {
-        std::cout << "Moved to (" << currentX << ", " << currentY << ").\n";
-    }
-
-    if (collisionCount >= 3) {
-        std::cout << "Micromouse died after 3 collisions with walls.\n";
+        logger->logMessage("Collision with wall at (" + std::to_string(currentX) + ", " + std::to_string(currentY) + "). Micromouse died.");
+        running = false;
         exit(0);
     }
 }

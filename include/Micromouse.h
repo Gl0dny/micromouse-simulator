@@ -53,6 +53,8 @@ class RightHandRuleBacktrackingMazeSolver : public Micromouse {
 public:
     RightHandRuleBacktrackingMazeSolver();
     void makeDecision() override;
+private:
+    void followRightHandRule();
 };
 
 class CornerDetectionMazeSolver : public Micromouse {

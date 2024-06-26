@@ -74,6 +74,10 @@ RightHandRuleBacktrackingMazeSolver::RightHandRuleBacktrackingMazeSolver()
     : Micromouse("rhrb_maze_solver") {}
 
 void RightHandRuleBacktrackingMazeSolver::makeDecision() {
+    followRightHandRule();
+}
+
+void RightHandRuleBacktrackingMazeSolver::followRightHandRule() {
     std::string newDirection = rightTurns.at(direction);
     auto [dx, dy] = directions.at(newDirection);
 

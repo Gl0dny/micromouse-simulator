@@ -16,6 +16,7 @@ Makefile
 *.ninja_deps
 *.ninja_log
 rules.ninja
+*.cmake
 
 # Ignorowanie plików konfiguracyjnych i tymczasowych edytorów
 *.swp

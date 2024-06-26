@@ -36,16 +36,12 @@ include_directories(include)
 
 # Source files
 set(SOURCES
-    src/Micromouse.cpp
-    src/Robot.cpp
     src/Maze.cpp
-    src/Sensor.cpp
-    src/Simulator.cpp
-    src/GUI.cpp
     src/Logger.cpp
     src/Utils.cpp
-    src/MainWindow.cpp
-    src/MazeWidget.cpp
+    src/Micromouse.cpp
+    src/Sensor.cpp
+    src/Simulator.cpp
 )
 
 # Main executable
@@ -75,6 +71,9 @@ add_executable(tests tests/test_maze.cpp ${SOURCES})
 
 # include(GoogleTest)
 # gtest_discover_tests(hello_world)
+
+# Link pthread for threads
+target_link_libraries(MicromouseProject pthread)
 
 # Linkowanie bibliotek Qt5 i Google Test do testów
 target_link_libraries(tests Qt5::Widgets GTest::GTest GTest::Main)

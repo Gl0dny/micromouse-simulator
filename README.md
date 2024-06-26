@@ -3,34 +3,14 @@ Wstępny Opis Projektu: Symulacja Micromouse
 1. Opis Projektu
 
 <!-- TODO
+check the teleporting one
 
-Zrozum gtest config zakomentowany
-Rozdziel testy
-Napraw pojawianie się walli dodatkowych w maze: parzysta liczba w ścianie;
-# # # # # # # # #
-#   #
-#   # # #   #   #
-#           #   #
-# # # # # # #   #
-#               #
-# # # # # # # # #
-# # # # # # # # #
+signleton simulator
 
-# # # # # # # #
-#           # #
-# # # # #   # #
-        #   # #
-#   #   #   # #
-#   #   #   # #
-#   #   #   # #
-#   #       # #
-# # # # # # # #
+pola zawsze prywatne chyba ze pole jest obiektem ktory sam sie chroni to moze byc protected/public  
 
-Można poprawić ale specyfika labiryntu ( korytarz musi być otoczony więc liczbą wyboru korytarza musi być liczba nieparzysta ( indeksowanie od 0 ), w przypadku parzystej liczby wyboru zawsze w labiryncie musiałbym pozwolić na istnieje podwójnych ścian - zakaz podwójnych ścian to założenie labiryntu i jego testów ). Mógłbym sztucznie wyżłobić pojedyncze ślepe uliczki ( sprawdzając trzy kierunki dookoła podwójnej ściany i decydując, że da się ją wyżłobić poza algorytmem depth-first search ) na długość jednego kroku ale mija się to ze specyfiką labiryntu. Pozostawiam hardcoded odd number of width/height.
-
-
-Zaimplementuj interfejs użytkownika: Użyj Qt do stworzenia GUI.
-Dokumentacja: Udokumentuj kod przy użyciu doxygen.  -->
+Dokumentacja: Udokumentuj kod przy użyciu doxygen.
+  -->
 
 Projekt zakłada stworzenie symulacji robota typu micromouse, którego zadaniem jest przejście przez labirynt. Robot będzie wyposażony w czujniki, które pozwolą mu zbierać dane o otoczeniu, i na ich podstawie podejmować decyzje dotyczące ruchu. Symulacja będzie zawierała wizualizację ruchu robota w labiryncie.
 

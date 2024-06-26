@@ -10,11 +10,11 @@ protected:
         // Setup can be used to initialize variables if needed
     }
 
-    bool hasAdditionalWalls(const Maze& maze, int width, int height) {
+    bool hasAdditionalWalls(const Maze* maze) {
         // We should check for any 2x2 blocks of walls inside the maze
-        for (int x = 1; x < width - 1; ++x) {
-            for (int y = 1; y < height - 1; ++y) {
-                if (maze.isWall(x, y) && maze.isWall(x + 1, y) && maze.isWall(x, y + 1) && maze.isWall(x + 1, y + 1)) {
+        for (int x = 1; x < maze->getWidth() - 1; ++x) {
+            for (int y = 1; y < maze->getHeight() - 1; ++y) {
+                if (maze->isWall(x, y) && maze->isWall(x + 1, y) && maze->isWall(x, y + 1) && maze->isWall(x + 1, y + 1)) {
                     return true;
                 }
             }
@@ -24,28 +24,23 @@ protected:
 };
 
 TEST_F(MazeTest, MazeGenerationMultipleTimes) {
-    int width = 21;
-    int height = 21;
-    int trials = 100;
-
-    for (int i = 0; i < trials; ++i) {
-        std::string logFileName = "./tests/logs/maze_test_log_file_" + std::to_string(i + 1) + ".log";
-        std::unique_ptr<Maze> maze = std::make_unique<Maze>(width, height, logFileName);
-        maze->generateMaze();
+        Maze* maze = Maze::getInstance();
         
-        std::cout << "Generated Maze " << i + 1 << ":\n";
-        
-        if (hasAdditionalWalls(*maze, width, height)) {
-            std::cout << "Additional walls found in the maze on trial " << i + 1 << ":\n";
-            maze->setLogger(logFileName, false);
-            maze->displayMaze();
+        if (hasAdditionalWalls(maze)) {
+            std::cout << "Additional walls found in the maze " << ":\n";
+            maze->setLogger("./logs/maze.log", false).displayMaze(); 
         }
         else{
             maze->displayMaze();
         }
 
-        EXPECT_FALSE(hasAdditionalWalls(*maze, width, height));
+        EXPECT_FALSE(hasAdditionalWalls(maze));
     }
+
+TEST_F(MazeTest, Singleton) {
+    Maze* maze1 = Maze::getInstance();
+    Maze* maze2 = Maze::getInstance();
+    EXPECT_EQ(maze1, maze2);
 }
 
 int main(int argc, char **argv) {

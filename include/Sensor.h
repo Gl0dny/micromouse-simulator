@@ -1,17 +1,42 @@
 #ifndef SENSOR_H
 #define SENSOR_H
 
-template <typename T>
+#include <vector>
+#include <memory>
+#include <map>
+#include <string>
+#include <utility>
+#include "Maze.h"
+#include "Logger.h"
+
 class Sensor {
 public:
-    Sensor();
-    T getReading(int direction) const;
+    Sensor(Maze* maze, const std::string& name);
+    virtual void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const = 0;
 
-private:
-    T data;
+protected:
+    Maze* maze;
+    std::map<std::pair<int, int>, std::string> directionNames;
+    std::unique_ptr<Logger> logger;
+    int steps;
+};
+
+class DistanceSensor : public Sensor {
+public:
+    DistanceSensor(Maze* maze);
+    void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const override;
+};
+
+class LaserSensor : public Sensor {
+public:
+    LaserSensor(Maze* maze);
+    void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const override;
+};
+
+class LidarSensor : public Sensor {
+public:
+    LidarSensor(Maze* maze);
+    void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const override;
 };
 
 #endif // SENSOR_H
-
-// Kod deklaruje klasę Sensor, która może przechowywać i zwracać dane różnych typów.
-// Template class jest instancjonowany dla konkretnych typów danych na końcu pliku implementacyjnego, aby zapewnić, że będą one gotowe do użycia w programie.

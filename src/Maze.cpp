@@ -8,45 +8,53 @@
 #include <vector>
 #include <memory>
 
-// Constructor
-Maze::Maze(int width, int height, const std::string& logFileName)
-    : width(width), height(height), mazeGrid(width, std::vector<int>(height, 1)), logger(std::make_unique<Logger>(logFileName)) {
-    directionNames = {{{0, -1}, "North"}, {{0, 1}, "South"}, {{-1, 0}, "West"}, {{1, 0}, "East"}};
+Maze* Maze::instance = nullptr;
+
+Maze::Maze()
+    : width(21), height(21), mazeGrid(width, std::vector<int>(height, 1)), logger(std::make_unique<Logger>("./logs/maze.log")) {
+    std::map<std::pair<int, int>, std::string> directionNames = {
+        {{-1, 0}, "West"},  
+        {{1, 0}, "East"},   
+        {{0, -1}, "South"}, 
+        {{0, 1}, "North"}   
+    };    
     logger->enableFileOutput();
     logger->clearLogFile();
     logger->logMessage("Maze initialized with all walls.");
+    generateMaze();
 }
 
-// Destructor
 Maze::~Maze() {
     logger->disableFileOutput();
+    delete instance;
 }
 
+Maze* Maze::getInstance()
+    {
+        if (!instance) {
+            instance = new Maze();
+        }
+        return instance;
+    }
+
 // Function to generate the maze
-Maze& Maze::generateMaze() {
+void Maze::generateMaze() {
     logger->logMessage("Starting maze generation.");
-    
-    // Generating the internal maze
     carvePassage(1, 1);
-
-    // Creating one exit
     createRandomExit();
-
     logger->logMessage("Maze generation completed.");
-
-    return *this;
 }
 
 // Function to create a random exit on the maze border (excluding corners and ensuring no adjacent inner walls)
 void Maze::createRandomExit() {
     std::vector<std::pair<int, int>> borderCells;
     for (int i = 1; i < width - 1; ++i) {
-        borderCells.push_back({i, 0});        // Top border
-        borderCells.push_back({i, height-1}); // Bottom border
+        borderCells.push_back({i, 0});        
+        borderCells.push_back({i, height-1}); 
     }
     for (int i = 1; i < height - 1; ++i) {
-        borderCells.push_back({0, i});        // Left border
-        borderCells.push_back({width-1, i});  // Right border
+        borderCells.push_back({0, i});        
+        borderCells.push_back({width-1, i}); 
     }
 
     std::random_device rd;
@@ -62,6 +70,7 @@ void Maze::createRandomExit() {
         if (isValidExit(exitX, exitY)) {
             mazeGrid[exitX][exitY] = 0;
             logger->logMessage("Created exit at (" + std::to_string(exitX) + ", " + std::to_string(exitY) + ").");
+            exit = {exitX, exitY};  
             exitCreated = true;
         }
     }
@@ -90,7 +99,7 @@ void Maze::carvePassage(int x, int y) {
     logger->logMessage("Carving passage at (" + std::to_string(x) + ", " + std::to_string(y) + ").");
 
     // Print maze with current position
-    printMazeWithCurrentPosition(x, y);
+    printMazeWithCurrentCarve(x, y);
 
     std::random_device rd;
     std::mt19937 g(rd());
@@ -116,13 +125,13 @@ void Maze::carvePassage(int x, int y) {
 }
 
 // Function to print the maze with the current position of the algorithm
-void Maze::printMazeWithCurrentPosition(int cx, int cy) const {
+void Maze::printMazeWithCurrentCarve(int cx, int cy) const {
     logger->logMessage("Displaying maze with current position:");
 
     // Log each row of the maze
-    for (int y = 0; y < height; ++y) {
+    for (int y = height - 1; y >= 0; --y) { 
         std::string rowString;
-        for (int x = 0; x < width; ++x) {
+        for (int x = 0; x < width; ++x) { 
             if (x == cx && y == cy) {
                 rowString += "C "; // Current position
             } else {
@@ -144,10 +153,10 @@ void Maze::displayMaze() const {
     logger->logMessage("Displaying maze:");
 
     // Log each row of the maze
-    for (const auto& row : mazeGrid) {
+    for (int y = height - 1; y >= 0; --y) {
         std::string rowString;
-        for (const auto& cell : row) {
-            rowString += (cell ? '#' : ' ');
+        for (int x = 0; x < width; ++x) {
+            rowString += (mazeGrid[x][y] ? '#' : ' ');
             rowString += ' ';
         }
         logger->logMessage(rowString, false);
@@ -158,4 +167,20 @@ Maze& Maze::setLogger(const std::string& log_file, bool toFileOnly /* = true */)
     logger.reset(new Logger(log_file));
     logger->enableFileOutput(toFileOnly);
     return *this;
+}
+
+const std::vector<std::vector<int>>& Maze::getMazeGrid() const {
+    return mazeGrid;
+}
+
+int Maze::getWidth() const {
+    return width;
+}
+
+int Maze::getHeight() const {
+    return height;
+}
+
+std::pair<int, int> Maze::readExit() const {
+    return exit;
 }

@@ -3,17 +3,17 @@ Wstępny Opis Projektu: Symulacja Micromouse
 1. Opis Projektu
 
 <!-- TODO
-Done:
-Logger, Utils, Maze, Simulator
-
 
 check the teleporting one + main threading
 
 Patterns collaborate class 
 GL course
 pola zawsze prywatne chyba ze pole jest obiektem ktory sam sie chroni to moze byc protected/public  
+pola protected w micromouse sensor zastanow sie
 
-Check the documentation
+Class diagram , README overall
+readme cleanup
+
 setup doc generation
 
   -->
@@ -1030,15 +1030,86 @@ Function Steps
 
    The chooseMicromouse function provides a user-friendly interface for selecting and creating micromouse instances with different solver and sensor types dynamically. By leveraging templated createMicromouse function calls based on user input, it allows for flexible configuration of micromouse behavior to suit different maze-solving strategies and sensor capabilities. This approach supports modularity and extensibility in micromouse simulation and development, enabling rapid testing and iteration of different algorithms and sensor combinations within a maze environment.     
 
+
+
+
 Logs
 
 maze.log
 
 The log file maze.log effectively tracks the maze generation process, carving of passages, and updates to the maze grid. It provides a comprehensive view of how the maze is constructed and logged in real-time. This level of logging is useful for debugging, understanding maze generation algorithms, and visualizing the state of the maze throughout its creation process.
 
+[2024-06-27 00:31:04] Displaying maze with current position:
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+#           # # # # # # # # # # # # # # # 
+#   # # #   # # # # # # # # # # # # # # # 
+#   # C     # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+[2024-06-27 00:31:04] Trying direction South from (3, 1) to (3, -1).
+[2024-06-27 00:31:04] Direction South is invalid or already visited.
+[2024-06-27 00:31:04] Trying direction West from (3, 1) to (1, 1).
+[2024-06-27 00:31:04] Direction West is invalid or already visited.
+[2024-06-27 00:31:04] Trying direction North from (3, 1) to (3, 3).
+[2024-06-27 00:31:04] Direction North is invalid or already visited.
+[2024-06-27 00:31:04] Trying direction East from (3, 1) to (5, 1).
+[2024-06-27 00:31:04] Direction East is invalid or already visited.
+[2024-06-27 00:31:04] Returning from carving at (3, 1).
+[2024-06-27 00:31:04] Trying direction East from (5, 1) to (7, 1).
+[2024-06-27 00:31:04] Direction East is valid, moving to (7, 1).
+[2024-06-27 00:31:04] Carving passage at (7, 1).
+[2024-06-27 00:31:04] Displaying maze with current position:
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+#           # # # # # # # # # # # # # # # 
+#   # # #   # # # # # # # # # # # # # # # 
+#   #         C # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # 
+
+
+
 sensor.log
 
 The sensor.log file captures the output of the micromouse's sensor as it scans the maze environment, detecting walls and logging its findings. 
+
+[2024-06-27 00:31:07] Step 1: Wall detected to the West at (0, 1)
+[2024-06-27 00:31:07] Step 1: Wall detected to the South at (1, 0)
+[2024-06-27 00:31:07] Step 1: No wall detected to the North at (1, 2)
+[2024-06-27 00:31:07] Step 1: Wall detected to the East at (2, 1)
+[2024-06-27 00:31:07] Step 2: Wall detected to the West at (0, 2)
+[2024-06-27 00:31:07] Step 2: No wall detected to the South at (1, 1)
+[2024-06-27 00:31:07] Step 2: No wall detected to the North at (1, 3)
+[2024-06-27 00:31:07] Step 2: Wall detected to the East at (2, 2)
 
 micromouse.log
 
@@ -1046,16 +1117,106 @@ The provided log file details a simulation or execution log of a Micromouse robo
 
 The log file provides a detailed record of the Micromouse's journey through the maze, reflecting the implementation of different maze-solving algorithms. Each step is logged to track the Micromouse's position, sensor readings, decision-making process, and algorithm-specific behavior. This structured logging is crucial for debugging, analyzing performance, and understanding the behavior of the maze-solving algorithms implemented in the Micromouse simulation.
 
+[2024-06-27 00:31:06] Sensor set for Micromouse
+[2024-06-27 00:31:06] Step 0: Micromouse position set to (1,1)
+[2024-06-27 00:31:07] Step 1: Sensors read at position (1,1)
+[2024-06-27 00:31:07] Step 1: Following right-hand rule. Micromouse decided to turn North
+[2024-06-27 00:31:07] Step 1: Micromouse moved to (1,2) facing North
+[2024-06-27 00:31:07] Step 2: Sensors read at position (1,2)
+[2024-06-27 00:31:07] Step 2: Following right-hand rule. Micromouse decided to turn North
+[2024-06-27 00:31:07] Step 2: Micromouse moved to (1,3) facing North
+
 simulator.log
 
 The provided log file simulator.log documents the activities and events during the execution of a micromouse simulation. The log file simulator.log serves as a detailed record of the micromouse simulation's progress, capturing initialization, grid representations, steps taken, and simulation time. It is essential for debugging, performance analysis, and understanding the behavior of the micromouse within the simulated maze environment. Each entry provides insight into the state of the simulation at specific points in time, aiding in understanding its execution flow and outcomes.
 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? # # # # # ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+#           # ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+#   # # #   # ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+#   # ? M     ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? # ? ? ? # ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+[2024-06-27 00:31:07] Steps taken: 9
+[2024-06-27 00:31:07] Simulation time: 0.409660 seconds
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? # # # # # ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+#           # ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+#   # # #   # ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+#   # M       ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+? # ? ? # # ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? 
+[2024-06-27 00:31:07] Steps taken: 10
+[2024-06-27 00:31:07] Simulation time: 0.460956 seconds
 
 main.log
 
 The provided code (main.log and main.cpp) showcases a structured approach to simulating micromouse behavior in a maze environment. It employs threads for managing user commands and simulator actions, ensuring smooth interaction and proper synchronization. The logging mechanism (Logger class) is utilized to record important events and commands during the simulation, aiding in monitoring and debugging the program's execution.
 
 The main.log file serves as a chronological record of events and user commands throughout the micromouse simulation program. It documents the initialization of key components such as the maze, micromouse, and simulator, as well as user interactions that control the simulation's flow (start, pause, reset, exit). Each log entry provides insights into the program's execution timeline, facilitating monitoring, debugging, and understanding of the simulation's behavior and outcomes.
+
+[2024-06-27 00:31:04] Creating the Maze...
+[2024-06-27 00:31:04] Displaying maze:
+# # # # # # # # # # # #   # # # # # # # # 
+#       #       #           #           # 
+#   #   #   #   # # #   #   # # #   #   # 
+#   #       #           #       #   #   # 
+#   # # # # # # # # # # # # #   # # #   # 
+#   #                       #   #       # 
+#   #   #   # # # # # # # # #   #   #   # 
+#   #   #           #           #   #   # 
+#   # # #   # # #   #   # # # # #   #   # 
+#       #       #   #               #   # 
+#   #   # # # # #   # # # # # # # # #   # 
+#   #           #   #               #   # 
+#   # # # # #   #   #   # # #   #   #   # 
+#       #   #   #   #       #   #   #   # 
+# # #   #   #   #   # # #   #   # # #   # 
+#           #   #           #           # 
+# # # # # # #   #   # # # # # # # # # # # 
+#           #   #           #           # 
+#   # # #   #   # # # # #   # # # # #   # 
+#   #           #                       # 
+# # # # # # # # # # # # # # # # # # # # # 
+[2024-06-27 00:31:04] Creating the Micromouse...
+[2024-06-27 00:31:06] Creating the Simulator...
+[2024-06-27 00:31:06] Running the simulation. Started a thread to handle user input for start/pause/reset/exit
+[2024-06-27 00:31:07] Command executed: start
+[2024-06-27 00:31:12] Command executed: stop
+[2024-06-27 00:31:14] Command executed: start
+[2024-06-27 00:31:15] Command executed: stop
+[2024-06-27 00:31:16] Command executed: start
+[2024-06-27 00:31:20] Command executed: exit
+[2024-06-27 00:31:20] Simulation finished.
+
 
 
 CMakeLists.txt

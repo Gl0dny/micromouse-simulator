@@ -35,9 +35,9 @@ protected:
 };
 
 /**
- * @brief Tests maze generation multiple times to ensure there are no 2x2 blocks of walls.
+ * @brief Tests maze generation to ensure there are no 2x2 blocks of walls.
  */
-TEST_F(MazeTest, MazeGenerationMultipleTimes) {
+TEST_F(MazeTest, MazeGeneration) {
     Maze* maze = Maze::getInstance();
     
     if (hasAdditionalWalls(maze)) {
@@ -61,11 +61,9 @@ TEST_F(MazeTest, Singleton) {
 
 /**
  * @brief Main function to run all tests.
- * @param argc Argument count.
- * @param argv Argument vector.
  * @return Result of the test run.
  */
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
+int main() {
+    ::testing::InitGoogleTest();
     return RUN_ALL_TESTS();
 }

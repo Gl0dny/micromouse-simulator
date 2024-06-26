@@ -5,8 +5,6 @@ Wstępny Opis Projektu: Symulacja Micromouse
 <!-- TODO
 check the teleporting one
 
-signleton simulator
-
 pola zawsze prywatne chyba ze pole jest obiektem ktory sam sie chroni to moze byc protected/public  
 
 Dokumentacja: Udokumentuj kod przy użyciu doxygen.

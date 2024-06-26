@@ -151,7 +151,7 @@ private:
 };
 
 /**
- * @brief Factory function to create a Micromouse with given solver and sensor types.
+ * @brief Factory function to create a Micromouse with given solver and sensor types. The createMicromouse function provides a flexible mechanism to instantiate micromouse objects with different solver and sensor types, based on the template parameters SolverType and SensorType. This approach supports modular design and facilitates the creation of micromouse instances tailored to specific maze-solving algorithms and sensor capabilities, enhancing reusability and flexibility in micromouse simulation and development environments.
  * @tparam SolverType Type of the solver.
  * @tparam SensorType Type of the sensor.
  * @param maze Pointer to the maze object.
@@ -167,7 +167,7 @@ std::shared_ptr<Micromouse> createMicromouse(Maze* maze) {
 }
 
 /**
- * @brief Function to choose and create a Micromouse based on user input.
+ * @brief Function to choose and create a Micromouse based on user input. The chooseMicromouse function provides a user-friendly interface for selecting and creating micromouse instances with different solver and sensor types dynamically. By leveraging templated createMicromouse function calls based on user input, it allows for flexible configuration of micromouse behavior to suit d ifferent maze-solving strategies and sensor capabilities. This approach supports modularity and extensibility in micromouse simulation and development, enabling rapid testing and iteration of different algorithms and sensor combinations within a maze environment.
  * @param maze Pointer to the maze object.
  * @return Shared pointer to the created Micromouse.
  */

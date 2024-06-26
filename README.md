@@ -953,3 +953,106 @@ Summary
 The TeleportingUndecidedMazeSolver class extends Micromouse and implements a maze-solving strategy that combines teleporting with an undecided path-solving approach. It utilizes backtracking (backtrackStack) to revisit previous positions and attempt alternative paths when encountering dead-ends or fully explored areas. This strategy aims to efficiently explore and navigate through the maze while adapting to unknown configurations and obstacles encountered.
 
 This class structure facilitates dynamic decision-making based on real-time sensor data (knownMaze) and maintains a comprehensive log (logger) of micromouse movements and decisions throughout the maze-solving process. By leveraging inherited methods and data members from Micromouse, it supports modular maze-solving algorithms within a flexible micromouse simulation framework.
+
+
+createMicromouse Factory Function
+
+The createMicromouse function is a templated factory function designed to create instances of Micromouse with specific solver and sensor types. It encapsulates the process of initializing a micromouse instance with the appropriate solver and sensor, setting up the known maze, and returning a shared pointer to the created micromouse.
+Template Parameters
+
+    SolverType: Type parameter specifying the type of the solver class derived from Micromouse.
+    SensorType: Type parameter specifying the type of the sensor class derived from Sensor.
+
+Parameters
+
+    maze: Pointer to a Maze object, which the created micromouse instance will interact with.
+
+Return Value
+
+    std::shared_ptr<Micromouse>: Shared pointer to the created micromouse instance.
+
+Function Steps
+
+    Create Solver and Sensor Instances:
+        auto micromouse = std::make_shared<SolverType>();: Creates an instance of SolverType, which should be a class derived from Micromouse.
+        auto sensor = std::make_shared<SensorType>(maze);: Creates an instance of SensorType, which should be a class derived from Sensor, initialized with the maze pointer.
+
+    Initialize Known Maze:
+        micromouse->initializeKnownMaze(maze->getWidth(), maze->getHeight());: Initializes the micromouse's knownMaze with the dimensions of the maze (getWidth() and getHeight()).
+
+    Set Sensor:
+        micromouse->setSensor(sensor);: Sets the created sensor instance to the micromouse, allowing it to interact with the maze environment.
+
+    Return Micromouse Instance:
+        Returns the shared pointer micromouse, which now points to a fully initialized micromouse instance configured with the specified solver and sensor types.
+
+    The createMicromouse function provides a flexible mechanism to instantiate micromouse objects with different solver and sensor types, based on the template parameters SolverType and SensorType. This approach supports modular design and facilitates the creation of micromouse instances tailored to specific maze-solving algorithms and sensor capabilities, enhancing reusability and flexibility in micromouse simulation and development environments.
+
+
+    chooseMicromouse Function
+
+The chooseMicromouse function allows the user to select a micromouse type (solver) and a sensor type based on input. It then dynamically creates and returns a shared pointer to the chosen micromouse configured with the selected solver and sensor types.
+Parameters
+
+    maze: Pointer to a Maze object, which the created micromouse instance will interact with.
+
+Return Value
+
+    std::shared_ptr<Micromouse>: Shared pointer to the created micromouse instance.
+
+Function Steps
+
+    User Input for Micromouse and Sensor Selection:
+        Prompts the user to choose a micromouse type (solverChoice) and a sensor type (sensorChoice) using standard input (std::cin).
+
+    Switch Statements Based on solverChoice:
+        Depending on the user's choice (solverChoice), switches between different micromouse solver types:
+            Case 1: Right Hand Rule based solvers (RightHandRuleBacktrackingMazeSolver).
+            Case 2: Left Hand Rule based solvers (LeftHandRuleBacktrackingMazeSolver).
+            Case 3: Teleporting Undecided Solver (TeleportingUndecidedMazeSolver).
+
+    Nested Switch Statements Based on sensorChoice:
+        Within each solver case, switches based on the user's choice (sensorChoice) for the sensor type:
+            Case 1: Distance Sensor (DistanceSensor).
+            Case 2: Laser Sensor (LaserSensor).
+            Case 3: Lidar Sensor (LidarSensor).
+
+    Creation of Micromouse Instance Using createMicromouse Function:
+        Calls the createMicromouse templated function with the appropriate solver and sensor types based on the user's choices.
+        Passes the maze pointer to initialize the micromouse instance with the correct maze dimensions.
+
+    Error Handling:
+        Prints an error message to std::cerr if an invalid micromouse solver or sensor choice is made.
+        Returns nullptr in case of an invalid choice.
+
+    Return Micromouse Instance:
+        Returns the created micromouse instance as a shared pointer.
+
+   The chooseMicromouse function provides a user-friendly interface for selecting and creating micromouse instances with different solver and sensor types dynamically. By leveraging templated createMicromouse function calls based on user input, it allows for flexible configuration of micromouse behavior to suit different maze-solving strategies and sensor capabilities. This approach supports modularity and extensibility in micromouse simulation and development, enabling rapid testing and iteration of different algorithms and sensor combinations within a maze environment.     
+
+Logs
+
+maze.log
+
+The log file maze.log effectively tracks the maze generation process, carving of passages, and updates to the maze grid. It provides a comprehensive view of how the maze is constructed and logged in real-time. This level of logging is useful for debugging, understanding maze generation algorithms, and visualizing the state of the maze throughout its creation process.
+
+sensor.log
+
+The sensor.log file captures the output of the micromouse's sensor as it scans the maze environment, detecting walls and logging its findings. 
+
+micromouse.log
+
+The provided log file details a simulation or execution log of a Micromouse robot navigating through a maze, using different maze solving algorithms based on the right-hand rule, left-hand rule, and a teleporting undecided strategy. 
+
+The log file provides a detailed record of the Micromouse's journey through the maze, reflecting the implementation of different maze-solving algorithms. Each step is logged to track the Micromouse's position, sensor readings, decision-making process, and algorithm-specific behavior. This structured logging is crucial for debugging, analyzing performance, and understanding the behavior of the maze-solving algorithms implemented in the Micromouse simulation.
+
+simulator.log
+
+The provided log file simulator.log documents the activities and events during the execution of a micromouse simulation. The log file simulator.log serves as a detailed record of the micromouse simulation's progress, capturing initialization, grid representations, steps taken, and simulation time. It is essential for debugging, performance analysis, and understanding the behavior of the micromouse within the simulated maze environment. Each entry provides insight into the state of the simulation at specific points in time, aiding in understanding its execution flow and outcomes.
+
+
+main.log
+
+The provided code (main.log and main.cpp) showcases a structured approach to simulating micromouse behavior in a maze environment. It employs threads for managing user commands and simulator actions, ensuring smooth interaction and proper synchronization. The logging mechanism (Logger class) is utilized to record important events and commands during the simulation, aiding in monitoring and debugging the program's execution.
+
+The main.log file serves as a chronological record of events and user commands throughout the micromouse simulation program. It documents the initialization of key components such as the maze, micromouse, and simulator, as well as user interactions that control the simulation's flow (start, pause, reset, exit). Each log entry provides insights into the program's execution timeline, facilitating monitoring, debugging, and understanding of the simulation's behavior and outcomes.

@@ -9,7 +9,7 @@
 #include <utility>
 
 /**
- * @brief Singleton class representing a Maze.
+ * @brief Singleton class representing a Maze. The Maze class encapsulates maze generation and manipulation logic, providing methods to retrieve maze dimensions, display the maze, access maze grid data, and manage logging of maze operations. It employs the singleton pattern to ensure a single instance exists throughout the program's execution, enhancing consistency and control over maze generation and logging activities. This design facilitates organized development and debugging of maze-related applications.
  */
 class Maze {
 public:

@@ -266,6 +266,139 @@ This setup is beneficial for applications requiring obstacle detection and spati
 
 
 
+Logger
+
+Logger Class
+
+The Logger class provides functionality for logging messages to a file and/or the console.
+Constructor
+
+    Constructor: Logger(const std::string& filePath)
+        Initializes the Logger object with the path to the log file (filePath).
+        Calls createLogDirectory to ensure the directory structure exists for the log file.
+
+Public Methods
+
+    logMessage: Logs a message to both the file (if enabled) and the console.
+        Parameters:
+            message: The message to log.
+            includeTimestamp (optional): Indicates whether to include a timestamp in the logged message.
+        Returns a reference to the Logger object.
+        If logToFile is true, writes the formatted message to the log file (logFile) and optionally to the console.
+        If logToFile is false, logs the message only to the console.
+
+    enableFileOutput: Enables logging to a file.
+        Parameters:
+            toFileOnly (optional): Specifies whether to log exclusively to the file or also to the console.
+        Returns a reference to the Logger object.
+        Opens the log file (logFilePath) for appending (std::ios::app mode).
+        Sets logToFile to true and logToFileOnly based on the provided parameter.
+        Displays debug messages (if DEBUG_MODE is defined) about the logging configuration.
+
+    disableFileOutput: Disables logging to the file.
+        Returns a reference to the Logger object.
+        Closes the log file (logFile) if it is currently open.
+        Resets logToFile and logToFileOnly to false.
+        Prints debug information (if DEBUG_MODE is defined) confirming the change in logging behavior.
+
+    clearLogFile: Clears the contents of the log file.
+        Returns a reference to the Logger object.
+        Uses Utils::clearFile to truncate the log file (logFilePath).
+
+Private Methods
+
+    createLogDirectory: Creates the directory structure for the log file if it doesn't exist.
+        Extracts the directory path from logFilePath and uses Utils::createDirectory to ensure the directory exists.
+
+Data Members
+
+    logToFile: Indicates if logging to the file is enabled.
+    logToFileOnly: Indicates if logging exclusively to the file is enabled.
+    logFile: Output file stream used for logging messages to the file.
+    logFilePath: Path to the log file.
+
+Summary
+
+The Logger class encapsulates functionality for logging messages with optional timestamps to a specified file path. It supports enabling/disabling file output, clearing the log file, and managing logging behavior between file and console outputs. This setup facilitates organized logging in applications, aiding in debugging, monitoring, and analysis tasks. The class ensures efficient file handling and robust logging capabilities within a program.
+
+
+Maze Class
+
+The Maze class represents a maze structure and provides various functionalities related to its generation, manipulation, and logging.
+Constructor and Singleton Pattern
+
+    Constructor: Maze()
+        Private constructor to prevent direct instantiation.
+        Initializes width and height of the maze (default: 21x21).
+        Initializes mazeGrid as a 2D vector representing the maze, initially filled with walls (1).
+        Initializes logger using Logger class to log maze operations to a specified log file (./logs/maze.log).
+        Initializes directionNames to map direction offsets ({{-1, 0}, "West"}, {1, 0}, "East"}, {0, -1}, "South"}, {0, 1}, "North"}).
+
+Destructor
+
+    Destructor: ~Maze()
+        Cleans up by disabling file output for logging (logger->disableFileOutput()).
+        Deletes the singleton instance (instance).
+
+Singleton Instance
+
+    getInstance(): Returns the single instance of Maze.
+        Implements the singleton pattern to ensure only one instance of Maze exists.
+        If instance doesn't exist, creates a new Maze object.
+
+Public Methods
+
+    Accessors: getWidth(), getHeight()
+        Returns the width and height of the maze.
+
+    displayMaze()
+        Logs the current state of the maze (mazeGrid) to the logger.
+        Formats the maze with walls (#) and spaces for empty spaces.
+        Uses logger->logMessage() to display each row of the maze.
+
+    getMazeGrid()
+        Returns a constant reference to the maze grid (mazeGrid).
+
+    readExit()
+        Returns the coordinates of the maze exit as a pair (exit).
+
+    isWall(int x, int y)
+        Checks if the cell at coordinates (x, y) is a wall (1).
+        Returns true if the cell is a wall, otherwise false.
+
+    setLogger(const std::string& logFile, bool toFileOnly = true)
+        Sets the logger for the maze with a specified log file path (logFile).
+        Optionally specifies whether to log only to the file (toFileOnly).
+        Uses Logger class methods to configure and enable logging.
+
+Private Methods
+
+    Maze Generation: generateMaze(), carvePassage(int x, int y), createRandomExit()
+
+        generateMaze(): Initiates maze generation process.
+            Calls carvePassage(1, 1) to start carving passages from the maze's starting point.
+            Calls createRandomExit() to randomly create an exit on the maze's border.
+
+        carvePassage(int x, int y): Recursively carves passages from the given coordinates (x, y).
+            Uses a depth-first search approach to carve paths (0) through the maze.
+            Logs each step of the carving process using logger->logMessage().
+
+        createRandomExit(): Randomly selects a valid border cell and designates it as the maze exit.
+            Uses isValidExit(int x, int y) to verify the selected cell is suitable for an exit.
+            Logs the creation of the exit using logger->logMessage().
+
+    Validation: isValidExit(int x, int y)
+        Checks if a potential exit at coordinates (x, y) meets the criteria for a valid exit:
+            Must be adjacent to open spaces (0) in the maze grid.
+
+    Utility: printMazeWithCurrentCarve(int cx, int cy)
+        Logs the current state of the maze with an indication (C) of the current position being carved.
+
+Summary
+
+The Maze class encapsulates maze generation and manipulation logic, providing methods to retrieve maze dimensions, display the maze, access maze grid data, and manage logging of maze operations. It employs the singleton pattern to ensure a single instance exists throughout the program's execution, enhancing consistency and control over maze generation and logging activities. This design facilitates organized development and debugging of maze-related applications.
+
+
 
 
 

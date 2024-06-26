@@ -27,19 +27,19 @@ namespace Utils {
      * @brief Creates a directory if it does not already exist.
      * @param dirPath Path to the directory.
      */
-    void createDirectory(const std::string &dirPath);
+    void createDirectory(const std::string& dirPath);
 
     /**
      * @brief Clears the contents of a file.
      * @param filePath Path to the file to be cleared.
      */
-    void clearFile(const std::string &filePath);
+    void clearFile(const std::string& filePath);
 
     /**
      * @brief Checks if a file exists.
      * @param filePath Path to the file.
      */
-    void fileExists(const std::string &filePath);
+    void fileExists(const std::string& filePath);
 }
 
 #endif // UTILS_H

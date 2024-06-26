@@ -14,16 +14,6 @@ namespace Utils {
         return dis(gen);
     }
 
-    void clearFile(const std::string &filePath) {
-        std::ofstream ofs(filePath, std::ios::trunc);
-        if (ofs) {
-#ifdef DEBUG_MODE
-            std::cout << "File cleared: " << filePath << std::endl;
-#endif
-        } else {
-            std::cerr << "Failed to clear file: " << filePath << std::endl;
-        }
-    }
 
     std::string getCurrentDateTime() {
         std::time_t now = std::time(nullptr);
@@ -49,15 +39,26 @@ namespace Utils {
         }
     }
 
+    void clearFile(const std::string &filePath) {
+        std::ofstream ofs(filePath, std::ios::trunc);
+        if (ofs) {
+#ifdef DEBUG_MODE
+            std::cout << "File cleared: " << filePath << std::endl;
+#endif
+        } else {
+            std::cerr << "Failed to clear file: " << filePath << std::endl;
+        }
+    }
+
     void fileExists(const std::string &filePath) {
         std::ifstream ifs(filePath);
-    #ifdef DEBUG_MODE
+#ifdef DEBUG_MODE
         if (ifs) {
             std::cout << "File exists." << std::endl;
         } else {
             std::cout << "File does not exist." << std::endl;
         }
-    #endif
+#endif
     }
 
 } // namespace Utils

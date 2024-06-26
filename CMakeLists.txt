@@ -41,17 +41,7 @@ set(SOURCES
     src/Utils.cpp
     src/Micromouse.cpp
     src/Sensor.cpp
-    src/DistanceSensor.cpp
-    src/LaserSensor.cpp
-    src/LidarSensor.cpp
     src/Simulator.cpp
-    src/RightHandRuleMazeSolver.cpp
-    src/BacktrackingMazeSolver.cpp
-    src/LaserBacktrackingMazeSolver.cpp
-    src/LidarBacktrackingMazeSolver.cpp
-    src/GUI.cpp
-    src/MainWindow.cpp
-    src/MazeWidget.cpp
 )
 
 # Main executable
@@ -81,6 +71,9 @@ add_executable(tests tests/test_maze.cpp ${SOURCES})
 
 # include(GoogleTest)
 # gtest_discover_tests(hello_world)
+
+# Link pthread for threads
+target_link_libraries(MicromouseProject pthread)
 
 # Linkowanie bibliotek Qt5 i Google Test do testów
 target_link_libraries(tests Qt5::Widgets GTest::GTest GTest::Main)

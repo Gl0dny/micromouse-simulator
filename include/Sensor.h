@@ -3,29 +3,40 @@
 
 #include <vector>
 #include <memory>
+#include <map>
+#include <string>
+#include <utility>
 #include "Maze.h"
+#include "Logger.h"
 
-template <typename T>
 class Sensor {
 public:
-    Sensor(std::shared_ptr<Maze> maze, int posX, int posY);
-    virtual ~Sensor() = default;
-    T getReading(int direction) const;
-    virtual void updateReadings(int posX, int posY) = 0;
+    Sensor(Maze* maze, const std::string& name);
+    virtual void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const = 0;
 
 protected:
-    std::shared_ptr<Maze> maze;
-    std::vector<T> data;
-    int posX, posY;
+    Maze* maze;
+    std::map<std::pair<int, int>, std::string> directionNames;
+    std::unique_ptr<Logger> logger;
+    int steps;
 };
 
-template <typename T>
-Sensor<T>::Sensor(std::shared_ptr<Maze> maze, int posX, int posY)
-    : maze(maze), posX(posX), posY(posY), data(4, T()) {}
+class DistanceSensor : public Sensor {
+public:
+    DistanceSensor(Maze* maze);
+    void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const override;
+};
 
-template <typename T>
-T Sensor<T>::getReading(int direction) const {
-    return data[direction];
-}
+class LaserSensor : public Sensor {
+public:
+    LaserSensor(Maze* maze);
+    void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const override;
+};
+
+class LidarSensor : public Sensor {
+public:
+    LidarSensor(Maze* maze);
+    void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const override;
+};
 
 #endif // SENSOR_H

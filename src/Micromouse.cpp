@@ -96,7 +96,7 @@ void RightHandRuleBacktrackingMazeSolver::makeDecision() {
             }
         }
     }
-    logger->logMessage("Step " + std::to_string(step) + ": Micromouse made a decision to turn " + direction);
+    logger->logMessage("Step " + std::to_string(step) + ": Following right-hand rule. Micromouse decided to turn " + direction);
 }
 
 
@@ -104,6 +104,33 @@ CornerDetectionMazeSolver::CornerDetectionMazeSolver()
     : Micromouse("lazy_smart_maze_solver") {}
 
 void CornerDetectionMazeSolver::makeDecision() {
+    followLeftHandRule();
+}
+
+void CornerDetectionMazeSolver::followLeftHandRule() {
+    std::string newDirection = leftTurns.at(direction);
+    auto [dx, dy] = directions.at(newDirection);
+
+    // Check if right-hand side is free
+    if (knownMaze[posX + dx][posY + dy] != 1) {
+        direction = newDirection;
+    } else {
+        // Check current direction
+        auto [dx, dy] = directions.at(direction);
+        if (knownMaze[posX + dx][posY + dy] == 1) {
+            // Check left-hand side
+            newDirection = rightTurns.at(direction);
+            auto [dx, dy] = directions.at(newDirection);
+            if (knownMaze[posX + dx][posY + dy] != 1) {
+                direction = newDirection;
+            } else {
+                // Turn around
+                newDirection = rightTurns.at(rightTurns.at(direction));
+                direction = newDirection;
+            }
+        }
+    }
+    logger->logMessage("Step " + std::to_string(step) + ": Following left-hand rule. Micromouse decided to turn " + direction);
 }
 
 TeleportingUndecidedMazeSolver::TeleportingUndecidedMazeSolver()
@@ -167,7 +194,7 @@ void TeleportingUndecidedMazeSolver::makeDecision() {
 
 std::shared_ptr<Micromouse> chooseMicromouse(Maze* maze) {
     int solverChoice, sensorChoice;
-    std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n2. LazySmartSolver\n3. TeleportingUndecidedSolver\n";
+    std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n2. Corner Detection Maze Solver\n3. Teleporting Undecided Solver\n";
     std::cin >> solverChoice;
     std::cout << "Choose Sensor type:\n1. Distance Sensor\n2. Laser Sensor\n3. Lidar Sensor\n";
     std::cin >> sensorChoice;

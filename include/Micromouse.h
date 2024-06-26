@@ -59,6 +59,20 @@ class CornerDetectionMazeSolver : public Micromouse {
 public:
     CornerDetectionMazeSolver();
     void makeDecision() override;
+
+private:
+    // bool isCorner(int x, int y);
+    // void updateCorners();
+    // void assumeCorners();
+    // void prioritizeOuterWalls();
+    void followLeftHandRule();
+
+    // bool cornersAssumed;
+    // bool confirmedMazeSize;
+    // std::pair<int, int> topLeft;
+    // std::pair<int, int> topRight;
+    // std::pair<int, int> bottomLeft;
+    // std::pair<int, int> bottomRight;
 };
 
 

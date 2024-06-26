@@ -3,9 +3,6 @@ Wstępny Opis Projektu: Symulacja Micromouse
 1. Opis Projektu
 
 <!-- TODO
-
-one new solvers - cornerdetection
-
 check the teleporting one
 
 pola zawsze prywatne chyba ze pole jest obiektem ktory sam sie chroni to moze byc protected/public  

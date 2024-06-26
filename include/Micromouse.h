@@ -57,26 +57,13 @@ private:
     void followRightHandRule();
 };
 
-class CornerDetectionMazeSolver : public Micromouse {
+class LeftHandRuleBacktrackingMazeSolver : public Micromouse {
 public:
-    CornerDetectionMazeSolver();
+    LeftHandRuleBacktrackingMazeSolver();
     void makeDecision() override;
-
 private:
     void followLeftHandRule();
-    std::string isCorner(int x, int y);
-    // void updateCorners();
-    // void assumeCorners();
-    void prioritizeOuterWalls();
-
-    // bool cornersAssumed;
-    bool confirmedMazeSize;
-    // std::pair<int, int> topLeft;
-    // std::pair<int, int> topRight;
-    // std::pair<int, int> bottomLeft;
-    // std::pair<int, int> bottomRight;
 };
-
 
 class TeleportingUndecidedMazeSolver : public Micromouse {
 public:

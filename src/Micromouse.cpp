@@ -1,5 +1,6 @@
 #include "Micromouse.h"
 #include <iostream>
+#include <limits>
 
 Micromouse::Micromouse(const std::string& logFileName)
     : posX(1), posY(1), direction("North"), step(0), logger(std::make_unique<Logger>("logs/" + logFileName + ".log")) {
@@ -104,32 +105,26 @@ void RightHandRuleBacktrackingMazeSolver::followRightHandRule() {
 }
 
 
-CornerDetectionMazeSolver::CornerDetectionMazeSolver()
-    : Micromouse("corner_detection_maze_solver"), confirmedMazeSize(false) {}
-
-void CornerDetectionMazeSolver::makeDecision() {
-    
-    // updateCorners();
-
-    if (confirmedMazeSize) {
-        prioritizeOuterWalls();
-    } else {
-        followLeftHandRule();
+LeftHandRuleBacktrackingMazeSolver::LeftHandRuleBacktrackingMazeSolver()
+    : Micromouse("lhrb_maze_solver") {
     }
+
+void LeftHandRuleBacktrackingMazeSolver::makeDecision() {
+    followLeftHandRule();
 }
 
-void CornerDetectionMazeSolver::followLeftHandRule() {
+void LeftHandRuleBacktrackingMazeSolver::followLeftHandRule() {
     std::string newDirection = leftTurns.at(direction);
     auto [dx, dy] = directions.at(newDirection);
 
-    // Check if right-hand side is free
+    // Check if left-hand side is free
     if (knownMaze[posX + dx][posY + dy] != 1) {
         direction = newDirection;
     } else {
         // Check current direction
         auto [dx, dy] = directions.at(direction);
         if (knownMaze[posX + dx][posY + dy] == 1) {
-            // Check left-hand side
+            // Check right-hand side
             newDirection = rightTurns.at(direction);
             auto [dx, dy] = directions.at(newDirection);
             if (knownMaze[posX + dx][posY + dy] != 1) {
@@ -144,27 +139,8 @@ void CornerDetectionMazeSolver::followLeftHandRule() {
     logger->logMessage("Step " + std::to_string(step) + ": Following left-hand rule. Micromouse decided to turn " + direction);
 }
 
-std::string CornerDetectionMazeSolver::isCorner(int x, int y) {
-    // Check if there are two adjacent walls at 90 degrees from the corner
-    if (knownMaze[x - 1][y] && knownMaze[x][y - 1]) {
-            return "Bottom left corner";
-        } else if (knownMaze[x + 1][y] && knownMaze[x][y - 1]) {
-            return "Bottom right corner";
-        } else if (knownMaze[x - 1][y] && knownMaze[x][y + 1]) {
-            return "Top left corner";
-        } else if (knownMaze[x + 1][y] && knownMaze[x][y + 1]) {
-            return "Top right corner";
-        } else {
-            return "Not a corner";
-        }
-}
-
-void CornerDetectionMazeSolver::prioritizeOuterWalls(){
-
-}
-
 TeleportingUndecidedMazeSolver::TeleportingUndecidedMazeSolver()
-    : Micromouse("exploring_solver") {}
+    : Micromouse("teleporting_undecided_maze_solver") {}
 
 bool TeleportingUndecidedMazeSolver::hasUntriedDirection(int x, int y) {
     for (const auto& dir : directions) {
@@ -224,7 +200,7 @@ void TeleportingUndecidedMazeSolver::makeDecision() {
 
 std::shared_ptr<Micromouse> chooseMicromouse(Maze* maze) {
     int solverChoice, sensorChoice;
-    std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n2. Corner Detection Maze Solver\n3. Teleporting Undecided Solver\n";
+    std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n2. Left Hand Rule\n3. Teleporting Undecided Solver\n";
     std::cin >> solverChoice;
     std::cout << "Choose Sensor type:\n1. Distance Sensor\n2. Laser Sensor\n3. Lidar Sensor\n";
     std::cin >> sensorChoice;
@@ -245,11 +221,11 @@ std::shared_ptr<Micromouse> chooseMicromouse(Maze* maze) {
         case 2:
             switch (sensorChoice) {
                 case 1:
-                    return createMicromouse<CornerDetectionMazeSolver, DistanceSensor>(maze);
+                    return createMicromouse<LeftHandRuleBacktrackingMazeSolver, DistanceSensor>(maze);
                 case 2:
-                    return createMicromouse<CornerDetectionMazeSolver, LaserSensor>(maze);
+                    return createMicromouse<LeftHandRuleBacktrackingMazeSolver, LaserSensor>(maze);
                 case 3:
-                    return createMicromouse<CornerDetectionMazeSolver, LidarSensor>(maze);
+                    return createMicromouse<LeftHandRuleBacktrackingMazeSolver, LidarSensor>(maze);
                 default:
                     std::cerr << "Invalid sensor choice" << std::endl;
                     return nullptr;

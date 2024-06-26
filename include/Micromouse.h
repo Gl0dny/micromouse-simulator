@@ -12,7 +12,7 @@
 #include <utility>
 
 /**
- * @brief Base class for Micromouse algorithms.
+ * @brief The Micromouse class encapsulates the core functionality and state management for a micromouse navigating and mapping a maze. It provides methods for setting up sensors, making decisions based on sensor data, moving within the maze, and maintaining an updated map (knownMaze). The class also handles initialization, resetting to initial state, and logging of micromouse activities, facilitating systematic maze exploration and navigation. This modular design supports the implementation of various micromouse algorithms by deriving classes that implement specific decision-making strategies (makeDecision()).
  */
 class Micromouse {
 public:
@@ -110,7 +110,7 @@ protected:
 };
 
 /**
- * @brief Micromouse implementation using the right-hand rule with backtracking.
+ * @brief The RightHandRuleBacktrackingMazeSolver class extends Micromouse and implements a maze-solving strategy based on the right-hand rule with backtracking. It leverages inherited methods and data members to manage micromouse state, decision-making based on sensor data (knownMaze), and logging of micromouse activities. This algorithmic approach ensures systematic maze exploration and backtracking when encountering dead-ends or blocked paths, aiming to find an optimal route through the maze environment.
  */
 class RightHandRuleBacktrackingMazeSolver : public Micromouse {
 public:
@@ -122,7 +122,7 @@ private:
 };
 
 /**
- * @brief Micromouse implementation using the left-hand rule with backtracking.
+ * @brief The LeftHandRuleBacktrackingMazeSolver class extends Micromouse and implements a maze-solving strategy based on the left-hand rule with backtracking. It utilizes inherited methods and data members to manage micromouse state, decision-making based on sensor data (knownMaze), and logging of micromouse activities. This algorithmic approach ensures systematic maze exploration and backtracking when encountering dead-ends or blocked paths, aiming to find an optimal route through the maze environment.
  */
 class LeftHandRuleBacktrackingMazeSolver : public Micromouse {
 public:
@@ -134,7 +134,7 @@ private:
 };
 
 /**
- * @brief Micromouse implementation with teleporting and undecided maze solving strategy.
+ * @brief The TeleportingUndecidedMazeSolver class extends Micromouse and implements a maze-solving strategy that combines teleporting with an undecided path-solving approach. It utilizes backtracking (backtrackStack) to revisit previous positions and attempt alternative paths when encountering dead-ends or fully explored areas. This strategy aims to efficiently explore and navigate through the maze while adapting to unknown configurations and obstacles encountered.
  */
 class TeleportingUndecidedMazeSolver : public Micromouse {
 public:

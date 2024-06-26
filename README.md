@@ -738,3 +738,218 @@ This setup ensures robust testing of the Maze class across different scenarios, 
 
 
 
+Micromouse
+
+Micromouse Class
+
+The Micromouse class serves as a base class for implementing algorithms for a micromouse navigating and mapping a maze environment.
+Constructor and Destructor
+
+    Constructor: Micromouse(const std::string& logFileName)
+        Initializes the micromouse with an initial position (1, 1) facing "North".
+        Sets up a logger specific to the micromouse instance, enabling file output and clearing any existing log file.
+    Destructor: virtual ~Micromouse()
+        Ensures proper cleanup by disabling file output for logging when the micromouse object is destroyed.
+
+Member Functions
+
+    setSensor(std::shared_ptr<Sensor> sensor):
+        Sets the sensor used by the micromouse.
+        Logs a message indicating the sensor has been set.
+
+    makeDecision() (pure virtual):
+        A method that must be implemented by derived classes to make a decision on the micromouse's next move.
+
+    getPosX() and getPosY():
+        Get the current X and Y positions of the micromouse, respectively.
+
+    setPosition(int x, int y):
+        Sets the position of the micromouse to (x, y).
+        Logs a message indicating the new position.
+
+    move():
+        Advances the micromouse one step in its current direction.
+        Calls readSensors() to update the knownMaze.
+        Calls makeDecision() to determine the next move based on sensor data and current state.
+        Updates posX and posY based on the current direction.
+        Logs a message indicating the micromouse's movement and new position.
+
+    readSensors():
+        Invokes the sensor's getSensorData() method to update knownMaze based on the micromouse's current position.
+        Logs a message indicating that sensors have been read at the current position.
+
+    getStep():
+        Returns the current step count.
+
+    initializeKnownMaze(int width, int height):
+        Initializes the knownMaze with dimensions (width, height), setting all cells to -1 initially.
+        Logs a message indicating the initialization of the known maze.
+
+    getKnownMaze():
+        Returns the knownMaze grid representing the micromouse's understanding of the maze.
+
+    reset():
+        Resets the micromouse to its initial state:
+            Sets posX and posY to 1.
+            Sets direction to "North".
+            Clears the knownMaze, setting all cells to -1.
+        Logs a message indicating the micromouse has been reset to its initial state.
+
+Data Members
+
+    Data Members:
+        posX, posY: Current X and Y positions of the micromouse.
+        direction: Current direction the micromouse is facing ("North", "East", "South", "West").
+        sensor: Shared pointer to a Sensor object used by the micromouse.
+        knownMaze: 2D vector representing the micromouse's understanding of the maze, where -1 indicates unknown spaces.
+        logger: Unique pointer to a Logger object for logging micromouse activities.
+        directions, rightTurns, leftTurns: Maps defining possible directions and corresponding turns.
+        step: Current step count during micromouse operation.
+
+Summary
+
+The Micromouse class encapsulates the core functionality and state management for a micromouse navigating and mapping a maze. It provides methods for setting up sensors, making decisions based on sensor data, moving within the maze, and maintaining an updated map (knownMaze). The class also handles initialization, resetting to initial state, and logging of micromouse activities, facilitating systematic maze exploration and navigation. This modular design supports the implementation of various micromouse algorithms by deriving classes that implement specific decision-making strategies (makeDecision()).
+
+
+
+RightHandRuleBacktrackingMazeSolver Class
+
+The RightHandRuleBacktrackingMazeSolver class implements a micromouse algorithm that follows the right-hand rule with backtracking to solve a maze.
+Constructor
+
+    Constructor: RightHandRuleBacktrackingMazeSolver()
+        Initializes the solver, inheriting from Micromouse with a specific log file name "rhrb_maze_solver".
+
+Member Functions
+
+    makeDecision() (override):
+        Implements the makeDecision() method from the base class Micromouse.
+        Calls followRightHandRule() to determine the micromouse's next move based on the right-hand rule algorithm.
+
+    followRightHandRule() (private):
+        Implements the right-hand rule algorithm with backtracking:
+            Retrieves the next direction based on the current direction using rightTurns.
+            Checks if moving in this direction (newDirection) is possible (knownMaze[posX + dx][posY + dy] != 1):
+                If possible, updates the micromouse's direction.
+            If moving in newDirection is not possible due to a wall:
+                Attempts a left turn (leftTurns).
+                If a left turn is possible, updates the micromouse's direction.
+                If both right and left turns are blocked, performs a 180-degree turn using nested rightTurns calls.
+            Logs the decision made by the micromouse for the current step.
+
+Data Members
+
+    Inherited Data Members:
+        posX, posY: Current X and Y positions of the micromouse inherited from Micromouse.
+        direction: Current direction of the micromouse inherited from Micromouse.
+        knownMaze: 2D vector representing the maze state known to the micromouse, inherited from Micromouse.
+        logger: Unique pointer to a Logger object inherited from Micromouse.
+        step: Current step count inherited from Micromouse.
+        directions, rightTurns, leftTurns: Maps defining possible directions and turns inherited from Micromouse.
+
+Summary
+
+The RightHandRuleBacktrackingMazeSolver class extends Micromouse and implements a maze-solving strategy based on the right-hand rule with backtracking. It leverages inherited methods and data members to manage micromouse state, decision-making based on sensor data (knownMaze), and logging of micromouse activities. This algorithmic approach ensures systematic maze exploration and backtracking when encountering dead-ends or blocked paths, aiming to find an optimal route through the maze environment.
+
+This class structure facilitates modularity and extensibility, allowing for the implementation of various maze-solving strategies by simply overriding the makeDecision() method while leveraging the core functionality provided by the Micromouse base class.
+
+
+
+
+LeftHandRuleBacktrackingMazeSolver Class
+
+The LeftHandRuleBacktrackingMazeSolver class implements a micromouse algorithm that follows the left-hand rule with backtracking to solve a maze.
+Constructor
+
+    Constructor: LeftHandRuleBacktrackingMazeSolver()
+        Initializes the solver, inheriting from Micromouse with a specific log file name "lhrb_maze_solver".
+
+Member Functions
+
+    makeDecision() (override):
+        Implements the makeDecision() method from the base class Micromouse.
+        Calls followLeftHandRule() to determine the micromouse's next move based on the left-hand rule algorithm.
+
+    followLeftHandRule() (private):
+        Implements the left-hand rule algorithm with backtracking:
+            Retrieves the next direction based on the current direction using leftTurns.
+            Checks if moving in this direction (newDirection) is possible (knownMaze[posX + dx][posY + dy] != 1):
+                If possible, updates the micromouse's direction.
+            If moving in newDirection is not possible due to a wall:
+                Attempts a right turn (rightTurns).
+                If a right turn is possible, updates the micromouse's direction.
+                If both left and right turns are blocked, performs a 180-degree turn using nested leftTurns calls.
+            Logs the decision made by the micromouse for the current step.
+
+Data Members
+
+    Inherited Data Members:
+        posX, posY: Current X and Y positions of the micromouse inherited from Micromouse.
+        direction: Current direction of the micromouse inherited from Micromouse.
+        knownMaze: 2D vector representing the maze state known to the micromouse, inherited from Micromouse.
+        logger: Unique pointer to a Logger object inherited from Micromouse.
+        step: Current step count inherited from Micromouse.
+        directions, rightTurns, leftTurns: Maps defining possible directions and turns inherited from Micromouse.
+
+Summary
+
+The LeftHandRuleBacktrackingMazeSolver class extends Micromouse and implements a maze-solving strategy based on the left-hand rule with backtracking. It utilizes inherited methods and data members to manage micromouse state, decision-making based on sensor data (knownMaze), and logging of micromouse activities. This algorithmic approach ensures systematic maze exploration and backtracking when encountering dead-ends or blocked paths, aiming to find an optimal route through the maze environment.
+
+This class structure supports modular and extensible maze-solving strategies by leveraging the core functionality provided by the Micromouse base class. By overriding the makeDecision() method, various algorithms can be implemented and tested within the micromouse simulation framework, facilitating exploration and solution of complex maze configurations.
+
+
+
+TeleportingUndecidedMazeSolver Class
+
+The TeleportingUndecidedMazeSolver class implements a micromouse algorithm with teleporting and an undecided maze solving strategy.
+Constructor
+
+    Constructor: TeleportingUndecidedMazeSolver()
+        Initializes the solver, inheriting from Micromouse with a specific log file name "teleporting_undecided_maze_solver".
+
+Member Functions
+
+    makeDecision() (override):
+        Implements the makeDecision() method from the base class Micromouse.
+        Manages the micromouse's decision-making process within the maze:
+            Records the current position (x, y) as visited in the visited map.
+            Pushes the current position (x, y) onto the backtrackStack if it's not already there.
+            Checks if there are untried directions from the current position using hasUntriedDirection(x, y):
+                If there are untried directions, selects the next direction using getNextDirection(x, y) and updates direction.
+                Returns after selecting a direction.
+            If no untried directions are available from the current position, attempts to backtrack:
+                Pops positions from backtrackStack until an untried direction is found.
+                Updates direction and micromouse position accordingly.
+            Logs a message if the micromouse becomes stuck with no untried directions available.
+
+    hasUntriedDirection(int x, int y):
+        Checks if there are untried directions (directions) from the given position (x, y):
+            Iterates through possible directions and checks if moving in that direction is valid (knownMaze[newX][newY] != 1) and if the direction hasn't been tried before (triedDirections[{x, y}]).
+            Returns true if an untried direction exists, otherwise false.
+
+    getNextDirection(int x, int y):
+        Retrieves the next untried direction from the given position (x, y):
+            Similar to hasUntriedDirection, iterates through possible directions and returns the first direction that hasn't been tried before.
+            Marks the direction as tried by inserting it into triedDirections[{x, y}].
+            Returns an empty string "" if no untried direction is found.
+
+Data Members
+
+    Inherited Data Members:
+        posX, posY: Current X and Y positions of the micromouse inherited from Micromouse.
+        direction: Current direction of the micromouse inherited from Micromouse.
+        knownMaze: 2D vector representing the maze state known to the micromouse, inherited from Micromouse.
+        logger: Unique pointer to a Logger object inherited from Micromouse.
+        step: Current step count inherited from Micromouse.
+        directions, rightTurns, leftTurns: Maps defining possible directions and turns inherited from Micromouse.
+
+    Additional Data Members:
+        visited: Map tracking visited cells (x, y) during micromouse traversal.
+        triedDirections: Map tracking directions already tried from each cell (x, y).
+        backtrackStack: Stack used for backtracking to previous positions when encountering dead-ends or blocked paths.
+
+Summary
+
+The TeleportingUndecidedMazeSolver class extends Micromouse and implements a maze-solving strategy that combines teleporting with an undecided path-solving approach. It utilizes backtracking (backtrackStack) to revisit previous positions and attempt alternative paths when encountering dead-ends or fully explored areas. This strategy aims to efficiently explore and navigate through the maze while adapting to unknown configurations and obstacles encountered.
+
+This class structure facilitates dynamic decision-making based on real-time sensor data (knownMaze) and maintains a comprehensive log (logger) of micromouse movements and decisions throughout the maze-solving process. By leveraging inherited methods and data members from Micromouse, it supports modular maze-solving algorithms within a flexible micromouse simulation framework.

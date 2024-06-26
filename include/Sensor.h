@@ -10,7 +10,7 @@
 #include "Logger.h"
 
 /**
- * @brief Base class for sensors.
+ * @brief The Sensor class encapsulates common functionality and data members needed by various sensor types in a maze navigation or mapping scenario. It manages logging activities, maintains direction mappings, and ensures proper initialization and cleanup of resources. Derived sensor classes extend this base functionality by implementing the getSensorData method according to their specific sensor behavior.
  */
 class Sensor {
 public:
@@ -43,7 +43,7 @@ protected:
 };
 
 /**
- * @brief Class for distance sensor.
+ * @brief The DistanceSensor class provides functionality to scan orthogonal directions from a starting position (x, y) within a maze. It uses a Maze object to query the environment and updates a 2D vector (knownMaze) to maintain a representation of the maze's layout based on sensor readings. 
  */
 class DistanceSensor : public Sensor {
 public:
@@ -54,7 +54,7 @@ public:
     DistanceSensor(Maze* maze);
 
     /**
-     * @brief Function to get sensor data.
+     * @brief The getSensorData function handles scanning for walls, logs detection results, and manages boundary conditions to ensure accurate mapping of the maze environment.
      * @param x X-coordinate.
      * @param y Y-coordinate.
      * @param knownMaze 2D vector representing the known maze.
@@ -64,8 +64,8 @@ public:
 };
 
 /**
- * @brief Class for laser sensor.
- */
+ * @brief The LaserSensor class provides functionality to scan multiple directions from a position (x, y) within a maze until the reading meets a wall. It uses a Maze object to query the environment and updates a 2D vector (knownMaze) to maintain a representation of the maze's layout based on sensor readings. 
+ */ 
 class LaserSensor : public Sensor {
 public:
     /**
@@ -75,7 +75,7 @@ public:
     LaserSensor(Maze* maze);
 
     /**
-     * @brief Function to get sensor data.
+     * @brief The getSensorData function handles scanning for walls in orthogonal directions, logs detection results, and manages boundary conditions, ensuring accurate mapping of the maze environment.
      * @param x X-coordinate.
      * @param y Y-coordinate.
      * @param knownMaze 2D vector representing the known maze.
@@ -85,7 +85,7 @@ public:
 };
 
 /**
- * @brief Class for lidar sensor.
+ * @brief The LidarSensor class provides functionality to detect walls and open spaces around a specific coordinate in a maze. It uses a Maze object to query the environment and updates a 2D vector (knownMaze) to maintain a representation of the maze's layout based on sensor readings.
  */
 class LidarSensor : public Sensor {
 public:
@@ -96,7 +96,7 @@ public:
     LidarSensor(Maze* maze);
 
     /**
-     * @brief Function to get sensor data.
+     * @brief The getSensorData function handles adjacent positions, logs detection results, and manages boundary conditions, ensuring accurate mapping of the maze environment.
      * @param x X-coordinate.
      * @param y Y-coordinate.
      * @param knownMaze 2D vector representing the known maze.

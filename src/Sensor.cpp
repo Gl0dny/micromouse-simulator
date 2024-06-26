@@ -46,25 +46,37 @@ LaserSensor::LaserSensor(Maze* maze)
     : Sensor(maze, "laser_sensor") {}
 
 void LaserSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const {
+    if (x < 0 || y < 0 || x >= maze->getWidth() || y >= maze->getHeight()) {
+        logger->logMessage("Step " + std::to_string(step) + ": Starting position out of bounds at (" + std::to_string(x) + ", " + std::to_string(y) + ")");
+        return;
+    }
+
     knownMaze[x][y] = 0;
-    for (const auto& [dir, direction] : directionNames) {
+
+    for (const auto& [coordinates, direction] : directionNames) {
         if (direction == "West" || direction == "East" || direction == "South" || direction == "North") {
             int nx = x;
             int ny = y;
-            bool outOfBounds = false;
-            while (nx >= 0 && ny >= 0 && nx < maze->getWidth() && ny < maze->getHeight() && !maze->isWall(nx + dir.first, ny + dir.second)) {
-                nx += dir.first;
-                ny += dir.second;
+
+            while (true) {
+                int nextX = nx + coordinates.first;
+                int nextY = ny + coordinates.second;
+
+                if (nextX < 0 || nextY < 0 || nextX >= maze->getWidth() || nextY >= maze->getHeight()) {
+                    logger->logMessage("Step " + std::to_string(step) + ": Out of bounds to the " + direction + " at (" + std::to_string(nextX) + ", " + std::to_string(nextY) + ")");
+                    break;
+                }
+
+                if (maze->isWall(nextX, nextY)) {
+                    knownMaze[nextX][nextY] = 1;
+                    logger->logMessage("Step " + std::to_string(step) + ": Laser detected wall to the " + direction + " at (" + std::to_string(nextX) + ", " + std::to_string(nextY) + ")");
+                    break;
+                }
+
+                nx = nextX;
+                ny = nextY;
                 knownMaze[nx][ny] = 0;
                 logger->logMessage("Step " + std::to_string(step) + ": Laser detected no wall to the " + direction + " at (" + std::to_string(nx) + ", " + std::to_string(ny) + ")");
-            }
-            if (nx < 0 || ny < 0 || nx >= maze->getWidth() || ny >= maze->getHeight()) {
-                outOfBounds = true;
-                logger->logMessage("Step " + std::to_string(step) + ": Out of bounds to the " + direction + " at (" + std::to_string(nx + dir.first) + ", " + std::to_string(ny + dir.second) + ")");
-            }
-            if (!outOfBounds && maze->isWall(nx + dir.first, ny + dir.second)) {
-                knownMaze[nx + dir.first][ny + dir.second] = 1;
-                logger->logMessage("Step " + std::to_string(step) + ": Laser detected wall to the " + direction + " at (" + std::to_string(nx + dir.first) + ", " + std::to_string(ny + dir.second) + ")");
             }
         }
     }

@@ -96,7 +96,7 @@ void RightHandRuleBacktrackingMazeSolver::followRightHandRule() {
                 direction = newDirection;
             } else {
                 // Turn around
-                newDirection = leftTurns.at(leftTurns.at(direction));
+                newDirection = rightTurns.at(rightTurns.at(direction));
                 direction = newDirection;
             }
         }
@@ -131,7 +131,7 @@ void LeftHandRuleBacktrackingMazeSolver::followLeftHandRule() {
                 direction = newDirection;
             } else {
                 // Turn around
-                newDirection = rightTurns.at(rightTurns.at(direction));
+                newDirection = leftTurns.at(leftTurns.at(direction));
                 direction = newDirection;
             }
         }

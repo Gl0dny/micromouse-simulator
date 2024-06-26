@@ -488,3 +488,78 @@ This setup is useful for applications involving maze navigation or mapping where
 
 
 
+Simulator
+
+
+The Simulator class manages the simulation of a Micromouse navigating through a Maze.
+Constructor and Destructor
+
+    Constructor: Simulator(std::shared_ptr<Micromouse> micromouse, Maze* maze)
+        Initializes micromouse with a shared pointer to a Micromouse object.
+        Initializes maze with a pointer to a Maze object.
+        Sets initial values for startX, startY, steps, startTime, totalSeconds, running, and initializes logger.
+        Calls setRandomStartPosition() to set a random start position for the micromouse.
+        Configures the logger (logger) to output to "logs/simulator.log", clears the log file, and logs initialization.
+
+    Destructor: ~Simulator()
+        Cleans up by disabling file output for logging (logger->disableFileOutput()).
+
+Public Methods
+
+    run()
+        Starts the simulation loop:
+            Sets running to true.
+            If startTime is uninitialized, sets it to the current time.
+            Loops until running is false or the micromouse reaches the maze exit (hasReachedGoal()):
+                Calls micromouse->move() to simulate the micromouse movement.
+                Updates steps with the micromouse's step count (micromouse->getStep()).
+                Displays the maze with the micromouse's current position (displayMazeWithMouse()).
+                Checks for wall collisions (checkAndHandleWallCollision()).
+                Pauses for 50 milliseconds using std::this_thread::sleep_for() to control simulation speed.
+            Logs completion of the simulation or pause if the micromouse reaches the goal or simulation is paused.
+
+    start()
+        Starts or resumes the simulation:
+            If running is false, spawns a detached thread to execute run() in parallel.
+            Logs that the simulation has started.
+
+    pause()
+        Pauses the simulation:
+            Sets running to false.
+            Logs that the simulation has been paused.
+
+    reset()
+        Resets the simulation:
+            If running is false, resets steps, startTime, totalSeconds, and the micromouse's position using micromouse->reset() and setRandomStartPosition().
+            Logs the reset operation or an error message if the simulation is running.
+
+Private Methods
+
+    setRandomStartPosition()
+        Sets a random starting position (startX, startY) for the micromouse within the maze:
+            Uses a random number generator (std::random_device, std::mt19937, std::uniform_int_distribution) to select a corner of the maze.
+            Updates micromouse's position and logs the micromouse's starting coordinates.
+
+    displayMazeWithMouse()
+        Displays the current state of the maze with the micromouse's position:
+            Retrieves the micromouse's known maze grid (grid) and current position (mouseX, mouseY).
+            Constructs a string representation of each row in the maze, indicating the micromouse's position ('M'), unknown areas ('?'), walls ('#'), and empty spaces (' ').
+            Logs each row of the maze and additional simulation details (steps taken, simulation time).
+
+    hasReachedGoal()
+        Checks if the micromouse has reached the maze exit:
+            Retrieves the exit coordinates from maze using maze->readExit().
+            Compares the micromouse's current position (micromouse->getPosX(), micromouse->getPosY()) with the exit coordinates.
+            Returns true if the micromouse is at the exit, otherwise false.
+
+    checkAndHandleWallCollision()
+        Checks if the micromouse has collided with a wall:
+            Retrieves the micromouse's current position (currentX, currentY).
+            Uses maze->isWall(currentX, currentY) to check if the cell at (currentX, currentY) is a wall.
+            Logs a collision message and terminates the simulation if a collision is detected (exit(0)).
+
+Summary
+
+The Simulator class orchestrates the simulation of a micromouse navigating through a maze. It interfaces with the Micromouse and Maze classes to control the micromouse's movement, manage simulation state, and handle logging of simulation events. This structured approach allows for clear separation of concerns and facilitates effective simulation management and monitoring.
+
+

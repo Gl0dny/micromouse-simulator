@@ -9,7 +9,7 @@
 #include <atomic>
 
 /**
- * @class Simulator
+ * @class The Simulator class orchestrates the simulation of a micromouse navigating through a maze. It interfaces with the Micromouse and Maze classes to control the micromouse's movement, manage simulation state, and handle logging of simulation events. This structured approach allows for clear separation of concerns and facilitates effective simulation management and monitoring.
  * @brief Controls the simulation of the Micromouse in the maze.
  */
 class Simulator {

@@ -105,10 +105,17 @@ void RightHandRuleBacktrackingMazeSolver::followRightHandRule() {
 
 
 CornerDetectionMazeSolver::CornerDetectionMazeSolver()
-    : Micromouse("lazy_smart_maze_solver") {}
+    : Micromouse("corner_detection_maze_solver"), confirmedMazeSize(false) {}
 
 void CornerDetectionMazeSolver::makeDecision() {
-    followLeftHandRule();
+    
+    // updateCorners();
+
+    if (confirmedMazeSize) {
+        prioritizeOuterWalls();
+    } else {
+        followLeftHandRule();
+    }
 }
 
 void CornerDetectionMazeSolver::followLeftHandRule() {
@@ -135,6 +142,25 @@ void CornerDetectionMazeSolver::followLeftHandRule() {
         }
     }
     logger->logMessage("Step " + std::to_string(step) + ": Following left-hand rule. Micromouse decided to turn " + direction);
+}
+
+std::string CornerDetectionMazeSolver::isCorner(int x, int y) {
+    // Check if there are two adjacent walls at 90 degrees from the corner
+    if (knownMaze[x - 1][y] && knownMaze[x][y - 1]) {
+            return "Bottom left corner";
+        } else if (knownMaze[x + 1][y] && knownMaze[x][y - 1]) {
+            return "Bottom right corner";
+        } else if (knownMaze[x - 1][y] && knownMaze[x][y + 1]) {
+            return "Top left corner";
+        } else if (knownMaze[x + 1][y] && knownMaze[x][y + 1]) {
+            return "Top right corner";
+        } else {
+            return "Not a corner";
+        }
+}
+
+void CornerDetectionMazeSolver::prioritizeOuterWalls(){
+
 }
 
 TeleportingUndecidedMazeSolver::TeleportingUndecidedMazeSolver()

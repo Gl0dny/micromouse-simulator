@@ -63,14 +63,14 @@ public:
     void makeDecision() override;
 
 private:
-    // bool isCorner(int x, int y);
+    void followLeftHandRule();
+    std::string isCorner(int x, int y);
     // void updateCorners();
     // void assumeCorners();
-    // void prioritizeOuterWalls();
-    void followLeftHandRule();
+    void prioritizeOuterWalls();
 
     // bool cornersAssumed;
-    // bool confirmedMazeSize;
+    bool confirmedMazeSize;
     // std::pair<int, int> topLeft;
     // std::pair<int, int> topRight;
     // std::pair<int, int> bottomLeft;

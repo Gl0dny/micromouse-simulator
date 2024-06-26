@@ -3,11 +3,17 @@ Wstępny Opis Projektu: Symulacja Micromouse
 1. Opis Projektu
 
 <!-- TODO
-check the teleporting one
+check the teleporting one + main threading
 
+Patterns collaborate class 
+GL course
 pola zawsze prywatne chyba ze pole jest obiektem ktory sam sie chroni to moze byc protected/public  
 
-Dokumentacja: Udokumentuj kod przy użyciu doxygen.
+Utiils + test_maze
+
+Check the documentation
+setup doc generation
+
   -->
 
 Projekt zakłada stworzenie symulacji robota typu micromouse, którego zadaniem jest przejście przez labirynt. Robot będzie wyposażony w czujniki, które pozwolą mu zbierać dane o otoczeniu, i na ich podstawie podejmować decyzje dotyczące ruchu. Symulacja będzie zawierała wizualizację ruchu robota w labiryncie.
@@ -78,9 +84,9 @@ Projekt zakłada stworzenie symulacji robota typu micromouse, którego zadaniem 
 
 Dependencies:
 
-###### QT5
+<!-- ###### QT5
 
-sudo apt install qt5-default
+sudo apt install qt5-default -->
 
 ###### Google Test
 
@@ -91,6 +97,10 @@ cd build
 cmake ..
 make
 sudo make install
+
+####### Doxygen
+
+sudo apt install doxygen clang llvm
 
 ## Opis diagramu:
 

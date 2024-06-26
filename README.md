@@ -563,3 +563,48 @@ Summary
 The Simulator class orchestrates the simulation of a micromouse navigating through a maze. It interfaces with the Micromouse and Maze classes to control the micromouse's movement, manage simulation state, and handle logging of simulation events. This structured approach allows for clear separation of concerns and facilitates effective simulation management and monitoring.
 
 
+Utils
+
+
+Utils Namespace
+
+The Utils namespace provides utility functions for various tasks commonly needed in software applications.
+Functions
+
+    getRandomNumber(int min, int max)
+        Generates a random integer within the specified range [min, max].
+        Uses std::random_device and std::mt19937 for random number generation, ensuring randomness.
+        Returns the generated random integer.
+
+    getCurrentDateTime()
+        Retrieves the current date and time as a formatted string (YYYY-MM-DD HH:MM:SS).
+        Uses std::time, std::strftime, and std::localtime to format the current system time.
+        Returns the formatted date-time string.
+
+    createDirectory(const std::string& dirPath)
+        Creates a directory at the specified dirPath if it does not already exist.
+        Uses stat to check if the directory exists.
+        Uses mkdir to create the directory with full permissions (0777).
+        Prints debug messages (if DEBUG_MODE is defined) confirming directory creation.
+
+    clearFile(const std::string& filePath)
+        Clears the contents of the file specified by filePath.
+        Opens the file in truncation mode (std::ios::trunc) using std::ofstream.
+        Prints debug messages (if DEBUG_MODE is defined) confirming file clearing.
+
+    fileExists(const std::string& filePath)
+        Checks if the file specified by filePath exists.
+        Opens the file using std::ifstream and prints debug messages (if DEBUG_MODE is defined) indicating file existence.
+
+Header File (Utils.h)
+
+    Header Guard (#ifndef, #define, #endif): Ensures that the header file contents are included only once during compilation to prevent multiple definitions.
+
+Implementation File (Utils.cpp)
+
+    Implementation: Defines all functions declared in Utils.h.
+    Includes necessary headers (<random>, <fstream>, <iostream>, <ctime>, <sys/stat.h>) for functionality implementation.
+
+Summary
+
+The Utils namespace encapsulates functions that handle random number generation, date-time formatting, directory creation, file manipulation (clearing and existence checking), and debug output. These utilities facilitate common tasks in software development, enhancing code modularity, reusability, and maintainability. The namespace structure ensures organized access to utility functions across different parts of an application.

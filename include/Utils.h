@@ -4,7 +4,7 @@
 #include <string>
 
 /**
- * @namespace Utils
+ * @namespace The Utils namespace encapsulates functions that handle random number generation, date-time formatting, directory creation, file manipulation (clearing and existence checking), and debug output. These utilities facilitate common tasks in software development, enhancing code modularity, reusability, and maintainability. The namespace structure ensures organized access to utility functions across different parts of an application.
  * @brief Utility functions for various tasks.
  */
 namespace Utils {

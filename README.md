@@ -608,3 +608,69 @@ Implementation File (Utils.cpp)
 Summary
 
 The Utils namespace encapsulates functions that handle random number generation, date-time formatting, directory creation, file manipulation (clearing and existence checking), and debug output. These utilities facilitate common tasks in software development, enhancing code modularity, reusability, and maintainability. The namespace structure ensures organized access to utility functions across different parts of an application.
+
+
+main / CommandQueue
+
+CommandQueue Class
+
+The CommandQueue class manages commands input by the user in a thread-safe manner using a queue and synchronization mechanisms.
+Member Functions
+
+    push(const std::string& command):
+        Pushes a command onto the queue.
+        Uses a std::lock_guard to lock the mutex (mtx) for thread safety.
+        Notifies the condition variable (cv) to wake up a waiting thread if one exists.
+
+    pop(std::string& command):
+        Pops a command from the queue.
+        Uses a std::unique_lock to lock the mutex (mtx).
+        Waits for up to 100 milliseconds for a command to become available using cv.wait_for.
+        If a command is available, retrieves and returns it, otherwise returns false.
+
+Data Members
+
+    commands: std::queue<std::string> to store commands.
+    mtx: std::mutex for thread safety.
+    cv: std::condition_variable for synchronization.
+
+main Function (Micromouse Simulation Program)
+
+The main function orchestrates the simulation of a Micromouse navigating a maze, with user input handled through CommandQueue.
+Steps and Functionality
+
+    Logger Initialization:
+        Initializes a Logger to log messages related to the simulation (main_log_file).
+
+    Maze Initialization:
+        Creates a singleton instance of Maze (Maze::getInstance()) and displays it.
+        Sets up logging for the maze and displays it again.
+
+    Micromouse Initialization:
+        Chooses a Micromouse strategy (chooseMicromouse(maze)) and initializes it.
+
+    Simulator Initialization:
+        Creates a Simulator instance using the Micromouse and Maze.
+
+    Thread Setup:
+        Initializes an atomic boolean exitFlag to control program termination.
+        Creates a CommandQueue instance for handling user input commands.
+
+    Input Thread:
+        Spawns a thread (inputThread) to handle user input commands.
+        Reads commands from std::cin, pushes them onto commandQueue, and sets exitFlag when "exit" command is received.
+
+    Simulation Thread:
+        Spawns a thread (simulationThread) to execute the simulation commands.
+        Processes commands (start, pause, reset, exit) retrieved from commandQueue and executes corresponding actions on the Simulator.
+        Logs executed commands and handles unknown commands with appropriate messages.
+
+    Thread Joining and Cleanup:
+        Waits for inputThread and simulationThread to complete (join()).
+        Logs simulation completion and disables file output for the logger.
+
+Summary
+
+The main function orchestrates the Micromouse simulation by managing user input through CommandQueue, initializing and interacting with the Maze and Micromouse objects, and controlling simulation flow through threads (inputThread and simulationThread). It ensures thread-safe command handling and logging of simulation activities, providing a structured approach to simulate and control Micromouse behavior in a maze environment.
+
+This setup facilitates real-time interaction with the simulation and maintains clear logging for debugging and analysis purposes, enhancing the overall simulation experience and functionality.

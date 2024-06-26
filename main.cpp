@@ -10,7 +10,7 @@
 #include <condition_variable>
 
 /**
- * @brief CommandQueue class to handle command input in a thread-safe manner.
+ * @brief CommandQueue class to handle command input in a thread-safe manner. 
  */
 class CommandQueue {
 public:
@@ -46,7 +46,7 @@ private:
 };
 
 /**
- * @brief Main function for the Micromouse simulation program.
+ * @brief Main function for the Micromouse simulation program. The main function orchestrates the Micromouse simulation by managing user input through CommandQueue, initializing and interacting with the Maze and Micromouse objects, and controlling simulation flow through threads (inputThread and simulationThread). It ensures thread-safe command handling and logging of simulation activities, providing a structured approach to simulate and control Micromouse behavior in a maze environment.
  * @return Exit status code.
  */
 int main() {

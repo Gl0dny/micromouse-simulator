@@ -63,14 +63,14 @@ private:
      */
     void checkAndHandleWallCollision();
 
-    std::shared_ptr<Micromouse> micromouse;
-    Maze* maze;
-    int startX, startY;
-    int steps;
-    std::chrono::steady_clock::time_point startTime;
-    std::chrono::duration<double> totalSeconds;
-    std::atomic<bool> running;
-    std::unique_ptr<Logger> logger;
+    std::shared_ptr<Micromouse> micromouse; ///< Shared pointer to the Micromouse.
+    Maze* maze; ///< Pointer to the Maze.
+    int startX, startY; ///< Starting coordinates of the Micromouse.
+    int steps; ///< Number of steps taken by the Micromouse.
+    std::chrono::steady_clock::time_point startTime; ///< Start time of the simulation.
+    std::chrono::duration<double> totalSeconds; ///< Total simulation time.
+    std::atomic<bool> running; ///< Indicates whether the simulation is running.
+    std::unique_ptr<Logger> logger; ///< Logger for the simulation.
 };
 
 #endif // SIMULATOR_H

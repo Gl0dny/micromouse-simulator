@@ -115,6 +115,17 @@ classDiagram
         +void setPosition(int x, int y)
         +void move()
         +void updateKnownMaze()
+        +void readSensors()
+        +int getStep()
+        +void initializeKnownMaze(int width, int height)
+        +void reset()
+        +void makeDecision()
+        +void followRightHandRule()
+        +void makeDecision()
+        +void followLeftHandRule()
+        +void makeDecision()
+        +bool hasUntriedDirection(int x, int y)
+        +string getNextDirection(int x, int y)
         -std::shared_ptr<Sensor> sensor
         -std::shared_ptr<Maze> knownMaze
         -std::pair<int, int> currentPosition
@@ -122,6 +133,7 @@ classDiagram
     
     class Sensor {
         +virtual int getDistance() const = 0
+        +void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step)
     }
     
     class Simulator {
@@ -129,6 +141,13 @@ classDiagram
         +void start()
         +void pause()
         +void reset()
+        +void run()
+        +void setRandomStartPosition()
+        +void displayMazeWithMouse()
+        +bool hasReachedGoal()
+        +void checkAndHandleWallCollision()
+        -int steps
+        -std::chrono::time_point<std::chrono::steady_clock> startTime
         -std::shared_ptr<Micromouse> micromouse
         -std::shared_ptr<Maze> maze
     }
@@ -194,6 +213,11 @@ classDiagram
         +int getDistance() const
     }
     
+    class CommandQueue {
+        +void push(const std::string& command)
+        +bool pop(std::string& command)
+    }
+    
     Micromouse "1" --> "1" Sensor : uses
     Micromouse "1" --> "1" Maze : interacts with
     Micromouse "1" --> "1" Logger : logs to
@@ -201,6 +225,7 @@ classDiagram
     Simulator "1" *-- "1" Maze : aggregates
     main "1" --> "1" Simulator : creates
     main "1" --> "1" Logger : creates
+    main "1" --> "1" CommandQueue : creates
     
     RightHandRuleBacktrackingMazeSolver --|> Micromouse
     LeftHandRuleBacktrackingMazeSolver --|> Micromouse

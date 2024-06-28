@@ -194,13 +194,13 @@ classDiagram
         +int getDistance() const
     }
     
-    Micromouse --> Sensor : uses
-    Micromouse --> Maze : interacts with
-    Micromouse --> Logger : logs to
-    Simulator --> Micromouse : controls
-    Simulator --> Maze : controls
-    main --> Simulator : creates
-    main --> Logger : creates
+    Micromouse "1" --> "1" Sensor : uses
+    Micromouse "1" --> "1" Maze : interacts with
+    Micromouse "1" --> "1" Logger : logs to
+    Simulator "1" *-- "1" Micromouse : aggregates
+    Simulator "1" *-- "1" Maze : aggregates
+    main "1" --> "1" Simulator : creates
+    main "1" --> "1" Logger : creates
     
     RightHandRuleBacktrackingMazeSolver --|> Micromouse
     LeftHandRuleBacktrackingMazeSolver --|> Micromouse
@@ -210,7 +210,7 @@ classDiagram
     LaserSensor --|> Sensor
     LidarSensor --|> Sensor
     
-    Maze --> Logger : uses
+    Maze "1" --> "1" Logger : uses
 
 ```
 

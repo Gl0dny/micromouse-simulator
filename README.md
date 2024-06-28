@@ -247,6 +247,7 @@ classDiagram
     main --> Simulator : creates
     main --> Micromouse : creates
     main --> CommandQueue : creates
+    main --> Maze : uses
     main --> Logger : creates, logs to
 
     Simulator o-- Micromouse : aggregates

@@ -1234,3 +1234,19 @@ Usage
         --clean: Cleans build and output directories.
         --debug: Builds the project in debug mode.
         --doc: Generates Doxygen documentation.
+
+Documentation
+To generate the project documentation, use the --doc option with the build.sh script. The documentation will be generated using Doxygen.
+
+./build.sh --doc
+
+The generated documentation can be found in the ./docs/html directory. Open the index.html file in a web browser to view the documentation.
+
+
+
+Prerequisites
+Ensure the following tools are installed on your system:
+
+CMake
+Qt5
+Doxygen

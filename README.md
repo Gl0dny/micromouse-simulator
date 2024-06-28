@@ -105,35 +105,35 @@ sudo apt install doxygen
 
 ```mermaid
 classDiagram
-    class Utils {
-        +int getRandomNumber(int min, int max)
-        +std::string getCurrentDateTime()
-        +void createDirectory(const std::string& dirPath)
-        +void clearFile(const std::string& filePath)
-        +void fileExists(const std::string& filePath)
+    class Micromouse {
+        +Micromouse(std::string logFileName)
+        +~Micromouse()
+        +void setSensor(std::shared_ptr<Sensor> sensor)
+        +virtual void makeDecision() = 0
+        +int getPosX() const
+        +int getPosY() const
+        +void setPosition(int x, int y)
+        +void move()
+        +void updateKnownMaze()
+        -std::shared_ptr<Sensor> sensor
+        -std::shared_ptr<Maze> knownMaze
+        -std::pair<int, int> currentPosition
     }
-
-    class Logger {
-        -bool logToFile
-        -bool logToFileOnly
-        -std::ofstream logFile
-        -std::string logFilePath
-        +Logger(const std::string& filePath)
-        +Logger& logMessage(const std::string& message, bool includeTimestamp = true)
-        +Logger& enableFileOutput(bool toFileOnly = true)
-        +Logger& disableFileOutput()
-        +Logger& clearLogFile()
-        -void createLogDirectory(const std::string& filePath)
+    
+    class Sensor {
+        +virtual int getDistance() const = 0
     }
-
+    
+    class Simulator {
+        +Simulator(std::shared_ptr<Micromouse> micromouse, std::shared_ptr<Maze> maze)
+        +void start()
+        +void pause()
+        +void reset()
+        -std::shared_ptr<Micromouse> micromouse
+        -std::shared_ptr<Maze> maze
+    }
+    
     class Maze {
-        -static Maze* instance
-        -int width
-        -int height
-        -std::vector<std::vector<int>> mazeGrid
-        -std::pair<int, int> exit
-        -std::unique_ptr<Logger> logger
-        -std::map<std::pair<int, int>, std::string> directionNames
         ~Maze()
         +static Maze* getInstance()
         +int getWidth() const
@@ -143,18 +143,74 @@ classDiagram
         +std::pair<int, int> readExit() const
         +bool isWall(int x, int y) const
         +Maze& setLogger(const std::string& logFile, bool toFileOnly = true)
-        -Maze()
+        -static Maze* instance
+        -int width
+        -int height
+        -std::vector<std::vector<int>> mazeGrid
+        -std::pair<int, int> exit
+        -std::unique_ptr<Logger> logger
+        -std::map<std::pair<int, int>, std::string> directionNames
         -void generateMaze()
         -void carvePassage(int x, int y)
         -void createRandomExit()
         -bool isValidExit(int x, int y)
         -void printMazeWithCurrentCarve(int cx, int cy) const
     }
-
-    Logger --> Utils : uses
+    
+    class Logger {
+        +Logger(const std::string &filePath)
+        +Logger& logMessage(const std::string& message, bool includeTimestamp = true)
+        +Logger& enableFileOutput(bool toFileOnly = true)
+        +Logger& disableFileOutput()
+        +Logger& clearLogFile()
+        -bool logToFile
+        -bool logToFileOnly
+        -std::ofstream logFile
+        -std::string logFilePath
+        -void createLogDirectory(const std::string &filePath)
+    }
+    
+    class RightHandRuleBacktrackingMazeSolver {
+        +makeDecision()
+    }
+    
+    class LeftHandRuleBacktrackingMazeSolver {
+        +makeDecision()
+    }
+    
+    class TeleportingUndecidedMazeSolver {
+        +makeDecision()
+    }
+    
+    class DistanceSensor {
+        +int getDistance() const
+    }
+    
+    class LaserSensor {
+        +int getDistance() const
+    }
+    
+    class LidarSensor {
+        +int getDistance() const
+    }
+    
+    Micromouse --> Sensor : uses
+    Micromouse --> Maze : interacts with
+    Micromouse --> Logger : logs to
+    Simulator --> Micromouse : controls
+    Simulator --> Maze : controls
+    main --> Simulator : creates
+    main --> Logger : creates
+    
+    RightHandRuleBacktrackingMazeSolver --|> Micromouse
+    LeftHandRuleBacktrackingMazeSolver --|> Micromouse
+    TeleportingUndecidedMazeSolver --|> Micromouse
+    
+    DistanceSensor --|> Sensor
+    LaserSensor --|> Sensor
+    LidarSensor --|> Sensor
+    
     Maze --> Logger : uses
-    Maze --> Utils : uses
-
 
 ```
 

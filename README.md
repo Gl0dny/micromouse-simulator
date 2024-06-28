@@ -27,14 +27,25 @@ Projekt zakłada stworzenie symulacji robota typu micromouse, którego zadaniem 
     Interfejs użytkownika: Program będzie posiadał prosty graficzny interfejs użytkownika (GUI), umożliwiający uruchomienie symulacji, pauzowanie, resetowanie oraz modyfikowanie parametrów labiryntu i robota.
     Raportowanie postępów: Program będzie wyświetlał informacje o postępach robota, takie jak liczba kroków, odległość od celu, itp.
 
-3.  Szkic Interfejsu Użytkownika
-    3.1. Główne okno aplikacji
+# Micromouse Maze Simulator
 
-        Obszar wyświetlania labiryntu: Centralna część okna, gdzie będzie wyświetlany labirynt i pozycja robota.
-        Panel kontrolny: Panel boczny zawierający przyciski sterujące:
-        Start/Pauza: Rozpoczęcie lub zatrzymanie symulacji.
-        Reset: Zresetowanie symulacji.
-        Opcje: Ustawienia parametrów labiryntu i robota.
+This project simulates a Micromouse navigating through a maze. It includes classes for the Micromouse, the maze, and the simulator that orchestrates the simulation. The project is designed with a clear separation of concerns to facilitate effective simulation management and monitoring.
+
+## Table of Contents
+- [Project Structure](#project-structure)
+- [Classes Overview](#classes-overview)
+  - [Simulator](#simulator)
+  - [Micromouse](#micromouse)
+  - [Maze](#maze)
+  - [Logger](#logger)
+  - [Sensor](#sensor)
+  - [CommandQueue](#commandqueue)
+  - [Main Function](#main-function)
+- [Usage](#usage)
+- [Dependencies](#dependencies)
+- [Compilation and Execution](#compilation-and-execution)
+
+## Project Structure
 
 3.2. Diagram klas
 
@@ -71,6 +82,129 @@ Projekt zakłada stworzenie symulacji robota typu micromouse, którego zadaniem 
         ├── main.cpp
         └── README.md
 
+## Classes Overview
+
+### Simulator
+The `Simulator` class controls the simulation of the Micromouse in the maze. It interfaces with the Micromouse and Maze classes to control the Micromouse's movement, manage simulation state, and handle logging of simulation events.
+
+**Public Methods:**
+- `Simulator(std::shared_ptr<Micromouse> micromouse, Maze* maze)`
+- `~Simulator()`
+- `void run()`
+- `void start()`
+- `void pause()`
+- `void reset()`
+
+**Private Methods:**
+- `void setRandomStartPosition()`
+- `void displayMazeWithMouse() const`
+- `bool hasReachedGoal() const`
+- `void checkAndHandleWallCollision()`
+
+### Micromouse
+The `Micromouse` class represents the robot navigating through the maze. It maintains the position, steps taken, and sensors attached to the Micromouse.
+
+**Public Methods:**
+- `void move()`
+- `void reset()`
+- `void setPosition(int x, int y)`
+- `int getPosX() const`
+- `int getPosY() const`
+- `int getStep() const`
+- `std::vector<std::vector<int>> getKnownMaze() const`
+
+### Maze
+The `Maze` class represents the maze structure. It is a singleton class, ensuring only one instance of the maze exists.
+
+**Public Methods:**
+- `void displayMaze()`
+- `void setLogger(const std::string& logFile, bool append)`
+- `std::pair<int, int> readExit() const`
+- `int getWidth() const`
+- `int getHeight() const`
+- `bool isWall(int x, int y) const`
+- `static Maze* getInstance()`
+
+### Logger
+The `Logger` class handles logging messages to a file and optionally to the console.
+
+**Public Methods:**
+- `Logger(const std::string& logFile)`
+- `~Logger()`
+- `void enableFileOutput(bool enable)`
+- `void disableFileOutput()`
+- `void clearLogFile()`
+- `void logMessage(const std::string& message, bool timestamp = true)`
+
+### Sensor
+The `Sensor` class is a base class for different types of sensors that can be attached to the Micromouse.
+
+**Public Methods:**
+- `void readData()`
+- `std::string getType() const`
+
+**Derived Classes:**
+- `ProximitySensor`
+- `LightSensor`
+- `UltrasonicSensor`
+
+### CommandQueue
+The `CommandQueue` class handles command input in a thread-safe manner using a queue, mutex, and condition variable.
+
+**Public Methods:**
+- `void push(const std::string& command)`
+- `bool pop(std::string& command)`
+
+## Main Function
+
+The main function orchestrates the Micromouse simulation by managing user input through CommandQueue, initializing and interacting with the Maze and Micromouse objects, and controlling simulation flow through threads.
+
+## Usage
+
+To use this project, follow these steps:
+
+1. **Clone the repository:**
+    ```sh
+    git clone <repository-url>
+    ```
+
+2. **Navigate to the project directory:**
+    ```sh
+    cd MicromouseMazeSimulator
+    ```
+
+3. **Build the project using CMake:**
+    ```sh
+    mkdir build
+    cd build
+    cmake ..
+    make
+    ```
+
+4. **Run the simulation:**
+    ```sh
+    ./MicromouseMazeSimulator
+    ```
+
+## Dependencies
+
+- C++17 or higher
+- CMake 3.10 or higher
+
+## Compilation and Execution
+
+1. **Compile the project:**
+    ```sh
+    mkdir build
+    cd build
+    cmake ..
+    make
+    ```
+
+2. **Run the simulation:**
+    ```sh
+    ./MicromouseMazeSimulator
+    ```
 
 Dependencies:
 

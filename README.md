@@ -126,7 +126,35 @@ classDiagram
         -void createLogDirectory(const std::string& filePath)
     }
 
+    class Maze {
+        -static Maze* instance
+        -int width
+        -int height
+        -std::vector<std::vector<int>> mazeGrid
+        -std::pair<int, int> exit
+        -std::unique_ptr<Logger> logger
+        -std::map<std::pair<int, int>, std::string> directionNames
+        ~Maze()
+        +static Maze* getInstance()
+        +int getWidth() const
+        +int getHeight() const
+        +void displayMaze() const
+        +const std::vector<std::vector<int>>& getMazeGrid() const
+        +std::pair<int, int> readExit() const
+        +bool isWall(int x, int y) const
+        +Maze& setLogger(const std::string& logFile, bool toFileOnly = true)
+        -Maze()
+        -void generateMaze()
+        -void carvePassage(int x, int y)
+        -void createRandomExit()
+        -bool isValidExit(int x, int y)
+        -void printMazeWithCurrentCarve(int cx, int cy) const
+    }
+
     Logger --> Utils : uses
+    Maze --> Logger : uses
+    Maze --> Utils : uses
+
 
 ```
 

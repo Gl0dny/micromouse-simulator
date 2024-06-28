@@ -245,21 +245,19 @@ classDiagram
     
 
     main --> Simulator : creates
-    main --> Logger : logs to
     main --> Micromouse : creates
     main --> Maze : creates
     main --> CommandQueue : creates
+    main --> Logger : creates, logs to
 
     Simulator o-- Micromouse : aggregates
     Simulator o-- Maze : aggregates
     Simulator *-- Logger : logs to
 
-    Maze --> Maze : Singleton
-    Maze --> Logger : logs to
+    Maze *-- Logger : logs to
 
     Micromouse *-- Sensor : uses
-    Micromouse --> Maze : interacts with
-    Micromouse --> Logger : logs to
+    Micromouse *-- Logger : logs to
 
     Sensor --> Maze : interacts with
     

@@ -106,54 +106,65 @@ sudo apt install doxygen
 ```mermaid
 classDiagram
     class Micromouse {
-        +Micromouse(std::string logFileName)
-        +~Micromouse()
+        +Micromouse(const std::string& logFileName)
+        +virtual ~Micromouse()
         +void setSensor(std::shared_ptr<Sensor> sensor)
         +virtual void makeDecision() = 0
         +int getPosX() const
         +int getPosY() const
         +void setPosition(int x, int y)
         +void move()
-        +void updateKnownMaze()
         +void readSensors()
         +int getStep()
+        +std::vector<std::vector<int>> getKnownMaze() const;
         +void initializeKnownMaze(int width, int height)
         +void reset()
-        +void makeDecision()
-        +void followRightHandRule()
-        +void makeDecision()
-        +void followLeftHandRule()
-        +void makeDecision()
-        +bool hasUntriedDirection(int x, int y)
-        +string getNextDirection(int x, int y)
-        -std::shared_ptr<Sensor> sensor
-        -std::shared_ptr<Maze> knownMaze
-        -std::pair<int, int> currentPosition
+        #int posX
+        #int posY
+        #std::string direction
+        #std::shared_ptr<Sensor> sensor
+        #std::vector<std::vector<int>> knownMaze
+        #std::unique_ptr<Logger> logger
+        #const std::map<std::string, std::pair<int, int>> directions 
+        #const std::map<std::string, std::string> rightTurns
+        #const std::map<std::string, std::string> leftTurns
+        #int step
     }
     
     class Sensor {
-        +virtual int getDistance() const = 0
-        +void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step)
+        +Sensor(Maze* maze, const std::string& name)
+        +virtual ~Sensor()
+        +virtual void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const = 0
+        #Maze* maze
+        #std::map<std::pair<int, int>, std::string> directionNames
+        #std::unique_ptr<Logger> logger
+        #int steps
     }
     
     class Simulator {
         +Simulator(std::shared_ptr<Micromouse> micromouse, std::shared_ptr<Maze> maze)
+        +~Simulator()
         +void start()
         +void pause()
         +void reset()
         +void run()
-        +void setRandomStartPosition()
-        +void displayMazeWithMouse()
-        +bool hasReachedGoal()
-        +void checkAndHandleWallCollision()
+        -void setRandomStartPosition()
+        -void displayMazeWithMouse()
+        -bool hasReachedGoal()
+        -void checkAndHandleWallCollision()
+        -std::shared_ptr<Micromouse> micromouse
+        -Maze* maze
+        -int startX
+        -int startY
         -int steps
         -std::chrono::time_point<std::chrono::steady_clock> startTime
-        -std::shared_ptr<Micromouse> micromouse
-        -std::shared_ptr<Maze> maze
+        -std::chrono::duration<double> totalSeconds
+        -std::atomic<bool> running
+        -std::unique_ptr<Logger> logger
     }
     
     class Maze {
-        ~Maze()
+        +~Maze()
         +static Maze* getInstance()
         +int getWidth() const
         +int getHeight() const
@@ -162,6 +173,7 @@ classDiagram
         +std::pair<int, int> readExit() const
         +bool isWall(int x, int y) const
         +Maze& setLogger(const std::string& logFile, bool toFileOnly = true)
+        -Maze()
         -static Maze* instance
         -int width
         -int height
@@ -190,52 +202,76 @@ classDiagram
     }
     
     class RightHandRuleBacktrackingMazeSolver {
-        +makeDecision()
+        +RightHandRuleBacktrackingMazeSolver()
+        +void makeDecision() override
+        -void followRightHandRule()
     }
     
     class LeftHandRuleBacktrackingMazeSolver {
-        +makeDecision()
+        +LeftHandRuleBacktrackingMazeSolver()
+        +void makeDecision() override
+        -followLeftHandRule()
     }
     
     class TeleportingUndecidedMazeSolver {
-        +makeDecision()
+        +TeleportingUndecidedMazeSolver()
+        +void makeDecision() override
+        -std::map<std::pair<int, int>, int> visited
+        -std::map<std::pair<int, int>, std::set<std::string>> triedDirections
+        -std::stack<std::pair<int, int>> backtrackStack
+        -bool hasUntriedDirection(int x, int y)
+        -std::string getNextDirection(int x, int y)
     }
     
     class DistanceSensor {
-        +int getDistance() const
+        +void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const override
     }
     
     class LaserSensor {
-        +int getDistance() const
+        +void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const override
     }
     
     class LidarSensor {
-        +int getDistance() const
+        +void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const override
     }
     
     class CommandQueue {
         +void push(const std::string& command)
         +bool pop(std::string& command)
+        -std::queue<std::string> commands
+        -std::mutex mtx
+        -std::condition_variable cv
     }
     
-    Micromouse "1" --> "1" Sensor : uses
-    Micromouse "1" --> "1" Maze : interacts with
-    Micromouse "1" --> "1" Logger : logs to
-    Simulator "1" *-- "1" Micromouse : aggregates
-    Simulator "1" *-- "1" Maze : aggregates
-    main "1" --> "1" Simulator : creates
-    main "1" --> "1" Logger : creates
-    main "1" --> "1" CommandQueue : creates
+
+    main --> Simulator : creates
+    main --> Logger : logs to
+    main --> Micromouse : creates
+    main --> Maze : creates
+    main --> CommandQueue : creates
+
+    Simulator o-- Micromouse : aggregates
+    Simulator o-- Maze : aggregates
+    Simulator *-- Logger : logs to
+
+    Maze --> Maze : Singleton
+    Maze --> Logger : logs to
+
+    Micromouse *-- Sensor : uses
+    Micromouse --> Maze : interacts with
+    Micromouse --> Logger : logs to
+
+    Sensor --> Maze : interacts with
     
-    RightHandRuleBacktrackingMazeSolver --|> Micromouse
-    LeftHandRuleBacktrackingMazeSolver --|> Micromouse
-    TeleportingUndecidedMazeSolver --|> Micromouse
+    RightHandRuleBacktrackingMazeSolver --|> Micromouse : inherits
+    LeftHandRuleBacktrackingMazeSolver --|> Micromouse : inherits
+    TeleportingUndecidedMazeSolver --|> Micromouse : inherits
     
-    DistanceSensor --|> Sensor
-    LaserSensor --|> Sensor
-    LidarSensor --|> Sensor
+    DistanceSensor --|> Sensor : inherits
+    LaserSensor --|> Sensor : inherits
+    LidarSensor --|> Sensor : inherits
     
-    Maze "1" --> "1" Logger : uses
+
 
 ```
 

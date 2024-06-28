@@ -105,77 +105,28 @@ sudo apt install doxygen
 
 ```mermaid
 classDiagram
-    class Simulator {
-        -Maze maze
-        -Robot robot
-        +start()
-        +reset()
-        +getMaze() : Maze
-        +getRobot() : Robot
-    }
-
-    class Maze {
-        -int width
-        -int height
-        -vector~vector~int~~ mazeGrid
-        +Maze(int width, int height)
-        +generateMaze()
-        +isWall(int x, int y) : bool
-        +displayMaze()
-        +getWidth() : int
-        +getHeight() : int
-    }
-
-    class Robot {
-        -int x
-        -int y
-        -vector~Sensor~ sensors
-        +Robot(int startX, int startY)
-        +move()
-        +getX() : int
-        +getY() : int
-        +addSensor(Sensor* sensor)
-    }
-
-    class Sensor {
-        +detect() : int
-        +getType() : string
-    }
-
-    class GUI {
-        +displayMaze(Maze* maze)
-        +displayRobot(Robot* robot)
-    }
-
-    class MainWindow {
-        -MazeWidget* mazeWidget
-        -Simulator* simulator
-        +MainWindow(QWidget* parent = nullptr)
-        +~MainWindow()
-        +startSimulation()
-        +resetSimulation()
-    }
-
-    class MazeWidget {
-        -Simulator* simulator
-        +MazeWidget(QWidget* parent = nullptr, Simulator* simulator = nullptr)
-        +paintEvent(QPaintEvent* event)
-    }
-
     class Utils {
-        +readFile(const string &fileName) : vector~string~
-        +getRandomNumber(int min, int max) : int
-        +logMessage(const string &message)
+        +int getRandomNumber(int min, int max)
+        +std::string getCurrentDateTime()
+        +void createDirectory(const std::string& dirPath)
+        +void clearFile(const std::string& filePath)
+        +void fileExists(const std::string& filePath)
     }
 
-    Simulator --> Maze : uses
-    Simulator --> Robot : uses
-    Simulator --> GUI : uses
-    Maze --> Utils : uses
-    Robot --> Sensor : contains
-    MainWindow --> Simulator : contains
-    MainWindow --> MazeWidget : contains
-    MazeWidget --> Simulator : uses
+    class Logger {
+        -bool logToFile
+        -bool logToFileOnly
+        -std::ofstream logFile
+        -std::string logFilePath
+        +Logger(const std::string& filePath)
+        +Logger& logMessage(const std::string& message, bool includeTimestamp = true)
+        +Logger& enableFileOutput(bool toFileOnly = true)
+        +Logger& disableFileOutput()
+        +Logger& clearLogFile()
+        -void createLogDirectory(const std::string& filePath)
+    }
+
+    Logger --> Utils : uses
 
 ```
 

@@ -97,10 +97,19 @@ build() {
 generate_docs() {
     check_doxygen
     echo "Generating Doxygen documentation..."
-    if [ ! -f "Doxyfile" ]; then
-        doxygen -g
+
+    # Check if ./docs/Doxyfile exists
+    if [ ! -f "./docs/Doxyfile" ]; then
+        # Create the docs directory if it does not exist
+        mkdir -p docs
+
+        # Generate Doxyfile inside the docs directory
+        doxygen -g docs/Doxyfile
     fi
-    doxygen Doxyfile
+
+    # Generate documentation using the Doxyfile in the docs directory
+    doxygen docs/Doxyfile
+
     if [ $? -ne 0 ]; then
         echo "Doxygen documentation generation failed."
         exit 1

@@ -9,9 +9,9 @@ check the teleporting one + main threading
 Patterns collaborate class 
 GL course
 pola zawsze prywatne chyba ze pole jest obiektem ktory sam sie chroni to moze byc protected/public  
-pola protected w micromouse sensor zastanow sie
+pola protected w micromouse sensor -> pola private get and set protected 
 
-Class diagram , README overall
+README overall
 readme cleanup
 
   -->

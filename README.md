@@ -208,10 +208,6 @@ To use this project, follow these steps:
 
 Dependencies:
 
-<!-- ###### QT5
-
-sudo apt install qt5-default -->
-
 ###### Google Test
 
 git clone https://github.com/google/googletest.git

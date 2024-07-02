@@ -4,8 +4,19 @@ Wstępny Opis Projektu: Symulacja Micromouse
 
 <!-- TODO
 
-Sprawdzic const funkcje
+string view w log file name? vs const string
 string view w create micromouse?
+
+dlaczego logMessage nie jest sprawdzane przez kompilator jako nie const?
+
+Scenario 3: logger is a Pointer or Reference
+
+If logger is a pointer or reference, const-correctness is applied differently.
+
+In this case, const-correctness applies to the pointer itself, not the object it points to. To enforce const-correctness on the pointed object, you should use a const pointer/reference. ??
+
+Not mutable pointer a mogę wywołać logMessage() kiedy nie jest const  
+
 
 check the teleporting one + main threading
 

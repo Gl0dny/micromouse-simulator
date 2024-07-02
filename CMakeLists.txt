@@ -41,7 +41,7 @@ add_executable(tests tests/test_maze.cpp ${SOURCES})
 # Link pthread for threads
 target_link_libraries(MicromouseProject pthread)
 
-# Linkowanie bibliotek Google Test do testów
+# Link Google Test for tests
 target_link_libraries(tests GTest::GTest GTest::Main)
 
 # Add the tests

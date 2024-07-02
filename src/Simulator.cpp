@@ -31,7 +31,7 @@ void Simulator::run() {
         displayMazeWithMouse();
         checkAndHandleWallCollision();
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
     if (hasReachedGoal()) {

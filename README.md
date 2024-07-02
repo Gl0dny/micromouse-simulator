@@ -4,6 +4,9 @@ Wstępny Opis Projektu: Symulacja Micromouse
 
 <!-- TODO
 
+Sprawdzic const funkcje
+string view w create micromouse?
+
 check the teleporting one + main threading
 
 Patterns collaborate class 

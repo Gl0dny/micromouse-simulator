@@ -404,7 +404,6 @@ classDiagram
     Simulator o-- Maze : aggregates
     Simulator *-- Logger : logs to
 
-    Maze --> Maze : Singleton
     Maze *-- Logger : logs to
 
     Micromouse *-- Sensor : uses

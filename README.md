@@ -4,8 +4,17 @@ Wstępny Opis Projektu: Symulacja Micromouse
 
 <!-- TODO
 
+GL course
+
+pola zawsze prywatne chyba ze pole jest obiektem ktory sam sie chroni to moze byc protected/public  
+pola protected w micromouse sensor -> pola private get and set protected 
+
 string view w log file name? vs const string
 string view w create micromouse?
+
+domyslne wartosci argumentow w funkcjach? sprawdzic
+
+check const keyword in my project
 
 dlaczego logMessage nie jest sprawdzane przez kompilator jako nie const?
 
@@ -18,12 +27,9 @@ In this case, const-correctness applies to the pointer itself, not the object it
 Not mutable pointer a mogę wywołać logMessage() kiedy nie jest const  
 
 
-check the teleporting one + main threading
+check the teleporting one + main threading code
 
 Patterns collaborate class 
-GL course
-pola zawsze prywatne chyba ze pole jest obiektem ktory sam sie chroni to moze byc protected/public  
-pola protected w micromouse sensor -> pola private get and set protected 
 
 README overall
 readme cleanup

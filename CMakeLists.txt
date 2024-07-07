@@ -26,7 +26,7 @@ set(SOURCES
 )
 
 # Main executable
-add_executable(MicromouseProject main.cpp ${SOURCES})
+add_executable(MicromouseProject src/main.cpp ${SOURCES})
 
 # Enable testing
 enable_testing()

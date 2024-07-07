@@ -36,6 +36,11 @@ public:
     virtual void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const = 0;
 
 protected:
+    Maze* getMaze() const;
+    const std::map<std::pair<int, int>, std::string>& getDirectionNames() const;
+    Logger* getLogger() const;
+
+private:
     Maze* maze; ///< Pointer to the maze object.
     std::map<std::pair<int, int>, std::string> directionNames; ///< Map of direction names.
     std::unique_ptr<Logger> logger; ///< Logger object.

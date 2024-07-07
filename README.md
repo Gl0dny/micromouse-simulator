@@ -285,10 +285,13 @@ classDiagram
         +Sensor(Maze* maze, const std::string& name)
         +virtual ~Sensor()
         +virtual void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const = 0
-        #Maze* maze
-        #std::map<std::pair<int, int>, std::string> directionNames
-        #std::unique_ptr<Logger> logger
-        #int steps
+        #Maze* getMaze() const
+        #const std::map<std::pair<int, int>, std::string>& getDirectionNames() const
+        #Logger* getLogger() const
+        -Maze* maze
+        -std::map<std::pair<int, int>, std::string> directionNames
+        -std::unique_ptr<Logger> logger
+        -int steps
     }
     
     class Simulator {

@@ -114,10 +114,20 @@ protected:
  */
 class RightHandRuleBacktrackingMazeSolver : public Micromouse {
 public:
+    /**
+     * @brief Constructor for RightHandRuleBacktrackingMazeSolver.
+     */
     RightHandRuleBacktrackingMazeSolver();
+
+    /**
+     * @brief Implements the decision-making process based on the right-hand rule algorithm.
+     */
     void makeDecision() override;
 
 private:
+    /**
+     * @brief Follows the right-hand rule to determine the next move.
+     */
     void followRightHandRule();
 };
 
@@ -126,10 +136,20 @@ private:
  */
 class LeftHandRuleBacktrackingMazeSolver : public Micromouse {
 public:
+    /**
+     * @brief Constructor for LeftHandRuleBacktrackingMazeSolver.
+     */
     LeftHandRuleBacktrackingMazeSolver();
+
+    /**
+     * @brief Implements the decision-making process based on the left-hand rule algorithm.
+     */
     void makeDecision() override;
 
 private:
+    /**
+     * @brief Follows the left-hand rule to determine the next move.
+     */
     void followLeftHandRule();
 };
 
@@ -138,7 +158,14 @@ private:
  */
 class TeleportingUndecidedMazeSolver : public Micromouse {
 public:
+    /**
+     * @brief Constructor for TeleportingUndecidedMazeSolver.
+     */
     TeleportingUndecidedMazeSolver();
+
+    /**
+     * @brief Implements the decision-making process for the maze solver.
+     */
     void makeDecision() override;
 
 private:
@@ -146,7 +173,20 @@ private:
     std::map<std::pair<int, int>, std::set<std::string>> triedDirections; ///< Tracks tried directions from each cell.
     std::stack<std::pair<int, int>> backtrackStack; ///< Stack for backtracking.
 
+    /**
+     * @brief Checks if there are untried directions from the current position.
+     * @param x X position.
+     * @param y Y position.
+     * @return True if there are untried directions, false otherwise.
+     */
     bool hasUntriedDirection(int x, int y);
+
+    /**
+     * @brief Gets the next direction to move from the current position.
+     * @param x X position.
+     * @param y Y position.
+     * @return The next direction as a string.
+     */
     std::string getNextDirection(int x, int y);
 };
 

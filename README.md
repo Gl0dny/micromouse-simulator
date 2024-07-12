@@ -8,10 +8,17 @@ GL course
 
 pola protected w micromouse -> pola private get and set protected 
 
-string view w log file name? vs const string
-string view w create micromouse?
 
-domyslne wartosci argumentow w funkcjach? sprawdzic
+check the teleporting one
+
+Patterns collaborate class 
+
+README overall
+readme cleanup
+
+
+
+
 
 check const keyword in my project
 
@@ -25,13 +32,6 @@ In this case, const-correctness applies to the pointer itself, not the object it
 
 Not mutable pointer a mogę wywołać logMessage() kiedy nie jest const  
 
-
-check the teleporting one
-
-Patterns collaborate class 
-
-README overall
-readme cleanup
 
   -->
 

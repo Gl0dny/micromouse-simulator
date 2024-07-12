@@ -92,11 +92,40 @@ public:
     void reset();
 
 protected:
+    /**
+     * @brief Gets the current direction of the Micromouse.
+     * @return Current direction as a string.
+     */
     std::string getDirection() const;
+
+    /**
+     * @brief Sets the direction of the Micromouse.
+     * @param direction Direction as a string.
+     */
     void setDirection(const std::string& direction);
+
+    /**
+     * @brief Gets the logger object.
+     * @return Unique pointer to the Logger object.
+     */
     std::unique_ptr<Logger>& getLogger();
+
+    /**
+     * @brief Gets the map of directions.
+     * @return Map of directions and their corresponding coordinate changes.
+     */
     const std::map<std::string, std::pair<int, int>>& getDirections() const;
+
+    /**
+     * @brief Gets the map of right turns.
+     * @return Map of directions and their corresponding right turns.
+     */
     const std::map<std::string, std::string>& getRightTurns() const;
+
+    /**
+     * @brief Gets the map of left turns.
+     * @return Map of directions and their corresponding left turns.
+     */
     const std::map<std::string, std::string>& getLeftTurns() const;
 private:
     int posX, posY; ///< Current X and Y positions of the Micromouse.

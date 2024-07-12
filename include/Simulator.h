@@ -24,7 +24,7 @@ public:
     /**
      * @brief Destructor for Simulator.
      */
-    ~Simulator();
+    ~Simulator() = default;
 
     /**
      * @brief Runs the simulation.

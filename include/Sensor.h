@@ -24,7 +24,7 @@ public:
     /**
      * @brief Virtual destructor for Sensor.
      */
-    virtual ~Sensor();
+    virtual ~Sensor() = default;
 
     /**
      * @brief Pure virtual function to get sensor data.

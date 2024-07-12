@@ -16,6 +16,11 @@ public:
     Logger(const std::string &filePath);
 
     /**
+     * @brief Destructor for Maze.
+     */
+    ~Logger();
+
+    /**
      * @brief Logs a message.
      * @param message The message to log.
      * @param includeTimestamp Whether to include a timestamp.
@@ -29,12 +34,6 @@ public:
      * @return Reference to the Logger object.
      */
     Logger& enableFileOutput(bool toFileOnly = true);
-
-    /**
-     * @brief Disables file output for logging.
-     * @return Reference to the Logger object.
-     */
-    Logger& disableFileOutput();
 
     /**
      * @brief Clears the log file.
@@ -53,6 +52,12 @@ private:
      * @param filePath Path to the log file.
      */
     void createLogDirectory(const std::string &filePath);
+
+        /**
+     * @brief Disables file output for logging.
+     * @return Reference to the Logger object.
+     */
+    void disableFileOutput();
 };
 
 #endif // LOGGER_H

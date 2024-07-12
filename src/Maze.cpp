@@ -22,12 +22,6 @@ Maze::Maze()
     generateMaze();
 }
 
-Maze::~Maze() {
-    if (logger) {
-        logger->disableFileOutput();
-    }
-}
-
 Maze& Maze::getInstance() {
     static Maze instance;
     return instance;

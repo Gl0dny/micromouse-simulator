@@ -112,6 +112,5 @@ int main() {
     simulationThread.join();
 
     logger->logMessage("Simulation finished.");
-    logger->disableFileOutput();
     return 0;
 }

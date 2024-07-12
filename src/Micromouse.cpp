@@ -8,10 +8,6 @@ Micromouse::Micromouse(const std::string& logFileName)
     logger->clearLogFile();
 }
 
-Micromouse::~Micromouse() {
-    logger->disableFileOutput();
-}
-
 void Micromouse::setSensor(std::shared_ptr<Sensor> sensor) {
     this->sensor = sensor;
     logger->logMessage("Sensor set for Micromouse");

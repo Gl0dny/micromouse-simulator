@@ -8,6 +8,10 @@ Logger::Logger(const std::string &filePath)
     createLogDirectory(logFilePath);
 }
 
+Logger::~Logger() {
+    disableFileOutput();
+}
+
 Logger& Logger::logMessage(const std::string &message, bool includeTimestamp /* = true */) {
     std::string logEntry;
 
@@ -53,7 +57,7 @@ Logger& Logger::enableFileOutput(bool toFileOnly /* = true */) {
     return *this;
 }
 
-Logger& Logger::disableFileOutput() {
+void Logger::disableFileOutput() {
     if (logFile.is_open()) {
         logFile.close();
     }
@@ -62,7 +66,6 @@ Logger& Logger::disableFileOutput() {
 #ifdef DEBUG_MODE
     std::cout << "File logging disabled. Logging to terminal only." << std::endl;
 #endif
-    return *this;
 }
 
 Logger& Logger::clearLogFile() {

@@ -16,7 +16,7 @@ public:
     /**
      * @brief Destructor for Maze.
      */
-    ~Maze();
+    ~Maze()=default;
 
     /**
      * @brief Returns the single instance of Maze.

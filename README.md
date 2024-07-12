@@ -8,8 +8,6 @@ GL course
 
 pola protected w micromouse -> pola private get and set protected 
 
-destructor loggera w loggerze a inne klasy maja default?
-
 string view w log file name? vs const string
 string view w create micromouse?
 
@@ -283,20 +281,20 @@ classDiagram
     }
     
     class Sensor {
-        +Sensor(Maze* maze, const std::string& name)
+        +Sensor(Maze& maze, const std::string& name)
         +virtual ~Sensor()
         +virtual void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const = 0
-        #Maze* getMaze() const
+        #Maze& getMaze() const
         #const std::map<std::pair<int, int>, std::string>& getDirectionNames() const
         #Logger* getLogger() const
-        -Maze* maze
+        -Maze& maze
         -std::map<std::pair<int, int>, std::string> directionNames
         -std::unique_ptr<Logger> logger
         -int steps
     }
     
     class Simulator {
-        +Simulator(std::shared_ptr<Micromouse> micromouse, std::shared_ptr<Maze> maze)
+        +Simulator(std::shared_ptr<Micromouse> micromouse, Maze& maze)
         +~Simulator()
         +void start()
         +void pause()
@@ -307,7 +305,7 @@ classDiagram
         -bool hasReachedGoal()
         -void checkAndHandleWallCollision()
         -std::shared_ptr<Micromouse> micromouse
-        -Maze* maze
+        -Maze& maze
         -int startX
         -int startY
         -int steps
@@ -319,7 +317,7 @@ classDiagram
     
     class Maze {
         +~Maze()
-        +static Maze* getInstance()
+        +static Maze& getInstance()
         +int getWidth() const
         +int getHeight() const
         +void displayMaze() const
@@ -328,7 +326,6 @@ classDiagram
         +bool isWall(int x, int y) const
         +Maze& setLogger(const std::string& logFile, bool toFileOnly = true)
         -Maze()
-        -static Maze* instance
         -int width
         -int height
         -std::vector<std::vector<int>> mazeGrid
@@ -344,15 +341,16 @@ classDiagram
     
     class Logger {
         +Logger(const std::string &filePath)
+        +~Logger()
         +Logger& logMessage(const std::string& message, bool includeTimestamp = true)
         +Logger& enableFileOutput(bool toFileOnly = true)
-        +Logger& disableFileOutput()
         +Logger& clearLogFile()
         -bool logToFile
         -bool logToFileOnly
         -std::ofstream logFile
         -std::string logFilePath
         -void createLogDirectory(const std::string &filePath)
+        -void disableFileOutput()
     }
     
     class RightHandRuleBacktrackingMazeSolver {
@@ -378,14 +376,17 @@ classDiagram
     }
     
     class DistanceSensor {
+        +DistanceSensor(Maze& maze)
         +void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const override
     }
     
     class LaserSensor {
+        +LaserSensor(Maze& maze)
         +void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const override
     }
     
     class LidarSensor {
+        +LidarSensor(Maze& maze)
         +void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const override
     }
     
@@ -397,7 +398,6 @@ classDiagram
         -std::condition_variable cv
     }
     
-
     main --> Simulator : creates
     main --> Micromouse : creates
     main --> CommandQueue : creates
@@ -422,9 +422,6 @@ classDiagram
     DistanceSensor --|> Sensor : inherits
     LaserSensor --|> Sensor : inherits
     LidarSensor --|> Sensor : inherits
-    
-
-
 ```
 
 

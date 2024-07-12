@@ -4,7 +4,7 @@
 #include <thread>
 #include <chrono>
 
-Simulator::Simulator(std::shared_ptr<Micromouse> micromouse, Maze* maze)
+Simulator::Simulator(std::shared_ptr<Micromouse> micromouse, Maze& maze)
     : micromouse(micromouse), maze(maze), startX(1), startY(1), steps(0), running(false), logger(std::make_unique<Logger>("logs/simulator.log")) {
     totalSeconds = std::chrono::duration<double>::zero();
     startTime = std::chrono::steady_clock::time_point::min(); // Initialize with "zero" time
@@ -27,7 +27,7 @@ void Simulator::run() {
         displayMazeWithMouse();
         checkAndHandleWallCollision();
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
     if (hasReachedGoal()) {
@@ -79,16 +79,16 @@ void Simulator::setRandomStartPosition() {
             startY = 1;
             break;
         case 1:
-            startX = maze->getWidth() - 2;
+            startX = maze.getWidth() - 2;
             startY = 1;
             break;
         case 2:
             startX = 1;
-            startY = maze->getHeight() - 2;
+            startY = maze.getHeight() - 2;
             break;
         case 3:
-            startX = maze->getWidth() - 2;
-            startY = maze->getHeight() - 2;
+            startX = maze.getWidth() - 2;
+            startY = maze.getHeight() - 2;
             break;
         default:
             throw std::invalid_argument("Invalid corner specified");
@@ -126,14 +126,14 @@ void Simulator::displayMazeWithMouse() const {
 }
 
 bool Simulator::hasReachedGoal() const {
-    auto [exitX, exitY] = maze->readExit();
+    auto [exitX, exitY] = maze.readExit();
     return micromouse->getPosX() == exitX && micromouse->getPosY() == exitY;
 }
 
 void Simulator::checkAndHandleWallCollision() {
     int currentX = micromouse->getPosX();
     int currentY = micromouse->getPosY();
-    if (maze->isWall(currentX, currentY)) {
+    if (maze.isWall(currentX, currentY)) {
         logger->logMessage("Collision with wall at (" + std::to_string(currentX) + ", " + std::to_string(currentY) + "). Micromouse died.");
         running = false;
         exit(0);

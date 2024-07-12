@@ -12,25 +12,6 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_definitions(-DDEBUG_MODE)
 endif()
 
-# include(FetchContent)
-# FetchContent_Declare(
-#   googletest
-#   URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
-# )
-
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-# set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-# FetchContent_MakeAvailable(googletest)
-
-# Włączenie automatycznego generowania plików MOC, RCC i UIC dla Qt
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
-
-# If using Qt5, uncomment these lines and add the necessary components
-find_package(Qt5 REQUIRED COMPONENTS Widgets)
-include_directories(${Qt5Widgets_INCLUDE_DIRS})
-
 # Include directories
 include_directories(include)
 
@@ -45,10 +26,7 @@ set(SOURCES
 )
 
 # Main executable
-add_executable(MicromouseProject main.cpp ${SOURCES})
-
-# Linkowanie bibliotek Qt5
-target_link_libraries(MicromouseProject Qt5::Widgets)
+add_executable(MicromouseProject src/main.cpp ${SOURCES})
 
 # Enable testing
 enable_testing()
@@ -60,23 +38,11 @@ include_directories(${GTEST_INCLUDE_DIRS})
 # Test executable
 add_executable(tests tests/test_maze.cpp ${SOURCES})
 
-
-# # Remove this line if you want to run only production code
-# target_compile_definitions(hello_world PRIVATE UNIT_TEST)
-
-# target_link_libraries(
-#   hello_world
-#   GTest::gtest_main
-# )
-
-# include(GoogleTest)
-# gtest_discover_tests(hello_world)
-
 # Link pthread for threads
 target_link_libraries(MicromouseProject pthread)
 
-# Linkowanie bibliotek Qt5 i Google Test do testów
-target_link_libraries(tests Qt5::Widgets GTest::GTest GTest::Main)
+# Link Google Test for tests
+target_link_libraries(tests GTest::GTest GTest::Main)
 
 # Add the tests
 add_test(NAME maze_tests COMMAND tests)

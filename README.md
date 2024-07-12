@@ -6,8 +6,9 @@ Wstępny Opis Projektu: Symulacja Micromouse
 
 GL course
 
-pola zawsze prywatne chyba ze pole jest obiektem ktory sam sie chroni to moze byc protected/public  
-pola protected w micromouse sensor -> pola private get and set protected 
+pola protected w micromouse -> pola private get and set protected 
+
+destructor loggera w loggerze a inne klasy maja default?
 
 string view w log file name? vs const string
 string view w create micromouse?
@@ -27,7 +28,7 @@ In this case, const-correctness applies to the pointer itself, not the object it
 Not mutable pointer a mogę wywołać logMessage() kiedy nie jest const  
 
 
-check the teleporting one + main threading code
+check the teleporting one
 
 Patterns collaborate class 
 

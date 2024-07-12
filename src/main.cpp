@@ -53,9 +53,9 @@ int main() {
     auto main_log_file = "./logs/main.log";
     auto logger = std::make_unique<Logger>(main_log_file);
     logger->enableFileOutput(false).clearLogFile().logMessage("Creating the Maze...");
-    Maze* maze = Maze::getInstance();
-    maze->displayMaze();
-    maze->setLogger(main_log_file, false).displayMaze();
+    Maze& maze = Maze::getInstance();
+    maze.displayMaze();
+    maze.setLogger(main_log_file, false).displayMaze();
 
     logger->logMessage("Creating the Micromouse...");
     auto micromouse = chooseMicromouse(maze);

@@ -187,7 +187,7 @@ void TeleportingUndecidedMazeSolver::makeDecision() {
     logger->logMessage("Step " + std::to_string(step) + ": Micromouse is stuck with no untried directions available.");
 }
 
-std::shared_ptr<Micromouse> chooseMicromouse(Maze* maze) {
+std::shared_ptr<Micromouse> chooseMicromouse(Maze& maze) {
     int solverChoice, sensorChoice;
     std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n2. Left Hand Rule\n3. Teleporting Undecided Solver\n";
     std::cin >> solverChoice;

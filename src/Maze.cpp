@@ -8,8 +8,6 @@
 #include <vector>
 #include <memory>
 
-Maze* Maze::instance = nullptr;
-
 Maze::Maze()
     : width(21), height(21), mazeGrid(width, std::vector<int>(height, 1)), logger(std::make_unique<Logger>("./logs/maze.log")) {
     directionNames = {
@@ -25,14 +23,13 @@ Maze::Maze()
 }
 
 Maze::~Maze() {
-    logger->disableFileOutput();
-    delete instance;
+    if (logger) {
+        logger->disableFileOutput();
+    }
 }
 
-Maze* Maze::getInstance() {
-    if (!instance) {
-        instance = new Maze();
-    }
+Maze& Maze::getInstance() {
+    static Maze instance;
     return instance;
 }
 

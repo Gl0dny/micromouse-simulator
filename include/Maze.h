@@ -20,9 +20,9 @@ public:
 
     /**
      * @brief Returns the single instance of Maze.
-     * @return Pointer to the Maze instance.
+     * @return Reference to the Maze instance.
      */
-    static Maze* getInstance();
+    static Maze& getInstance();
 
     // Delete copy constructor and assignment operator to prevent duplicates
     Maze(Maze const &) = delete;
@@ -79,7 +79,6 @@ private:
      */
     Maze();
 
-    static Maze* instance; ///< Static member pointer to hold the instance.
     int width; ///< Width of the maze.
     int height; ///< Height of the maze.
     std::vector<std::vector<int>> mazeGrid; ///< Grid representing the maze.

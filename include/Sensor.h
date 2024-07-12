@@ -16,10 +16,10 @@ class Sensor {
 public:
     /**
      * @brief Constructor for Sensor.
-     * @param maze Pointer to the Maze object.
+     * @param maze Reference to the Maze object.
      * @param name Name of the sensor.
      */
-    Sensor(Maze* maze, const std::string& name);
+    Sensor(Maze& maze, const std::string& name);
 
     /**
      * @brief Virtual destructor for Sensor.
@@ -36,12 +36,12 @@ public:
     virtual void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const = 0;
 
 protected:
-    Maze* getMaze() const;
+    Maze& getMaze() const;
     const std::map<std::pair<int, int>, std::string>& getDirectionNames() const;
     Logger* getLogger() const;
 
 private:
-    Maze* maze; ///< Pointer to the maze object.
+    Maze& maze; ///< Reference to the maze object.
     std::map<std::pair<int, int>, std::string> directionNames; ///< Map of direction names.
     std::unique_ptr<Logger> logger; ///< Logger object.
     int steps; ///< Step counter.
@@ -54,9 +54,9 @@ class DistanceSensor : public Sensor {
 public:
     /**
      * @brief Constructor for DistanceSensor.
-     * @param maze Pointer to the Maze object.
+     * @param maze Reference to the Maze object.
      */
-    DistanceSensor(Maze* maze);
+    DistanceSensor(Maze& maze);
 
     /**
      * @brief The getSensorData function handles scanning for walls, logs detection results, and manages boundary conditions to ensure accurate mapping of the maze environment.
@@ -75,9 +75,9 @@ class LaserSensor : public Sensor {
 public:
     /**
      * @brief Constructor for LaserSensor.
-     * @param maze Pointer to the Maze object.
+     * @param maze Reference to the Maze object.
      */
-    LaserSensor(Maze* maze);
+    LaserSensor(Maze& maze);
 
     /**
      * @brief The getSensorData function handles scanning for walls in orthogonal directions, logs detection results, and manages boundary conditions, ensuring accurate mapping of the maze environment.
@@ -96,9 +96,9 @@ class LidarSensor : public Sensor {
 public:
     /**
      * @brief Constructor for LidarSensor.
-     * @param maze Pointer to the Maze object.
+     * @param maze Reference to the Maze object.
      */
-    LidarSensor(Maze* maze);
+    LidarSensor(Maze& maze);
 
     /**
      * @brief The getSensorData function handles adjacent positions, logs detection results, and manages boundary conditions, ensuring accurate mapping of the maze environment.

@@ -3,7 +3,7 @@
 #include "Maze.h"
 #include "Logger.h"
 
-Sensor::Sensor(Maze* maze, const std::string& name)
+Sensor::Sensor(Maze& maze, const std::string& name)
     : maze(maze), logger(std::make_unique<Logger>("logs/" + name + ".log")) {
     directionNames = {
         {{-1, 0}, "West"},
@@ -23,7 +23,7 @@ Sensor::~Sensor() {
     logger->disableFileOutput();
 }
 
-Maze* Sensor::getMaze() const {
+Maze& Sensor::getMaze() const {
     return maze;
 }
 
@@ -35,7 +35,7 @@ Logger* Sensor::getLogger() const {
     return logger.get();
 }
 
-DistanceSensor::DistanceSensor(Maze* maze)
+DistanceSensor::DistanceSensor(Maze& maze)
     : Sensor(maze, "distance_sensor") {}
 
 void DistanceSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const {
@@ -46,7 +46,7 @@ void DistanceSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& 
             int ny = y + coordinates.second;
 
             if (nx >= 0 && ny >= 0 && nx < knownMaze.size() && ny < knownMaze[0].size()) {
-                if (getMaze()->isWall(nx, ny)) {
+                if (getMaze().isWall(nx, ny)) {
                     knownMaze[nx][ny] = 1;
                     getLogger()->logMessage("Step " + std::to_string(step) + ": Wall detected to the " + direction + " at (" + std::to_string(nx) + ", " + std::to_string(ny) + ")");
                 } else {
@@ -60,11 +60,11 @@ void DistanceSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& 
     }
 }
 
-LaserSensor::LaserSensor(Maze* maze)
+LaserSensor::LaserSensor(Maze& maze)
     : Sensor(maze, "laser_sensor") {}
 
 void LaserSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const {
-    if (x < 0 || y < 0 || x >= getMaze()->getWidth() || y >= getMaze()->getHeight()) {
+    if (x < 0 || y < 0 || x >= getMaze().getWidth() || y >= getMaze().getHeight()) {
         getLogger()->logMessage("Step " + std::to_string(step) + ": Starting position out of bounds at (" + std::to_string(x) + ", " + std::to_string(y) + ")");
         return;
     }
@@ -80,12 +80,12 @@ void LaserSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& kno
                 int nextX = nx + coordinates.first;
                 int nextY = ny + coordinates.second;
 
-                if (nextX < 0 || nextY < 0 || nextX >= getMaze()->getWidth() || nextY >= getMaze()->getHeight()) {
+                if (nextX < 0 || nextY < 0 || nextX >= getMaze().getWidth() || nextY >= getMaze().getHeight()) {
                     getLogger()->logMessage("Step " + std::to_string(step) + ": Out of bounds to the " + direction + " at (" + std::to_string(nextX) + ", " + std::to_string(nextY) + ")");
                     break;
                 }
 
-                if (getMaze()->isWall(nextX, nextY)) {
+                if (getMaze().isWall(nextX, nextY)) {
                     knownMaze[nextX][nextY] = 1;
                     getLogger()->logMessage("Step " + std::to_string(step) + ": Laser detected wall to the " + direction + " at (" + std::to_string(nextX) + ", " + std::to_string(nextY) + ")");
                     break;
@@ -100,7 +100,7 @@ void LaserSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& kno
     }
 }
 
-LidarSensor::LidarSensor(Maze* maze)
+LidarSensor::LidarSensor(Maze& maze)
     : Sensor(maze, "lidar_sensor") {}
 
 void LidarSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const {
@@ -111,8 +111,8 @@ void LidarSensor::getSensorData(int x, int y, std::vector<std::vector<int>>& kno
             
             int nx = x + dx;
             int ny = y + dy;
-            if (nx >= 0 && ny >= 0 && nx < getMaze()->getWidth() && ny < getMaze()->getHeight()) {
-                if (getMaze()->isWall(nx, ny)) {
+            if (nx >= 0 && ny >= 0 && nx < getMaze().getWidth() && ny < getMaze().getHeight()) {
+                if (getMaze().isWall(nx, ny)) {
                     knownMaze[nx][ny] = 1;
                     getLogger()->logMessage("Step " + std::to_string(step) + ": Lidar detected wall at (" + std::to_string(nx) + ", " + std::to_string(ny) + ")");
                 } else {

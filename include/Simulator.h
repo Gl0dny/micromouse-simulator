@@ -17,9 +17,9 @@ public:
     /**
      * @brief Constructs a new Simulator object.
      * @param micromouse Shared pointer to a Micromouse object.
-     * @param maze Pointer to a Maze object.
+     * @param maze Reference to a Maze object.
      */
-    Simulator(std::shared_ptr<Micromouse> micromouse, Maze* maze);
+    Simulator(std::shared_ptr<Micromouse> micromouse, Maze& maze);
 
     /**
      * @brief Destructor for Simulator.
@@ -69,7 +69,7 @@ private:
     void checkAndHandleWallCollision();
 
     std::shared_ptr<Micromouse> micromouse; ///< Shared pointer to the Micromouse.
-    Maze* maze; ///< Pointer to the Maze.
+    Maze& maze; ///< Reference to the Maze.
     int startX, startY; ///< Starting coordinates of the Micromouse.
     int steps; ///< Number of steps taken by the Micromouse.
     std::chrono::steady_clock::time_point startTime; ///< Start time of the simulation.

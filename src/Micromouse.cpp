@@ -71,6 +71,31 @@ void Micromouse::reset() {
     logger->logMessage("Micromouse reset to initial state");
 }
 
+std::string Micromouse::getDirection() const {
+    return direction;
+}
+
+void Micromouse::setDirection(const std::string& direction) {
+    this->direction = direction;
+}
+
+std::unique_ptr<Logger>& Micromouse::getLogger() {
+    return logger;
+}
+
+
+const std::map<std::string, std::pair<int, int>>& Micromouse::getDirections() const {
+    return directions;
+}
+
+const std::map<std::string, std::string>& Micromouse::getRightTurns() const {
+    return rightTurns;
+}
+
+const std::map<std::string, std::string>& Micromouse::getLeftTurns() const {
+    return leftTurns;
+}
+
 RightHandRuleBacktrackingMazeSolver::RightHandRuleBacktrackingMazeSolver()
     : Micromouse("rhrb_maze_solver") {}
 
@@ -79,25 +104,25 @@ void RightHandRuleBacktrackingMazeSolver::makeDecision() {
 }
 
 void RightHandRuleBacktrackingMazeSolver::followRightHandRule() {
-    std::string newDirection = rightTurns.at(direction);
-    auto [dx, dy] = directions.at(newDirection);
+    std::string newDirection = getRightTurns().at(getDirection());
+    auto [dx, dy] = getDirections().at(newDirection);
 
-    if (knownMaze[posX + dx][posY + dy] != 1) {
-        direction = newDirection;
+    if (getKnownMaze()[getPosX() + dx][getPosY() + dy] != 1) {
+        setDirection(newDirection);
     } else {
-        auto [dx, dy] = directions.at(direction);
-        if (knownMaze[posX + dx][posY + dy] == 1) {
-            newDirection = leftTurns.at(direction);
-            auto [dx, dy] = directions.at(newDirection);
-            if (knownMaze[posX + dx][posY + dy] != 1) {
-                direction = newDirection;
+        auto [dx, dy] = getDirections().at(getDirection());
+        if (getKnownMaze()[getPosX() + dx][getPosY() + dy] == 1) {
+            newDirection = getLeftTurns().at(getDirection());
+            auto [dx, dy] = getDirections().at(newDirection);
+            if (getKnownMaze()[getPosX() + dx][getPosY()  + dy] != 1) {
+                setDirection(newDirection);
             } else {
-                newDirection = rightTurns.at(rightTurns.at(direction));
-                direction = newDirection;
+                newDirection = getRightTurns().at(getRightTurns().at(getDirection()));
+                setDirection(newDirection);
             }
         }
     }
-    logger->logMessage("Step " + std::to_string(step) + ": Following right-hand rule. Micromouse decided to turn " + direction);
+    getLogger()->logMessage("Step " + std::to_string(getStep()) + ": Following right-hand rule. Micromouse decided to turn " + getDirection());
 }
 
 LeftHandRuleBacktrackingMazeSolver::LeftHandRuleBacktrackingMazeSolver()
@@ -108,35 +133,35 @@ void LeftHandRuleBacktrackingMazeSolver::makeDecision() {
 }
 
 void LeftHandRuleBacktrackingMazeSolver::followLeftHandRule() {
-    std::string newDirection = leftTurns.at(direction);
-    auto [dx, dy] = directions.at(newDirection);
+    std::string newDirection = getLeftTurns().at(getDirection());
+    auto [dx, dy] = getDirections().at(newDirection);
 
-    if (knownMaze[posX + dx][posY + dy] != 1) {
-        direction = newDirection;
+    if (getKnownMaze()[getPosX() + dx][getPosY() + dy] != 1) {
+        setDirection(newDirection);
     } else {
-        auto [dx, dy] = directions.at(direction);
-        if (knownMaze[posX + dx][posY + dy] == 1) {
-            newDirection = rightTurns.at(direction);
-            auto [dx, dy] = directions.at(newDirection);
-            if (knownMaze[posX + dx][posY + dy] != 1) {
-                direction = newDirection;
+        auto [dx, dy] = getDirections().at(getDirection());
+        if (getKnownMaze()[getPosX() + dx][getPosY() + dy] == 1) {
+            newDirection = getRightTurns().at(getDirection());
+            auto [dx, dy] = getDirections().at(newDirection);
+            if (getKnownMaze()[getPosX() + dx][getPosY()+ dy] != 1) {
+                setDirection(newDirection);
             } else {
-                newDirection = leftTurns.at(leftTurns.at(direction));
-                direction = newDirection;
+                newDirection = getLeftTurns().at(getLeftTurns().at(getDirection()));
+                setDirection(newDirection);
             }
         }
     }
-    logger->logMessage("Step " + std::to_string(step) + ": Following left-hand rule. Micromouse decided to turn " + direction);
+    getLogger()->logMessage("Step " + std::to_string(getStep()) + ": Following left-hand rule. Micromouse decided to turn " + getDirection());
 }
 
 TeleportingUndecidedMazeSolver::TeleportingUndecidedMazeSolver()
     : Micromouse("teleporting_undecided_maze_solver") {}
 
 bool TeleportingUndecidedMazeSolver::hasUntriedDirection(int x, int y) {
-    for (const auto& dir : directions) {
+    for (const auto& dir : getDirections()) {
         int newX = x + dir.second.first;
         int newY = y + dir.second.second;
-        if (knownMaze[newX][newY] != 1 && triedDirections[{x, y}].find(dir.first) == triedDirections[{x, y}].end()) {
+        if (getKnownMaze()[newX][newY] != 1 && triedDirections[{x, y}].find(dir.first) == triedDirections[{x, y}].end()) {
             return true;
         }
     }
@@ -144,10 +169,10 @@ bool TeleportingUndecidedMazeSolver::hasUntriedDirection(int x, int y) {
 }
 
 std::string TeleportingUndecidedMazeSolver::getNextDirection(int x, int y) {
-    for (const auto& dir : directions) {
+    for (const auto& dir : getDirections()) {
         int newX = x + dir.second.first;
         int newY = y + dir.second.second;
-        if (knownMaze[newX][newY] != 1 && triedDirections[{x, y}].find(dir.first) == triedDirections[{x, y}].end()) {
+        if (getKnownMaze()[newX][newY] != 1 && triedDirections[{x, y}].find(dir.first) == triedDirections[{x, y}].end()) {
             triedDirections[{x, y}].insert(dir.first);
             return dir.first;
         }
@@ -165,7 +190,7 @@ void TeleportingUndecidedMazeSolver::makeDecision() {
     }
 
     if (hasUntriedDirection(x, y)) {
-        direction = getNextDirection(x, y);
+        setDirection(getNextDirection(x, y));
         return;
     }
 
@@ -174,13 +199,13 @@ void TeleportingUndecidedMazeSolver::makeDecision() {
         backtrackStack.pop();
 
         if (hasUntriedDirection(backX, backY)) {
-            direction = getNextDirection(backX, backY);
+            setDirection(getNextDirection(backX, backY));
             setPosition(backX, backY);
             return;
         }
     }
 
-    logger->logMessage("Step " + std::to_string(step) + ": Micromouse is stuck with no untried directions available.");
+    getLogger()->logMessage("Step " + std::to_string(getStep()) + ": Micromouse is stuck with no untried directions available.");
 }
 
 std::shared_ptr<Micromouse> chooseMicromouse(Maze& maze) {

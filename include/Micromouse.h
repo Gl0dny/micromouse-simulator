@@ -92,7 +92,15 @@ public:
     void reset();
 
 protected:
+    std::string getDirection() const;
+    void setDirection(const std::string& direction);
+    std::unique_ptr<Logger>& getLogger();
+    const std::map<std::string, std::pair<int, int>>& getDirections() const;
+    const std::map<std::string, std::string>& getRightTurns() const;
+    const std::map<std::string, std::string>& getLeftTurns() const;
+private:
     int posX, posY; ///< Current X and Y positions of the Micromouse.
+    int step; ///< Current step count.
     std::string direction; ///< Current direction of the Micromouse.
     std::shared_ptr<Sensor> sensor; ///< Sensor for the Micromouse.
     std::vector<std::vector<int>> knownMaze; ///< Known maze grid.
@@ -106,7 +114,6 @@ protected:
     const std::map<std::string, std::string> leftTurns = {
         {"North", "West"}, {"West", "South"}, {"South", "East"}, {"East", "North"}
     }; ///< Left turns map.
-    int step; ///< Current step count.
 };
 
 /**

@@ -6,9 +6,6 @@ Wstępny Opis Projektu: Symulacja Micromouse
 
 GL course
 
-pola protected w micromouse -> pola private get and set protected 
-
-
 check the teleporting one
 
 Patterns collaborate class 
@@ -265,19 +262,25 @@ classDiagram
         +void move()
         +void readSensors()
         +int getStep()
-        +std::vector<std::vector<int>> getKnownMaze() const;
+        +std::vector<std::vector<int>> getKnownMaze() const
         +void initializeKnownMaze(int width, int height)
         +void reset()
-        #int posX
-        #int posY
-        #std::string direction
-        #std::shared_ptr<Sensor> sensor
-        #std::vector<std::vector<int>> knownMaze
-        #std::unique_ptr<Logger> logger
-        #const std::map<std::string, std::pair<int, int>> directions 
-        #const std::map<std::string, std::string> rightTurns
-        #const std::map<std::string, std::string> leftTurns
-        #int step
+        #std::string getDirection() const;
+        #const std::map<std::string, std::pair<int, int>>& getDirections() const
+        #const std::map<std::string, std::string>& getRightTurns() const
+        #const std::map<std::string, std::string>& getLeftTurns() const
+        #void setDirection(const std::string& direction)
+        #std::unique_ptr<Logger>& getLogger()
+        -int posX
+        -int posY
+        -std::string direction
+        -std::shared_ptr<Sensor> sensor
+        -std::vector<std::vector<int>> knownMaze
+        -std::unique_ptr<Logger> logger
+        -const std::map<std::string, std::pair<int, int>> directions 
+        -const std::map<std::string, std::string> rightTurns
+        -const std::map<std::string, std::string> leftTurns
+        -int step
     }
     
     class Sensor {

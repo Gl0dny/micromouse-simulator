@@ -3,8 +3,6 @@
 Patterns collaborate class 
 GL course
 
-check class diagram
-add simulation description
 double check everything
   -->
 
@@ -38,7 +36,16 @@ This program simulates a Micromouse navigating through a maze. The primary compo
    - [Prerequisites](#Prerequisites)
 3. [Running the Project](#running-the-project)
 4. [Documentation](#documentation)
-5. [Simulation](#simulation)
+5. [Simulation detailed description](#simulation-detailed-description)
+    - [Simulation Control](#simulation-control)
+    - [Main components](#main-components)
+        - [Maze](#maze)
+        - [Micromouse](#micromouse)
+        - [Sensor](#sensor)
+    - [Simulation Behaviour](#simulation-behaviour)
+    - [Key features](#key-features)
+    - [Simulation Execution](#simulation-execution)
+    - [Summary](#summary)
 6. [Log Files](#log-files)
     - [`main.log`](#mainlog)
     - [`simulator.log`](#simulatorlog)
@@ -119,7 +126,8 @@ sudo apt install doxygen
 ## Running the project
 
 ```sh
-./build.sh [options]
+./build.sh [option]
+
 Options:
     --help: Displays usage help.
     --test: Builds and runs tests without running the main application.
@@ -134,7 +142,7 @@ The provided build.sh script is a Bash script designed to automate the build pro
 
 `CMakeLists.txt`
 
-The provided CMakeLists.txt file is used to configure the build process for a project named MicromouseProject. It sets up compilation options, includes necessary libraries like Qt5 and Google Test, and defines targets for both the main executable and test executable. This CMakeLists.txt file effectively configures the build system for a C++ project involving Qt5 for GUI components and Google Test for unit testing. It separates the main executable build (MicromouseProject) from the test executable (tests), ensuring that both production and testing code are handled appropriately during compilation and linking. The file demonstrates best practices for integrating external libraries (Qt5 and Google Test) and setting up a comprehensive build environment for a C++ project.
+The provided CMakeLists.txt file is used to configure the build process for a project named MicromouseProject. It sets up compilation options, includes necessary libraries like Google Test, and defines targets for both the main executable and test executable. It separates the main executable build (MicromouseProject) from the test executable (tests), ensuring that both production and testing code are handled appropriately during compilation and linking.
 
 
 ## Documentation
@@ -147,9 +155,18 @@ To generate the project documentation, use the --doc option with the build.sh sc
 
 The generated documentation can be found in the ./docs/html directory. Open the index.html file in a web browser to view the documentation.
 
-## Simulation
+## Simulation detailed description
 
-Micromouse Selection
+The Micromouse Simulator is an interactive program designed to emulate the behavior of a small autonomous robot, known as a Micromouse, navigating through a maze. This simulation offers users the ability to control and monitor the Micromouse's progress using simple text commands. The program is multi-threaded, ensuring smooth operation and responsiveness.
+
+### Simulation Control
+
+The program utilizes a CommandQueue to manage user commands. This queue ensures that commands are processed in the order they are received and provides thread-safe access to user input.
+Two threads are created:
+
+- Input Thread: Continuously waits for user commands and adds them to the command queue.
+
+- Simulation Thread: Processes commands from the queue and controls the simulator accordingly.
 
 The program prompts the user to choose the type of Micromouse and sensor to use in the simulation.
 
@@ -165,13 +182,74 @@ Choose Sensor type:
     3. Lidar Sensor
 ```
 
-Enter Commands:
-```sh
-    start: Starts the simulation.
-    pause: Pauses the simulation.
-    reset: Resets the simulation.
-    exit: Exits the simulation.
-```
+When the user enters a command, it is pushed onto the command queue.
+The simulation thread pops commands from the queue and executes them. Depending on the command, the simulator will:
+- *```start```*: Begin the simulation, allowing the Micromouse to navigate the maze.
+- *```pause```*: Pause the simulation, halting the Micromouse's movement.
+- *```reset```*: Reset the simulation, bringing the Micromouse back to its initial state.
+- *```exit```*: Exit the simulation.
+ 
+### Main components
+
+###### Maze 
+The Maze component is a crucial part of the Micromouse Simulator, providing the environment in which the Micromouse navigates. It is a grid-based maze with walls and passages, generated randomly at the start of the simulation. The depth-first search algorithm is used to carve passages by visiting each cell and creating paths in random directions. The maze includes an exit point that the Micromouse must find.
+
+- Grid Dimensions: The maze is a 21x21 grid, with borders forming the outer walls.
+- Walls and Passages: Walls are represented by #, and open passages by spaces ( ).
+- Start and Exit Points: The Micromouse starts at a random corner, and the exit is located randomly on one of the borders.
+
+###### Micromouse
+The Micromouse component is a versatile simulation tool for testing different maze-solving algorithms and sensors. It provides detailed logging and visualization of the Micromouse's journey through the maze, making it an excellent tool for understanding and analyzing navigation strategies.
+
+Multiple Solvers - different algorithms for navigation:
+- Right-Hand Rule: Follows the right-hand rule to navigate.
+- Left-Hand Rule: Follows the left-hand rule to navigate.
+- Teleporting Undecided: Checks untried directions and uses backtracking for teleporting.
+
+
+###### Sensor
+The Sensor component is crucial for the Micromouse’s navigation, providing real-time data about the maze. Different sensor types offer various levels of detail, and detailed logging helps in understanding and analyzing the navigation process.
+
+Multiple Sensors - different sensor types for various levels of detail and range:
+- Distance Sensor: Detects walls in four cardinal directions (North, East, South, West).
+- Laser Sensor: Scans in four cardinal directions until a wall is detected.
+- Lidar Sensor: Scans a 5x5 area around the Micromouse for walls and open paths.
+
+### Simulation Behaviour
+
+- Start Position: The Micromouse begins at a randomly selected corner of the maze.
+- Movement: The Micromouse autonomously moves through the maze, making decisions based on its surroundings.
+- Goal: The Micromouse aims to reach a predetermined, random exit point within the maze.
+- Collision: If the Micromouse encounters a wall, the simulation pauses, and an appropriate log message is generated
+
+### Key Features
+
+- Type of solver and sensor can be chosen at the initialization of the simulator.
+- Thread-Safe Command Processing: Ensures that user inputs are handled efficiently and safely in a multi-threaded environment.
+- Responsive Control: Users can start, pause, reset, and exit the simulation with immediate effect.
+- Random Maze Generation: Each simulation run generates a unique maze, providing varied challenges for the Micromouse.
+- Depth-First Search Algorithm: Ensures that the maze has a solvable path from the start to the exit.
+- Random Start Position: Each reset places the Micromouse at a new random start position, providing varied simulation scenarios.
+- Collision Detection: The simulator monitors for wall collisions, halting the simulation if a collision occurs.
+- Dynamic Display: The maze state can be visualized at different stages of the generation and during the simulation.
+- Sensors read the maze at the Micromouse’s current position and update its known maze layout.
+- Logging: Keeps a detailed record of the simulation’s and main components activities , aiding in debugging and analysis.
+
+### Simulation Execution
+
+- When you start the simulation, the maze is generated and displayed. The Micromouse will begin navigating this randomly generated maze making decisions at each step.
+- The maze will be logged and displayed periodically, especially when significant events occur.
+- The simulation thread updates the Micromouse’s position, checks for wall collisions, and verifies if the Micromouse has reached the goal.
+- The simulator pauses if the user enters the pause command or if a wall collision occurs.
+- The simulator resets if the user enters the reset command, placing the Micromouse at a new random start position.
+- The simulation exits cleanly upon the exit command.
+
+You can observe the Micromouse’s progress in the maze through the console output, analyze the decisions made based on sensor inputs and algorithms.
+
+**Summary**
+
+This Micromouse simulator provides an engaging way to explore autonomous navigation algorithms within a maze. By offering simple command-based control, it allows users to easily manage the simulation and observe the behavior of the Micromouse in real-time.
+
 
 ## Log files
 
@@ -393,13 +471,13 @@ classDiagram
     class Simulator {
         +Simulator(std::shared_ptr<Micromouse> micromouse, Maze& maze)
         +~Simulator()
+        +void run()
         +void start()
         +void pause()
         +void reset()
-        +void run()
         -void setRandomStartPosition()
-        -void displayMazeWithMouse()
-        -bool hasReachedGoal()
+        -void displayMazeWithMouse() const
+        -bool hasReachedGoal() const
         -void checkAndHandleWallCollision()
         -std::shared_ptr<Micromouse> micromouse
         -Maze& maze
@@ -535,7 +613,7 @@ classDiagram
     main --> Simulator : creates
     main --> Micromouse : creates
     main --> CommandQueue : creates
-    main --> Maze : uses
+    main --> Maze : creates
     main --> Logger : creates, logs to
 
     Simulator o-- Micromouse : aggregates
@@ -544,7 +622,7 @@ classDiagram
 
     Maze *-- Logger : logs to
 
-    Micromouse *-- Sensor : uses
+    Micromouse o-- Sensor : aggregates
     Micromouse *-- Logger : logs to
 
     Sensor --> Maze : interacts with

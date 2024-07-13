@@ -4,15 +4,15 @@ Patterns collaborate class
 GL course
 
 check class diagram
-project functionalities/ description
+add simulation description
 double check everything
   -->
 
 # Micromouse Simulator
 
-This project aims to create a simulation of a micromouse robot tasked with navigating through a maze. The robot will be equipped with sensors that allow it to gather data about its surroundings and make movement decisions based on that data. The simulation will include a visualization of the robot's movement within the maze.
+This program simulates a Micromouse navigating through a maze. The primary components of the program include the maze, the Micromouse, and the simulator that orchestrates the simulation. The program allows for user interaction to start, pause, reset, and exit the simulation. This document provides a detailed overview of the program, including its structure, functionalities, and usage.
 
-## Functionality
+## Functionalities
 
 **Maze Generation and Display**
    - The maze will be generated randomly and displayed in the terminal, showing both walls and open spaces.
@@ -21,7 +21,7 @@ This project aims to create a simulation of a micromouse robot tasked with navig
    - The robot will navigate through the maze, analyzing sensor data and making movement decisions based solely on internal data. The robot's movement will be visualized on the screen.
 
 **Robot Sensors**
-   - The robot will be equipped with distance sensors (front, left, right) to assess the distance to the nearest wall in those directions.
+   - The robot will be equipped with sensors to allow the micrmouse to make a decision in which direction to move in the next iteration.
 
 **Navigation Algorithm**
    - The robot will use simple navigation algorithms, such as prioritizing the right or left direction when making movement decisions.
@@ -30,7 +30,7 @@ This project aims to create a simulation of a micromouse robot tasked with navig
    - The program will feature a simple console-based user interface, allowing users to start the simulation, pause, reset, and exit.
 
 **Progress Reporting**
-   - The program will display information about the robot's progress, such as the number of steps taken and the simulation time.
+   - The program will display information about the robot's progress, such as the number of steps taken and the simulation time. Besides that it will log information such as , simulation steps, user input, maze generation steps, sensor readings and  micromouse decision-making details.
 
 ## Table of Contents
 1. [Project Structure](#project-structure)
@@ -38,36 +38,23 @@ This project aims to create a simulation of a micromouse robot tasked with navig
    - [Prerequisites](#Prerequisites)
 3. [Running the Project](#running-the-project)
 4. [Documentation](#documentation)
-
-<!-- 5. [Detailed Program Operation](#detailed-program-operation)
-   - [Step 1: Extracting Data](#step-1-extracting-data)
-   - [Step 2: Data Processing](#step-2-data-processing)
-   - [Optional Step: Visualizing Sample Data](#optional-step-visualizing-sample-data)
-   - [Step 3: Training Gaussian Bayes Classifier](#step-3-training-gaussian-bayes-classifier)
-   - [Step 4: Training Histogram Bayes Classifier](#step-4-training-histogram-bayes-classifier)
-   - [Optional Step: Visualization of Histograms for a Given Class](#optional-step-visualization-of-histograms-for-a-given-class)
-   - [Step 5: Classification - Parametric Bayesian ML Classifier](#step-5-classification-parametric-bayesian-ml-classifier)
-   - [Step 6: Classification - Non-parametric Bayesian Classifier](#step-6-classification-non-parametric-bayesian-classifier) -->
-
+5. [Simulation](#simulation)
 6. [Log Files](#log-files)
-
     - [`main.log`](#mainlog)
     - [`simulator.log`](#simulatorlog)
     - [`maze.log`](#mazelog)
     - [`micromouse.log`](#micromouselog)
     - [`sensor.log`](#sensorlog)
 - [Log file examples](#log-file-examples)
-
 7. [Class Diagram](#class-diagram)
-<!-- 8. [Description of project files](#description-of-project-files)
-   - [`control/logger_utils.py`](#controllogger_utilspy)
-   - [`debug/debug_visualize_samples.py`](#debugdebug_visualize_samplespy)
-   - [`problem/gtsrb.py`](#problemgtsrbpy)
-   - [`problem/hu_image_data.py`](#problemhu_image_datapy)
-   - [`setup/setup.bat`](#setupsetupbat)
-   - [`setup/setup.sh`](#setup/setupsh)
-   - [`method/gaussian_bayes.py`](#methodgaussian_bayespy)
-   - [`method/histogram_bayes.py`](#methodhistogram_bayespy)  -->
+   - [Overview](#overview)
+        - [Main function](#main-function)
+        - [CommandQueue](#command-queue)
+        - [Simulator](#simulator)
+        - [Maze](#maze)
+        - [ Micromouse](#micromouse)
+        - [Sensor](#sensor)
+        - [Logger](#logger)
 
 ## Project Structure
 
@@ -151,7 +138,31 @@ To generate the project documentation, use the --doc option with the build.sh sc
 
 The generated documentation can be found in the ./docs/html directory. Open the index.html file in a web browser to view the documentation.
 
-## Detailed program overview
+## Simulation
+
+Micromouse Selection
+
+The program prompts the user to choose the type of Micromouse and sensor to use in the simulation.
+
+```sh
+Choose Micromouse type:
+    1. Right Hand Rule
+    2. Left Hand Rule
+    3. Teleporting Undecided Solver
+
+Choose Sensor type:
+    1. Distance Sensor
+    2. Laser Sensor
+    3. Lidar Sensor
+```
+
+Enter Commands:
+```sh
+    start: Starts the simulation.
+    pause: Pauses the simulation.
+    reset: Resets the simulation.
+    exit: Exits the simulation.
+```
 
 ## Log files
 
@@ -362,49 +373,12 @@ The log file provides a detailed record of the Micromouse's journey through the 
 
 ```mermaid
 classDiagram
-    class Micromouse {
-        +Micromouse(const std::string& logFileName)
-        +virtual ~Micromouse()
-        +void setSensor(std::shared_ptr<Sensor> sensor)
-        +virtual void makeDecision() = 0
-        +int getPosX() const
-        +int getPosY() const
-        +void setPosition(int x, int y)
-        +void move()
-        +void readSensors()
-        +int getStep()
-        +std::vector<std::vector<int>> getKnownMaze() const
-        +void initializeKnownMaze(int width, int height)
-        +void reset()
-        #std::string getDirection() const;
-        #const std::map<std::string, std::pair<int, int>>& getDirections() const
-        #const std::map<std::string, std::string>& getRightTurns() const
-        #const std::map<std::string, std::string>& getLeftTurns() const
-        #void setDirection(const std::string& direction)
-        #std::unique_ptr<Logger>& getLogger()
-        -int posX
-        -int posY
-        -std::string direction
-        -std::shared_ptr<Sensor> sensor
-        -std::vector<std::vector<int>> knownMaze
-        -std::unique_ptr<Logger> logger
-        -const std::map<std::string, std::pair<int, int>> directions 
-        -const std::map<std::string, std::string> rightTurns
-        -const std::map<std::string, std::string> leftTurns
-        -int step
-    }
-    
-    class Sensor {
-        +Sensor(Maze& maze, const std::string& name)
-        +virtual ~Sensor()
-        +virtual void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const = 0
-        #Maze& getMaze() const
-        #const std::map<std::pair<int, int>, std::string>& getDirectionNames() const
-        #Logger* getLogger() const
-        -Maze& maze
-        -std::map<std::pair<int, int>, std::string> directionNames
-        -std::unique_ptr<Logger> logger
-        -int steps
+    class CommandQueue {
+        +void push(const std::string& command)
+        +bool pop(std::string& command)
+        -std::queue<std::string> commands
+        -std::mutex mtx
+        -std::condition_variable cv
     }
     
     class Simulator {
@@ -453,20 +427,38 @@ classDiagram
         -void printMazeWithCurrentCarve(int cx, int cy) const
     }
     
-    class Logger {
-        +Logger(const std::string &filePath)
-        +~Logger()
-        +Logger& logMessage(const std::string& message, bool includeTimestamp = true)
-        +Logger& enableFileOutput(bool toFileOnly = true)
-        +Logger& clearLogFile()
-        -bool logToFile
-        -bool logToFileOnly
-        -std::ofstream logFile
-        -std::string logFilePath
-        -void createLogDirectory(const std::string &filePath)
-        -void disableFileOutput()
+    class Micromouse {
+        +Micromouse(const std::string& logFileName)
+        +virtual ~Micromouse()
+        +void setSensor(std::shared_ptr<Sensor> sensor)
+        +virtual void makeDecision() = 0
+        +int getPosX() const
+        +int getPosY() const
+        +void setPosition(int x, int y)
+        +void move()
+        +void readSensors()
+        +int getStep()
+        +std::vector<std::vector<int>> getKnownMaze() const
+        +void initializeKnownMaze(int width, int height)
+        +void reset()
+        #std::string getDirection() const;
+        #const std::map<std::string, std::pair<int, int>>& getDirections() const
+        #const std::map<std::string, std::string>& getRightTurns() const
+        #const std::map<std::string, std::string>& getLeftTurns() const
+        #void setDirection(const std::string& direction)
+        #std::unique_ptr<Logger>& getLogger()
+        -int posX
+        -int posY
+        -int step
+        -std::string direction
+        -std::shared_ptr<Sensor> sensor
+        -std::vector<std::vector<int>> knownMaze
+        -std::unique_ptr<Logger> logger
+        -const std::map<std::string, std::pair<int, int>> directions 
+        -const std::map<std::string, std::string> rightTurns
+        -const std::map<std::string, std::string> leftTurns
     }
-    
+
     class RightHandRuleBacktrackingMazeSolver {
         +RightHandRuleBacktrackingMazeSolver()
         +void makeDecision() override
@@ -489,6 +481,19 @@ classDiagram
         -std::string getNextDirection(int x, int y)
     }
     
+    class Sensor {
+        +Sensor(Maze& maze, const std::string& name)
+        +virtual ~Sensor()
+        +virtual void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const = 0
+        #Maze& getMaze() const
+        #const std::map<std::pair<int, int>, std::string>& getDirectionNames() const
+        #Logger* getLogger() const
+        -Maze& maze
+        -std::map<std::pair<int, int>, std::string> directionNames
+        -std::unique_ptr<Logger> logger
+        -int steps
+    }
+
     class DistanceSensor {
         +DistanceSensor(Maze& maze)
         +void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const override
@@ -503,13 +508,19 @@ classDiagram
         +LidarSensor(Maze& maze)
         +void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const override
     }
-    
-    class CommandQueue {
-        +void push(const std::string& command)
-        +bool pop(std::string& command)
-        -std::queue<std::string> commands
-        -std::mutex mtx
-        -std::condition_variable cv
+
+    class Logger {
+        +Logger(const std::string &filePath)
+        +~Logger()
+        +Logger& logMessage(const std::string& message, bool includeTimestamp = true)
+        +Logger& enableFileOutput(bool toFileOnly = true)
+        +Logger& clearLogFile()
+        -bool logToFile
+        -bool logToFileOnly
+        -std::ofstream logFile
+        -std::string logFilePath
+        -void createLogDirectory(const std::string &filePath)
+        -void disableFileOutput()
     }
     
     main --> Simulator : creates
@@ -537,30 +548,59 @@ classDiagram
     LaserSensor --|> Sensor : inherits
     LidarSensor --|> Sensor : inherits
 ```
-<!-- ## Classes Overview
 
-### Simulator
-The `Simulator` class controls the simulation of the Micromouse in the maze. It interfaces with the Micromouse and Maze classes to control the Micromouse's movement, manage simulation state, and handle logging of simulation events.
+### Overview
 
+#### `Main Function`
 
-### Micromouse
+The main function orchestrates the Micromouse simulation program by managing user input through CommandQueue, initializing and interacting with the Maze and Micromouse objects, and controlling simulation flow through threads (inputThread and simulationThread). It ensures thread-safe command handling and logging of simulation activities, providing a structured approach to simulate and control Micromouse behavior in a maze environment. The main function sets up logging, creates the maze and micromouse objects, and runs the simulation, allowing user commands to start, pause, reset, or exit the simulation.
+
+#### CommandQueue
+The CommandQueue class handles command input in a thread-safe manner using a queue, mutex, and condition variable. It provides methods to push commands onto the queue and pop commands from the queue, ensuring synchronized access and communication between threads. This design facilitates safe and efficient handling of user commands in a multi-threaded environment.
+
+#### `Simulator`
+
+The Simulator class orchestrates the simulation of a micromouse navigating through a maze. It interfaces with the Micromouse and Maze classes to control the micromouse's movement, manage simulation state, and handle logging of simulation events. This structured approach allows for clear separation of concerns and facilitates effective simulation management and monitoring.
+
+#### `Maze`
+
+Singleton class representing a Maze. The Maze class encapsulates maze generation and manipulation logic, providing methods to retrieve maze dimensions, display the maze, access maze grid data, and manage logging of maze operations. It employs the singleton pattern to ensure a single instance exists throughout the program's execution, enhancing consistency and control over maze generation and logging activities. This design facilitates organized development and debugging of maze-related applications.
+
+#### `Micromouse`
 The `Micromouse` class represents the robot navigating through the maze. It maintains the position, steps taken, and sensors attached to the Micromouse.
 
+The Micromouse class encapsulates the core functionality and state management for a micromouse navigating and mapping a maze. It provides methods for setting up sensors, making decisions based on sensor data, moving within the maze, and maintaining an updated map (knownMaze). The class also handles initialization, resetting to initial state, and logging of micromouse activities, facilitating systematic maze exploration and navigation. This modular design supports the implementation of various micromouse algorithms by deriving classes that implement specific decision-making strategies (makeDecision()).
 
-### Maze
-The `Maze` class represents the maze structure. It is a singleton class, ensuring only one instance of the maze exists.
+#### `RightHandRuleBacktrackingMazeSolver`
+The RightHandRuleBacktrackingMazeSolver class extends Micromouse and implements a maze-solving strategy based on the right-hand rule with backtracking. It leverages inherited methods and data members to manage micromouse state, decision-making based on sensor data (knownMaze), and logging of micromouse activities. This algorithmic approach ensures systematic maze exploration and backtracking when encountering dead-ends or blocked paths, aiming to find an optimal route through the maze environment.
 
+#### `LeftHandRuleBacktrackingMazeSolver`
+The LeftHandRuleBacktrackingMazeSolver class extends Micromouse and implements a maze-solving strategy based on the left-hand rule with backtracking. It utilizes inherited methods and data members to manage micromouse state, decision-making based on sensor data (knownMaze), and logging of micromouse activities. This algorithmic approach ensures systematic maze exploration and backtracking when encountering dead-ends or blocked paths, aiming to find an optimal route through the maze environment.
 
-### Logger
-The `Logger` class handles logging messages to a file and optionally to the console.
+#### `TeleportingUndecidedMazeSolver`
+The TeleportingUndecidedMazeSolver class extends Micromouse and implements a maze-solving strategy that combines teleporting with an undecided path-solving approach. It utilizes backtracking (backtrackStack) to revisit previous positions and attempt alternative paths when encountering dead-ends or fully explored areas. This strategy aims to efficiently explore and navigate through the maze while adapting to unknown configurations and obstacles encountered.
 
-### Sensor
-The `Sensor` class is a base class for different types of sensors that can be attached to the Micromouse.
+#### `createMicromouse()`
+The createMicromouse function is a factory function that creates a Micromouse object with given solver and sensor types. It provides a flexible mechanism to instantiate micromouse objects with different solver and sensor types, based on the template parameters SolverType and SensorType. This approach supports modular design and facilitates the creation of micromouse instances tailored to specific maze-solving algorithms and sensor capabilities, enhancing reusability and flexibility in micromouse simulation and development environments.
 
-### CommandQueue
-The `CommandQueue` class handles command input in a thread-safe manner using a queue, mutex, and condition variable.
+#### `chooseMicromouse()`
+The chooseMicromouse function allows for dynamic selection and creation of a Micromouse instance based on user input. By leveraging templated createMicromouse function calls based on user input, it enables flexible configuration of micromouse behavior to suit different maze-solving strategies and sensor capabilities. This approach supports modularity and extensibility in micromouse simulation and development, enabling rapid testing and iteration of different algorithms and sensor combinations within a maze environment.
 
-## Main Function
+#### `Sensor`
+The Sensor class serves as a base class for different types of sensors used in a maze environment. It provides a common interface and shared functionality for sensor operations. The class maintains a reference to the Maze object, a map of direction names, a unique pointer to a Logger for logging activities, and a step counter. Derived classes must implement the pure virtual function getSensorData, which retrieves sensor data based on the maze's layout and updates a known representation of the maze. This design promotes modularity and ease of extending sensor capabilities.
 
-The main function orchestrates the Micromouse simulation by managing user input through CommandQueue, initializing and interacting with the Maze and Micromouse objects, and controlling simulation flow through threads. -->
+#### `DistanceSensor`
+The DistanceSensor class inherits from the Sensor class and specializes in scanning orthogonal directions within a maze to detect walls. By querying the maze environment through the Maze object, it updates a 2D vector representing the known layout of the maze. The getSensorData function handles scanning, logging detection results, and managing boundary conditions to ensure an accurate mapping of the maze, facilitating precise navigation and obstacle avoidance.
 
+#### `LaserSensor`
+The LaserSensor class extends the Sensor class, providing functionality to scan multiple directions from a specific position within a maze until encountering a wall. Utilizing the Maze object, it gathers data about the maze's structure and updates a 2D vector to reflect the known layout. The getSensorData function focuses on scanning, logging findings, and handling boundary conditions, ensuring the sensor accurately represents the maze environment for navigation purposes.
+
+#### `LidarSensor`
+The LidarSensor class, derived from the Sensor class, is designed to detect walls and open spaces around a given coordinate in a maze. It leverages the Maze object to query the environment and updates a 2D vector with the known maze layout. The getSensorData function processes data from adjacent positions, logs detection results, and manages boundary conditions, ensuring the sensor provides a reliable and precise mapping of the maze for navigation and exploration tasks.
+
+#### `Logger`
+
+The Logger class provides functionality for logging messages to a file and/or console. It allows messages to be logged with optional timestamps and supports enabling or disabling file output. The class includes methods for clearing the log file and managing logging behavior between file and console outputs. The Logger ensures efficient file handling and robust logging capabilities, aiding in debugging, monitoring, and analysis tasks within an application.
+
+#### `Utils` namesace
+The Utils namespace encapsulates functions that handle random number generation, date-time formatting, directory creation, file manipulation (clearing and existence checking), and debug output. These utilities facilitate common tasks in software development, enhancing code modularity, reusability, and maintainability. The namespace structure ensures organized access to utility functions across different parts of an application.

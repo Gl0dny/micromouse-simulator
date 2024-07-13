@@ -10,7 +10,7 @@
 #include <condition_variable>
 
 /**
- * @brief CommandQueue class to handle command input in a thread-safe manner. 
+ * @brief The CommandQueue class handles command input in a thread-safe manner using a queue, mutex, and condition variable. It provides methods to push commands onto the queue and pop commands from the queue, ensuring synchronized access and communication between threads. This design facilitates safe and efficient handling of user commands in a multi-threaded environment.
  */
 class CommandQueue {
 public:

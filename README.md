@@ -1,11 +1,3 @@
-<!-- TODO
-
-Patterns collaborate class 
-GL course
-
-double check everything
-  -->
-
 # Micromouse Simulator
 
 This program simulates a Micromouse navigating through a maze. The primary components of the program include the maze, the micromouse, and the simulator that orchestrates the simulation. The program allows for user interaction to start, pause, reset, and exit the simulation. This document provides a detailed overview of the program, including its structure, functionalities, and usage.

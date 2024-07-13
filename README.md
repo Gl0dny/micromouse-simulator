@@ -4,23 +4,12 @@ This program simulates a Micromouse navigating through a maze. The primary compo
 
 ## Functionalities
 
-**Maze Generation and Display**
-   - The maze will be generated randomly and displayed in the terminal, showing both walls and open spaces.
-
-**Robot Movement Simulation**
-   - The robot will navigate through the maze, analyzing sensor data and making movement decisions based solely on internal data. The robot's movement will be visualized on the screen.
-
-**Robot Sensors**
-   - The robot will be equipped with sensors to allow the micrmouse to make a decision in which direction to move in the next iteration.
-
-**Navigation Algorithm**
-   - The robot will use simple navigation algorithms, such as prioritizing the right or left direction when making movement decisions.
-
-**User Interface**
-   - The program will feature a simple console-based user interface, allowing users to start the simulation, pause, reset, and exit.
-
-**Progress Reporting**
-   - The program will display information about the robot's progress, such as the number of steps taken and the simulation time. Besides that it will log information such as , simulation steps, user input, maze generation steps, sensor readings and  micromouse decision-making details.
+- The maze will be generated randomly and displayed in the terminal, showing both walls and open spaces.
+- The robot will be equipped with sensors to allow the micromouse to make a decision in which direction to move in the next iteration.
+- The robot will navigate through the maze, analyzing sensor data and making movement decisions based solely on internal data. The robot's movement will be visualized on the screen.
+- The robot will use simple navigation algorithms, such as prioritizing the right or left direction when making movement decisions.
+- The program will feature a simple console-based user interface, allowing users to start the simulation, pause, reset, and exit.
+- The program will display information about the robot's progress such as the number of steps taken and the simulation time, sensor readings and micromouse decision-making details.
 
 ## Table of Contents
 1. [Project Structure](#project-structure)
@@ -95,13 +84,15 @@ This program simulates a Micromouse navigating through a maze. The primary compo
 
 ### Prerequisites
 
+This setup was tested and should be run on Ubuntu.
+
 Ensure the following tools are installed on your system:
 
 - C++17 or higher
 - CMake 3.10 or higher
 
 - Google Test Framework
-```sh
+```
 git clone https://github.com/google/googletest.git
 cd googletest
 mkdir build
@@ -117,7 +108,7 @@ sudo apt install doxygen
 
 ## Running the project
 
-```sh
+```
 ./build.sh [option]
 
 Options:
@@ -134,22 +125,22 @@ The provided build.sh script is a Bash script designed to automate the build pro
 
 `CMakeLists.txt`
 
-The provided CMakeLists.txt file is used to configure the build process for a project named MicromouseProject. It sets up compilation options, includes necessary libraries like Google Test, and defines targets for both the main executable and test executable. It separates the main executable build (MicromouseProject) from the test executable (tests), ensuring that both production and testing code are handled appropriately during compilation and linking.
+The provided CMakeLists.txt file is used to configure the build process for a project named MicromouseProject. It sets up compilation options, includes necessary libraries like Google Test, and defines targets for both the main executable and test executable. It separates the main executable build (`MicromouseProject`) from the test executable (`tests`), ensuring that both production and testing code are handled appropriately during compilation and linking.
 
 
 ## Documentation
 
-To generate the project documentation, use the --doc option with the build.sh script. The documentation will be generated using Doxygen.
+To generate the project documentation, use the `--doc` option with the `build.sh` script. The documentation will be generated using Doxygen.
 
 ```sh
 ./build.sh --doc
 ```
 
-The generated documentation can be found in the ./docs/html directory. Open the index.html file in a web browser to view the documentation.
+The generated documentation can be found in the `./docs/html` directory. Open the `index.html` file in a web browser to view the documentation.
 
 ## Simulation detailed description
 
-The Micromouse Simulator is an interactive program designed to emulate the behavior of a small autonomous robot, known as a Micromouse, navigating through a maze. This simulation offers users the ability to control and monitor the Micromouse's progress using simple text commands. The program is multi-threaded, ensuring smooth operation and responsiveness.
+The Micromouse Simulator is an interactive program designed to simulate the behavior of a small autonomous robot, known as a Micromouse, navigating through a maze. This simulation offers users the ability to control and monitor the Micromouse's progress using simple text commands. The program is multi-threaded, ensuring smooth operation and responsiveness.
 
 ### Simulation Control
 
@@ -162,7 +153,7 @@ Two threads are created:
 
 The program prompts the user to choose the type of Micromouse and sensor to use in the simulation.
 
-```sh
+```
 Choose Micromouse type:
     1. Right Hand Rule
     2. Left Hand Rule
@@ -184,7 +175,7 @@ The simulation thread pops commands from the queue and executes them. Depending 
 ### Main components
 
 ###### Maze 
-The Maze component is a crucial part of the Micromouse Simulator, providing the environment in which the Micromouse navigates. It is a grid-based maze with walls and passages, generated randomly at the start of the simulation. The depth-first search algorithm is used to carve passages by visiting each cell and creating paths in random directions. The maze includes an exit point that the Micromouse must find.
+The Maze component is a crucial part of the Micromouse Simulator, providing the environment in which the Micromouse navigates. It is a grid-based maze with walls and passages, generated randomly at the start of the simulation. The depth-first search algorithm is used to carve passages by visiting each cell and creating paths in random directions. The maze includes random exit point that the Micromouse must find.
 
 - Grid Dimensions: The maze is a 21x21 grid, with borders forming the outer walls.
 - Walls and Passages: Walls are represented by #, and open passages by spaces ( ).
@@ -194,9 +185,9 @@ The Maze component is a crucial part of the Micromouse Simulator, providing the 
 The Micromouse component is a versatile simulation tool for testing different maze-solving algorithms and sensors. It provides detailed logging and visualization of the Micromouse's journey through the maze, making it an excellent tool for understanding and analyzing navigation strategies.
 
 Multiple Solvers - different algorithms for navigation:
-- Right-Hand Rule: Follows the right-hand rule to navigate.
-- Left-Hand Rule: Follows the left-hand rule to navigate.
-- Teleporting Undecided: Checks untried directions and uses backtracking for teleporting.
+- Right-Hand Rule: Follows the right-hand rule with backtracking to navigate.
+- Left-Hand Rule: Follows the left-hand rule with backtracking to navigate.
+- Teleporting Undecided: Checks untried directions and uses backtracking for teleporting to make it seem like the micromouse's behaviour is undefined.
 
 
 ###### Sensor
@@ -222,15 +213,17 @@ Multiple Sensors - different sensor types for various levels of detail and range
 - Random Maze Generation: Each simulation run generates a unique maze, providing varied challenges for the Micromouse.
 - Depth-First Search Algorithm: Ensures that the maze has a solvable path from the start to the exit.
 - Random Start Position: Each reset places the Micromouse at a new random start position, providing varied simulation scenarios.
+- Random Exit Position: Each run of the simulation generates a unique exit position.
 - Collision Detection: The simulator monitors for wall collisions, halting the simulation if a collision occurs.
-- Dynamic Display: The maze state can be visualized at different stages of the generation and during the simulation.
 - Sensors read the maze at the Micromouse’s current position and update its known maze layout.
+- Micromouse makes decision where to move based on the sensor data and chosen solver algorithm.
+- Dynamic Display: The maze state can be visualized at different stages of the generation and during the simulation.
 - Logging: Keeps a detailed record of the simulation’s and main components activities , aiding in debugging and analysis.
 
 ### Simulation Execution
 
 - When you start the simulation, the maze is generated and displayed. The Micromouse will begin navigating this randomly generated maze making decisions at each step.
-- The maze will be logged and displayed periodically, especially when significant events occur.
+- Micromouse's journey will be logged and displayed periodically, especially when significant events occur.
 - The simulation thread updates the Micromouse’s position, checks for wall collisions, and verifies if the Micromouse has reached the goal.
 - The simulator pauses if the user enters the pause command or if a wall collision occurs.
 - The simulator resets if the user enters the reset command, placing the Micromouse at a new random start position.
@@ -238,36 +231,34 @@ Multiple Sensors - different sensor types for various levels of detail and range
 
 You can observe the Micromouse’s progress in the maze through the console output, analyze the decisions made based on sensor inputs and algorithms.
 
-**Summary**
+### Summary
 
 This Micromouse simulator provides an engaging way to explore autonomous navigation algorithms within a maze. By offering simple command-based control, it allows users to easily manage the simulation and observe the behavior of the Micromouse in real-time.
 
 
 ## Log files
 
+The logging mechanism (Logger class) is utilized to record main components states, important events and commands during the simulation, aiding in monitoring and debugging the program's execution.
+
 #### `main.log`
 
-The provided code (main.log and main.cpp) showcases a structured approach to simulating micromouse behavior in a maze environment. It employs threads for managing user commands and simulator actions, ensuring smooth interaction and proper synchronization. The logging mechanism (Logger class) is utilized to record important events and commands during the simulation, aiding in monitoring and debugging the program's execution.
-
-The main.log file serves as a chronological record of events and user commands throughout the micromouse simulation program. It documents the initialization of key components such as the maze, micromouse, and simulator, as well as user interactions that control the simulation's flow (start, pause, reset, exit). Each log entry provides insights into the program's execution timeline, facilitating monitoring, debugging, and understanding of the simulation's behavior and outcomes.
+Serves as a chronological record of events and user commands throughout the micromouse simulation program. It documents the initialization of key components such as the maze, micromouse, and simulator, as well as user interactions that control the simulation's flow (start, pause, reset, exit). Each log entry provides insights into the program's execution timeline, facilitating monitoring, debugging, and understanding of the simulation's behavior and outcomes.
 
 #### `simulator.log`
 
-The provided log file simulator.log documents the activities and events during the execution of a micromouse simulation. The log file simulator.log serves as a detailed record of the micromouse simulation's progress, capturing initialization, grid representations, steps taken, and simulation time. It is essential for debugging, performance analysis, and understanding the behavior of the micromouse within the simulated maze environment. Each entry provides insight into the state of the simulation at specific points in time, aiding in understanding its execution flow and outcomes.
+Serves as a detailed record of the micromouse simulation's progress, capturing initialization, grid representations, steps taken, and simulation time. It is essential for debugging, performance analysis, and understanding the behavior of the micromouse within the simulated maze environment. Each entry provides insight into the state of the simulation at specific points in time, aiding in understanding its execution flow and outcomes.
 
 #### `maze.log`
 
-The log file maze.log effectively tracks the maze generation process, carving of passages, and updates to the maze grid. It provides a comprehensive view of how the maze is constructed and logged in real-time. This level of logging is useful for debugging, understanding maze generation algorithms, and visualizing the state of the maze throughout its creation process.
+Tracks the maze generation process, carving of passages, and updates to the maze grid. It provides a comprehensive view of how the maze is constructed and logged in real-time. This level of logging is useful for debugging, understanding maze generation algorithms, and visualizing the state of the maze throughout its creation process.
 
 #### `sensor.log`
 
-The sensor.log file captures the output of the micromouse's sensor as it scans the maze environment, detecting walls and logging its findings. 
+Captures the output of the micromouse's sensor as it scans the maze environment, detecting walls and logging its findings. 
 
 #### `micromouse.log`
-
-The provided log file details a simulation or execution log of a Micromouse robot navigating through a maze, using different maze solving algorithms based on the right-hand rule, left-hand rule, and a teleporting undecided strategy. 
-
-The log file provides a detailed record of the Micromouse's journey through the maze, reflecting the implementation of different maze-solving algorithms. Each step is logged to track the Micromouse's position, sensor readings, decision-making process, and algorithm-specific behavior. This structured logging is crucial for debugging, analyzing performance, and understanding the behavior of the maze-solving algorithms implemented in the Micromouse simulation.
+ 
+Provides a detailed record of the Micromouse's journey through the maze, reflecting the implementation of different maze-solving algorithms. Each step is logged to track the Micromouse's position, sensor readings, decision-making process, and algorithm-specific behavior. This structured logging is crucial for debugging, analyzing performance, and understanding the behavior of the maze-solving algorithms implemented in the Micromouse simulation.
 
 
 ## Log file examples

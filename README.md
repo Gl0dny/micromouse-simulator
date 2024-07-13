@@ -10,7 +10,7 @@ double check everything
 
 # Micromouse Simulator
 
-This program simulates a Micromouse navigating through a maze. The primary components of the program include the maze, the Micromouse, and the simulator that orchestrates the simulation. The program allows for user interaction to start, pause, reset, and exit the simulation. This document provides a detailed overview of the program, including its structure, functionalities, and usage.
+This program simulates a Micromouse navigating through a maze. The primary components of the program include the maze, the micromouse, and the simulator that orchestrates the simulation. The program allows for user interaction to start, pause, reset, and exit the simulation. This document provides a detailed overview of the program, including its structure, functionalities, and usage.
 
 ## Functionalities
 
@@ -47,14 +47,23 @@ This program simulates a Micromouse navigating through a maze. The primary compo
     - [`sensor.log`](#sensorlog)
 - [Log file examples](#log-file-examples)
 7. [Class Diagram](#class-diagram)
-   - [Overview](#overview)
-        - [Main function](#main-function)
-        - [CommandQueue](#command-queue)
-        - [Simulator](#simulator)
-        - [Maze](#maze)
-        - [ Micromouse](#micromouse)
-        - [Sensor](#sensor)
-        - [Logger](#logger)
+8. [Main classes and functions overview](#main-classes-and-functions-overview)
+    - [`Main function`](#main-function)
+    - [`CommandQueue`](#commandqueue)
+    - [`Simulator`](#simulator)
+    - [`Maze`](#maze)
+    - [`Micromouse`](#micromouse)
+    - [`RightHandRuleBacktrackingMazeSolver`](#RightHandRuleBacktrackingMazeSolver)
+    - [`LeftHandRuleBacktrackingMazeSolver`](#LeftHandRuleBacktrackingMazeSolver)
+    - [`TeleportingUndecidedMazeSolver`](#TeleportingUndecidedMazeSolver)
+    - [`createMicromouse()`](#createmicromouse)
+    - [`chooseMicromouse()`](#choosemicromouse)
+    - [`Sensor`](#sensor)
+    - [`DistanceSensor`](#distancesensor)
+    - [`LaserSensor`](#lasersensor)
+    - [`LidarSensor`](#lidarsensor)
+    - [`Logger`](#logger)
+    - [`Utils`](#utils)
 
 ## Project Structure
 
@@ -380,7 +389,7 @@ classDiagram
         -std::mutex mtx
         -std::condition_variable cv
     }
-    
+
     class Simulator {
         +Simulator(std::shared_ptr<Micromouse> micromouse, Maze& maze)
         +~Simulator()
@@ -549,26 +558,22 @@ classDiagram
     LidarSensor --|> Sensor : inherits
 ```
 
-### Overview
+## Main classes and functions overview
 
 #### `Main Function`
 
 The main function orchestrates the Micromouse simulation program by managing user input through CommandQueue, initializing and interacting with the Maze and Micromouse objects, and controlling simulation flow through threads (inputThread and simulationThread). It ensures thread-safe command handling and logging of simulation activities, providing a structured approach to simulate and control Micromouse behavior in a maze environment. The main function sets up logging, creates the maze and micromouse objects, and runs the simulation, allowing user commands to start, pause, reset, or exit the simulation.
 
-#### CommandQueue
+#### `CommandQueue`
 The CommandQueue class handles command input in a thread-safe manner using a queue, mutex, and condition variable. It provides methods to push commands onto the queue and pop commands from the queue, ensuring synchronized access and communication between threads. This design facilitates safe and efficient handling of user commands in a multi-threaded environment.
 
 #### `Simulator`
-
 The Simulator class orchestrates the simulation of a micromouse navigating through a maze. It interfaces with the Micromouse and Maze classes to control the micromouse's movement, manage simulation state, and handle logging of simulation events. This structured approach allows for clear separation of concerns and facilitates effective simulation management and monitoring.
 
 #### `Maze`
-
 Singleton class representing a Maze. The Maze class encapsulates maze generation and manipulation logic, providing methods to retrieve maze dimensions, display the maze, access maze grid data, and manage logging of maze operations. It employs the singleton pattern to ensure a single instance exists throughout the program's execution, enhancing consistency and control over maze generation and logging activities. This design facilitates organized development and debugging of maze-related applications.
 
 #### `Micromouse`
-The `Micromouse` class represents the robot navigating through the maze. It maintains the position, steps taken, and sensors attached to the Micromouse.
-
 The Micromouse class encapsulates the core functionality and state management for a micromouse navigating and mapping a maze. It provides methods for setting up sensors, making decisions based on sensor data, moving within the maze, and maintaining an updated map (knownMaze). The class also handles initialization, resetting to initial state, and logging of micromouse activities, facilitating systematic maze exploration and navigation. This modular design supports the implementation of various micromouse algorithms by deriving classes that implement specific decision-making strategies (makeDecision()).
 
 #### `RightHandRuleBacktrackingMazeSolver`
@@ -599,8 +604,7 @@ The LaserSensor class extends the Sensor class, providing functionality to scan 
 The LidarSensor class, derived from the Sensor class, is designed to detect walls and open spaces around a given coordinate in a maze. It leverages the Maze object to query the environment and updates a 2D vector with the known maze layout. The getSensorData function processes data from adjacent positions, logs detection results, and manages boundary conditions, ensuring the sensor provides a reliable and precise mapping of the maze for navigation and exploration tasks.
 
 #### `Logger`
-
 The Logger class provides functionality for logging messages to a file and/or console. It allows messages to be logged with optional timestamps and supports enabling or disabling file output. The class includes methods for clearing the log file and managing logging behavior between file and console outputs. The Logger ensures efficient file handling and robust logging capabilities, aiding in debugging, monitoring, and analysis tasks within an application.
 
-#### `Utils` namesace
+#### `Utils`
 The Utils namespace encapsulates functions that handle random number generation, date-time formatting, directory creation, file manipulation (clearing and existence checking), and debug output. These utilities facilitate common tasks in software development, enhancing code modularity, reusability, and maintainability. The namespace structure ensures organized access to utility functions across different parts of an application.

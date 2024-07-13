@@ -92,7 +92,44 @@ public:
     void reset();
 
 protected:
+    /**
+     * @brief Gets the current direction of the Micromouse.
+     * @return Current direction as a string.
+     */
+    std::string getDirection() const;
+
+    /**
+     * @brief Sets the direction of the Micromouse.
+     * @param direction Direction as a string.
+     */
+    void setDirection(const std::string& direction);
+
+    /**
+     * @brief Gets the logger object.
+     * @return Unique pointer to the Logger object.
+     */
+    std::unique_ptr<Logger>& getLogger();
+
+    /**
+     * @brief Gets the map of directions.
+     * @return Map of directions and their corresponding coordinate changes.
+     */
+    const std::map<std::string, std::pair<int, int>>& getDirections() const;
+
+    /**
+     * @brief Gets the map of right turns.
+     * @return Map of directions and their corresponding right turns.
+     */
+    const std::map<std::string, std::string>& getRightTurns() const;
+
+    /**
+     * @brief Gets the map of left turns.
+     * @return Map of directions and their corresponding left turns.
+     */
+    const std::map<std::string, std::string>& getLeftTurns() const;
+private:
     int posX, posY; ///< Current X and Y positions of the Micromouse.
+    int step; ///< Current step count.
     std::string direction; ///< Current direction of the Micromouse.
     std::shared_ptr<Sensor> sensor; ///< Sensor for the Micromouse.
     std::vector<std::vector<int>> knownMaze; ///< Known maze grid.
@@ -106,7 +143,6 @@ protected:
     const std::map<std::string, std::string> leftTurns = {
         {"North", "West"}, {"West", "South"}, {"South", "East"}, {"East", "North"}
     }; ///< Left turns map.
-    int step; ///< Current step count.
 };
 
 /**
@@ -114,10 +150,20 @@ protected:
  */
 class RightHandRuleBacktrackingMazeSolver : public Micromouse {
 public:
+    /**
+     * @brief Constructor for RightHandRuleBacktrackingMazeSolver.
+     */
     RightHandRuleBacktrackingMazeSolver();
+
+    /**
+     * @brief Implements the decision-making process based on the right-hand rule algorithm.
+     */
     void makeDecision() override;
 
 private:
+    /**
+     * @brief Follows the right-hand rule to determine the next move.
+     */
     void followRightHandRule();
 };
 
@@ -126,10 +172,20 @@ private:
  */
 class LeftHandRuleBacktrackingMazeSolver : public Micromouse {
 public:
+    /**
+     * @brief Constructor for LeftHandRuleBacktrackingMazeSolver.
+     */
     LeftHandRuleBacktrackingMazeSolver();
+
+    /**
+     * @brief Implements the decision-making process based on the left-hand rule algorithm.
+     */
     void makeDecision() override;
 
 private:
+    /**
+     * @brief Follows the left-hand rule to determine the next move.
+     */
     void followLeftHandRule();
 };
 
@@ -138,7 +194,14 @@ private:
  */
 class TeleportingUndecidedMazeSolver : public Micromouse {
 public:
+    /**
+     * @brief Constructor for TeleportingUndecidedMazeSolver.
+     */
     TeleportingUndecidedMazeSolver();
+
+    /**
+     * @brief Implements the decision-making process for the maze solver.
+     */
     void makeDecision() override;
 
 private:
@@ -146,7 +209,20 @@ private:
     std::map<std::pair<int, int>, std::set<std::string>> triedDirections; ///< Tracks tried directions from each cell.
     std::stack<std::pair<int, int>> backtrackStack; ///< Stack for backtracking.
 
+    /**
+     * @brief Checks if there are untried directions from the current position.
+     * @param x X position.
+     * @param y Y position.
+     * @return True if there are untried directions, false otherwise.
+     */
     bool hasUntriedDirection(int x, int y);
+
+    /**
+     * @brief Gets the next direction to move from the current position.
+     * @param x X position.
+     * @param y Y position.
+     * @return The next direction as a string.
+     */
     std::string getNextDirection(int x, int y);
 };
 
@@ -157,8 +233,7 @@ private:
  * @param maze Reference to the maze object.
  * @return Shared pointer to the created Micromouse.
  */
-template <typename SolverType, typename SensorType>
-std::shared_ptr<Micromouse> createMicromouse(Maze& maze) {
+template <typename SolverType, typename SensorType> std::shared_ptr<Micromouse> createMicromouse(Maze& maze) {
     auto micromouse = std::make_shared<SolverType>();
     auto sensor = std::make_shared<SensorType>(maze);
     micromouse->initializeKnownMaze(maze.getWidth(), maze.getHeight());

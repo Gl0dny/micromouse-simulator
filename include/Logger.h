@@ -5,7 +5,7 @@
 #include <string>
 
 /**
- * @brief Logger class for logging messages to a file and/or console.
+ * @brief The Logger class provides functionality for logging messages to a file and/or console. It allows messages to be logged with optional timestamps and supports enabling or disabling file output. The class includes methods for clearing the log file and managing logging behavior between file and console outputs. The Logger ensures efficient file handling and robust logging capabilities, aiding in debugging, monitoring, and analysis tasks within an application.
  */
 class Logger {
 public:

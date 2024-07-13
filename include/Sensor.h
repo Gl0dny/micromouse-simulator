@@ -10,7 +10,7 @@
 #include "Logger.h"
 
 /**
- * @brief The Logger class encapsulates functionality for logging messages with optional timestamps to a specified file path. It supports enabling/disabling file output, clearing the log file, and managing logging behavior between file and console outputs. This setup facilitates organized logging in applications, aiding in debugging, monitoring, and analysis tasks. The class ensures efficient file handling and robust logging capabilities within a program.
+ * @brief The Sensor class serves as a base class for different types of sensors used in a maze environment. It provides a common interface and shared functionality for sensor operations. The class maintains a reference to the Maze object, a map of direction names, a unique pointer to a Logger for logging activities, and a step counter. Derived classes must implement the pure virtual function getSensorData, which retrieves sensor data based on the maze's layout and updates a known representation of the maze. This design promotes modularity and ease of extending sensor capabilities.
  */
 class Sensor {
 public:
@@ -36,8 +36,22 @@ public:
     virtual void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const = 0;
 
 protected:
+    /**
+     * @brief Gets the reference to the Maze object.
+     * @return Reference to the Maze object.
+     */
     Maze& getMaze() const;
+
+    /**
+     * @brief Gets the direction names map.
+     * @return Map of direction names.
+     */
     const std::map<std::pair<int, int>, std::string>& getDirectionNames() const;
+
+    /**
+     * @brief Gets the logger object.
+     * @return Pointer to the Logger object.
+     */
     Logger* getLogger() const;
 
 private:
@@ -48,7 +62,7 @@ private:
 };
 
 /**
- * @brief The DistanceSensor class provides functionality to scan orthogonal directions from a starting position (x, y) within a maze. It uses a Maze object to query the environment and updates a 2D vector (knownMaze) to maintain a representation of the maze's layout based on sensor readings. 
+ * @brief The DistanceSensor class provides functionality to scan orthogonal directions from a starting position (x, y) within a maze. It uses a Maze object to query the environment and updates a 2D vector (knownMaze) to maintain a representation of the maze's layout based on sensor readings.
  */
 class DistanceSensor : public Sensor {
 public:
@@ -69,8 +83,8 @@ public:
 };
 
 /**
- * @brief The LaserSensor class provides functionality to scan multiple directions from a position (x, y) within a maze until the reading meets a wall. It uses a Maze object to query the environment and updates a 2D vector (knownMaze) to maintain a representation of the maze's layout based on sensor readings. 
- */ 
+ * @brief The LaserSensor class provides functionality to scan multiple directions from a position (x, y) within a maze until the reading meets a wall. It uses a Maze object to query the environment and updates a 2D vector (knownMaze) to maintain a representation of the maze's layout based on sensor readings.
+ */
 class LaserSensor : public Sensor {
 public:
     /**

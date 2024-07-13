@@ -233,8 +233,7 @@ private:
  * @param maze Reference to the maze object.
  * @return Shared pointer to the created Micromouse.
  */
-template <typename SolverType, typename SensorType>
-std::shared_ptr<Micromouse> createMicromouse(Maze& maze) {
+template <typename SolverType, typename SensorType> std::shared_ptr<Micromouse> createMicromouse(Maze& maze) {
     auto micromouse = std::make_shared<SolverType>();
     auto sensor = std::make_shared<SensorType>(maze);
     micromouse->initializeKnownMaze(maze.getWidth(), maze.getHeight());

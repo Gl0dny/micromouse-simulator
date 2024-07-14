@@ -529,6 +529,10 @@ classDiagram
         -const std::map<std::string, std::string> leftTurns
     }
 
+    RightHandRuleBacktrackingMazeSolver --|> Micromouse : inherits
+    LeftHandRuleBacktrackingMazeSolver --|> Micromouse : inherits
+    TeleportingUndecidedMazeSolver --|> Micromouse : inherits
+
     class RightHandRuleBacktrackingMazeSolver {
         +RightHandRuleBacktrackingMazeSolver()
         +void makeDecision() override
@@ -564,6 +568,10 @@ classDiagram
         -int steps
     }
 
+    DistanceSensor --|> Sensor : inherits
+    LaserSensor --|> Sensor : inherits
+    LidarSensor --|> Sensor : inherits
+
     class DistanceSensor {
         +DistanceSensor(Maze& maze)
         +void getSensorData(int x, int y, std::vector<std::vector<int>>& knownMaze, int step) const override
@@ -592,12 +600,6 @@ classDiagram
         -void createLogDirectory(const std::string &filePath)
         -void disableFileOutput()
     }
-    
-    main --> Simulator : creates
-    main --> Micromouse : creates
-    main --> CommandQueue : creates
-    main --> Maze : creates
-    main --> Logger : creates, logs to
 
     Simulator o-- Micromouse : aggregates
     Simulator o-- Maze : aggregates
@@ -610,13 +612,6 @@ classDiagram
 
     Sensor --> Maze : interacts with
     
-    RightHandRuleBacktrackingMazeSolver --|> Micromouse : inherits
-    LeftHandRuleBacktrackingMazeSolver --|> Micromouse : inherits
-    TeleportingUndecidedMazeSolver --|> Micromouse : inherits
-    
-    DistanceSensor --|> Sensor : inherits
-    LaserSensor --|> Sensor : inherits
-    LidarSensor --|> Sensor : inherits
 ```
 
 ## Main classes and functions overview

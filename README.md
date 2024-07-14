@@ -592,12 +592,6 @@ classDiagram
         -void createLogDirectory(const std::string &filePath)
         -void disableFileOutput()
     }
-    
-    main --> Simulator : creates
-    main --> Micromouse : creates
-    main --> CommandQueue : creates
-    main --> Maze : creates
-    main --> Logger : creates, logs to
 
     Simulator o-- Micromouse : aggregates
     Simulator o-- Maze : aggregates

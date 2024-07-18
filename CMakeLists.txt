@@ -28,21 +28,8 @@ set(SOURCES
 # Main executable
 add_executable(MicromouseProject src/main.cpp ${SOURCES})
 
-# Enable testing
-enable_testing()
-
-# Google Test
-find_package(GTest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIRS})
-
-# Test executable
-add_executable(tests tests/test_maze.cpp ${SOURCES})
-
 # Link pthread for threads
 target_link_libraries(MicromouseProject pthread)
 
-# Link Google Test for tests
-target_link_libraries(tests GTest::GTest GTest::Main)
-
-# Add the tests
-add_test(NAME maze_tests COMMAND tests)
+# Include the tests subdirectory
+add_subdirectory(tests)

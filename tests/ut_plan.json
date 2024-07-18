@@ -1,0 +1,16 @@
+{
+    "projectName": "STLA.Cockpit.Mmux.CoreFramework",
+    "unitTestDir": "${PROJECT_ROOT}/tests",
+    "language": "cpp",
+    "includeDirs": [
+        "${PROJECT_ROOT}/include",
+        "${PROJECT_ROOT}/src"
+    ],
+    "testSuites": [
+        {
+            "name": "LoggingTest",
+            "source": "${PROJECT_ROOT}/src/Logging.cpp",
+            "header": "${PROJECT_ROOT}/framework/Logging.hpp"
+        }
+    ]
+}

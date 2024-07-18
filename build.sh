@@ -59,19 +59,12 @@ build() {
     # echo "Checking if QT is installed..."
     # check_qt
 
-    echo "Creating build directory if it does not exist..."
-    if [ ! -d "build" ]; then
-        mkdir build
-    fi
-
-    cd build || exit
-
     # Configure the project using CMake
     echo "Configuring the project using CMake..."
     if $DEBUG; then
-        cmake -DCMAKE_BUILD_TYPE=Debug ..
+        cmake -DCMAKE_BUILD_TYPE=Debug -S . -B build
     else
-        cmake ..
+        cmake -S . -B build
     fi
 
     # Check if configuration was successful
@@ -82,15 +75,13 @@ build() {
 
     # Compile the project
     echo "Compiling the project..."
-    make
+    cmake --build build
 
     # Check if compilation was successful
     if [ $? -ne 0 ]; then
         echo "Project compilation failed."
         exit 1
     fi
-
-    cd ..
 }
 
 # Function to generate Doxygen documentation
@@ -132,7 +123,7 @@ run_application() {
 # Function to run tests
 run_tests() {
     echo "Running tests..."
-    ./build/tests
+    ./build/tests/tests
 
     # Check if tests ran successfully
     if [ $? -ne 0 ]; then

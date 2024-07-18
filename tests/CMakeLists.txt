@@ -5,6 +5,9 @@ enable_testing()
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
+# Coverage using lcov 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+
 # Test executable
 add_executable(tests test_maze.cpp ${CMAKE_SOURCE_DIR}/src/Maze.cpp ${CMAKE_SOURCE_DIR}/src/Logger.cpp ${CMAKE_SOURCE_DIR}/src/Utils.cpp ${CMAKE_SOURCE_DIR}/src/Micromouse.cpp ${CMAKE_SOURCE_DIR}/src/Sensor.cpp ${CMAKE_SOURCE_DIR}/src/Simulator.cpp)
 

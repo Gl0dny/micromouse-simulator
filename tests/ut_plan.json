@@ -1,6 +1,8 @@
 {
-    "projectName": "STLA.Cockpit.Mmux.CoreFramework",
-    "unitTestDir": "${PROJECT_ROOT}/tests",
+    "projectName": "MicromouseSimulator",
+    "unitTestDir": "${PROJECT_ROOT}/build/tests",
+    "outputDir": "${PROJECT_ROOT}/tests/reports",
+    "pdfReportStylingFile": "${PROJECT_ROOT}/tests/pdf_report_styling_file.xslt",
     "language": "cpp",
     "includeDirs": [
         "${PROJECT_ROOT}/include",
@@ -8,9 +10,9 @@
     ],
     "testSuites": [
         {
-            "name": "LoggingTest",
-            "source": "${PROJECT_ROOT}/src/Logging.cpp",
-            "header": "${PROJECT_ROOT}/framework/Logging.hpp"
+            "name": "MazeTest",
+            "source": "${PROJECT_ROOT}/tests/test_maze.cpp",
+            "header": ""
         }
     ]
 }

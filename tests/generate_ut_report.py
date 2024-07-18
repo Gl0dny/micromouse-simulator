@@ -17,6 +17,7 @@ XML_REPORT_NAME = 'ut_report.xml'
 HTML_REPORT_NAME = 'ut_report.html'
 PDF_REPORT_NAME = 'ut_report.pdf'
 LCOV_REPORT_NAME = 'coverage.info'
+GENINFO_TEMP_DIR = '/tmp/geninfo_datvLkR'
 
 EXCLUDE_DIRS = []
 
@@ -59,7 +60,7 @@ def generate_test_report(dir, output_dir):
         tuple: Paths to the generated test report and coverage file.
     """
     original_dir = os.path.abspath(os.getcwd())
-    target_dir = os.path.join(original_dir, "build", dir)
+    target_dir = os.path.join(original_dir, dir)
     logging.info(f"Generating test report for {target_dir}")
     
     test_report_file = None
@@ -75,7 +76,25 @@ def generate_test_report(dir, output_dir):
         
         subprocess.run([executable])
         subprocess.run(["lcov", "--capture", "--directory", ".", "--output-file", LCOV_REPORT_NAME])
+
+        # Generate the coverage report using geninfo and handle warnings/errors
+        geninfo_cmd = [
+            "geninfo", ".", "--output-filename", LCOV_REPORT_NAME,
+            "--ignore-errors", "usage,usage,inconsistent,inconsistent",
+            "--rc", "geninfo_unexecuted_blocks=1"
+        ]
         
+        # Create a temporary directory for geninfo data if it does not exist
+        os.makedirs(GENINFO_TEMP_DIR, exist_ok=True)
+        
+        # Set the temporary directory environment variable for geninfo
+        os.environ["GENINFO_TEMP_DIR"] = GENINFO_TEMP_DIR
+        
+        # Run geninfo with the necessary options to suppress warnings and handle errors
+        subprocess.run(geninfo_cmd)
+
+        logging.info(f"Coverage data captured in {LCOV_REPORT_NAME}")
+
         if os.path.isfile(XML_REPORT_NAME):
             logging.info(f"{target_dir}/{XML_REPORT_NAME}")
             test_report_file = os.path.join(output_dir, XML_REPORT_NAME)
@@ -253,7 +272,6 @@ def generate_xml_reports(test_plan, project_root, output_dir):
     Returns:
         str: Path to the generated XML test report.
     """
-    report_results = []
     directory = test_plan['unitTestDir']
     directory = os.path.relpath(directory, project_root)
 
@@ -312,16 +330,24 @@ def generate_pdf_report(input_file, output_file, styling_file, output_dir):
     # Convert the HTML file to a PDF
     pdfkit.from_file(html_file_path, output_file)
 
-def main(test_plan, project_root, output_dir, styling_file):
+def main(test_plan, project_root):
     """
     Main function to generate test reports.
 
     Args:
         test_plan (dict): Test plan containing unit test directories and test suites.
         project_root (str): Root directory of the project.
-        output_dir (str): Directory to save the generated reports.
-        styling_file (str): Path to the XSLT styling file.
     """
+
+    output_dir = test_plan['outputDir']
+    styling_file = test_plan['pdfReportStylingFile']
+
+    print("###############")
+    print(output_dir)
+
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
@@ -333,14 +359,21 @@ def main(test_plan, project_root, output_dir, styling_file):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Generate Test Report')
     parser.add_argument('testPlan', type=str, help='Path to the test plan JSON file')
-    parser.add_argument('stylingFile', type=str, help='Path to the XSLT styling file')
-    parser.add_argument('output_dir', type=str, help='Output directory for the reports')
 
     args = parser.parse_args()
     project_root = os.getcwd()
 
     with open(args.testPlan) as f:
-        file_data = f.read().replace("${PROJECT_ROOT}", project_root)
+        file_data = f.read()
+        
+        file_data = file_data.replace("${PROJECT_ROOT}", project_root)
+        file_data = file_data.replace("$PROJECT_ROOT", project_root)
+        
         logging.info(f"Test plan: {file_data}")
-        data = json.loads(file_data)
-        main(data, project_root, args.output_dir, args.stylingFile)
+        
+        try:
+            data = json.loads(file_data)
+            logging.info(f"Test plan: {data}")
+            main(data, project_root)
+        except json.JSONDecodeError as e:
+            logging.error(f"Failed to parse JSON: {e}")

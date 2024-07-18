@@ -36,3 +36,4 @@ docs/html/
 docs/latex/
 
 /.vscode
+/tests/reports

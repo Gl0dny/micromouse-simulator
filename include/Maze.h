@@ -14,19 +14,10 @@
 class Maze {
 public:
     /**
-     * @brief Destructor for Maze.
-     */
-    ~Maze()=default;
-
-    /**
      * @brief Returns the single instance of Maze.
      * @return Reference to the Maze instance.
      */
     static Maze& getInstance();
-
-    // Delete copy constructor and assignment operator to prevent duplicates
-    Maze(Maze const &) = delete;
-    void operator=(Maze const &) = delete;
 
     /**
      * @brief Gets the width of the maze.
@@ -78,6 +69,19 @@ private:
      * @brief Private constructor to prevent instantiation.
      */
     Maze();
+
+    /**
+     * @brief Destructor for Maze.
+     */
+    ~Maze()=default;
+
+    // Delete copy constructor and assignment operator to prevent duplicates
+    Maze(const Maze&) = delete;
+    Maze& operator=(const Maze&) = delete;
+
+    // Delete move constructor and move assignment operator to prevent moving
+    Maze(Maze&&) = delete;
+    Maze& operator=(Maze&&) = delete;
 
     int width; ///< Width of the maze.
     int height; ///< Height of the maze.

@@ -475,8 +475,7 @@ classDiagram
         -std::unique_ptr<Logger> logger
     }
     
-    class Maze {
-        +~Maze()
+    class Maze 
         +static Maze& getInstance()
         +int getWidth() const
         +int getHeight() const
@@ -486,6 +485,7 @@ classDiagram
         +bool isWall(int x, int y) const
         +Maze& setLogger(const std::string& logFile, bool toFileOnly = true)
         -Maze()
+        -~Maze()
         -int width
         -int height
         -std::vector<std::vector<int>> mazeGrid

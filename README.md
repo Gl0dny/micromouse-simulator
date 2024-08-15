@@ -1,4 +1,4 @@
-# Micromouse Simulator
+# micromouse-simulator
 
 Project made for C++ course at Warsaw University of Technology.
 
@@ -57,7 +57,7 @@ This program simulates a Micromouse navigating through a maze. The primary compo
 
 ## Project Structure
 
-        MicromouseProject/
+        micromouse-simulator/
         ├── docs/
         │   └── Doxyfile
         ├── include/

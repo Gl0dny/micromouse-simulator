@@ -475,7 +475,7 @@ classDiagram
         -std::unique_ptr<Logger> logger
     }
     
-    class Maze 
+    class Maze {
         +static Maze& getInstance()
         +int getWidth() const
         +int getHeight() const

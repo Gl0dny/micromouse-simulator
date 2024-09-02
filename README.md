@@ -613,6 +613,7 @@ classDiagram
     Micromouse *-- Logger : logs to
 
     Sensor --> Maze : interacts with
+    Sensor *-- Logger : logs to
     
 ```
 

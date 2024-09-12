@@ -211,24 +211,34 @@ void TeleportingUndecidedMazeSolver::makeDecision() {
     getLogger()->logMessage("Step " + std::to_string(getStep()) + ": Micromouse is stuck with no untried directions available.");
 }
 
-RandomSolver::RandomSolver()
+RandomMoveSolver::RandomMoveSolver()
     : Micromouse("random_solver") {}
 
-void RandomSolver::makeDecision() {
-    followRandomAlgorithm();
+/**
+ * @brief Makes a decision on the next move using a random move algorithm.
+ * This function shuffles the possible directions and chooses one that is not a wall.
+ */
+void RandomMoveSolver::makeDecision() {
+    followRandomMoveAlgorithm();
 }
 
-void RandomSolver::followRandomAlgorithm() {
-    std::cout << "Following a random solver algorithm" << std::endl;
+/**
+ * @brief Follows a random move algorithm to determine the next move.
+ * The algorithm selects possible directions: current direction, left, right, and reverse.
+ * It shuffles the directions randomly and selects the first valid direction that does not lead into a wall.
+ */
+void RandomMoveSolver::followRandomMoveAlgorithm() {
+    
     std::vector<std::string> possibleDirections = {
-        getLeftTurns().at(getDirection()),       
-        getRightTurns().at(getDirection()),       
-        getLeftTurns().at(getLeftTurns().at(getDirection())), 
-        getDirection() 
+        getLeftTurns().at(getDirection()),        // Left turn
+        getRightTurns().at(getDirection()),       // Right turn
+        getLeftTurns().at(getLeftTurns().at(getDirection())), // Reverse
+        getDirection() // Continue straight
     };
 
     std::random_device rd;
     std::mt19937 gen(rd());
+
     std::shuffle(possibleDirections.begin(), possibleDirections.end(), gen);
 
     for (const auto& newDirection : possibleDirections) {
@@ -238,12 +248,13 @@ void RandomSolver::followRandomAlgorithm() {
             break; 
         }
     }
+
     getLogger()->logMessage("Step " + std::to_string(getStep()) + ": Following random algorithm. Micromouse decided to turn " + getDirection());
 }
 
 std::shared_ptr<Micromouse> chooseMicromouse(Maze& maze) {
     int solverChoice, sensorChoice;
-    std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n2. Left Hand Rule\n3. Teleporting Undecided Solver\n4. Random Algorithm\n";
+    std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n2. Left Hand Rule\n3. Teleporting Undecided Solver\n4. Random Move Algorithm\n";
     std::cin >> solverChoice;
     std::cout << "Choose Sensor type:\n1. Distance Sensor\n2. Laser Sensor\n3. Lidar Sensor\n";
     std::cin >> sensorChoice;
@@ -288,11 +299,11 @@ std::shared_ptr<Micromouse> chooseMicromouse(Maze& maze) {
         case 4:
             switch (sensorChoice) {
                 case 1:
-                    return createMicromouse<RandomSolver, DistanceSensor>(maze);
+                    return createMicromouse<RandomMoveSolver, DistanceSensor>(maze);
                 case 2:
-                    return createMicromouse<RandomSolver, LaserSensor>(maze);
+                    return createMicromouse<RandomMoveSolver, LaserSensor>(maze);
                 case 3:
-                    return createMicromouse<RandomSolver, LidarSensor>(maze);
+                    return createMicromouse<RandomMoveSolver, LidarSensor>(maze);
                 default:
                     std::cerr << "Invalid sensor choice" << std::endl;
                     return nullptr;

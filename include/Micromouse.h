@@ -248,13 +248,29 @@ template <typename SolverType, typename SensorType> std::shared_ptr<Micromouse> 
  */
 std::shared_ptr<Micromouse> chooseMicromouse(Maze& maze);
 
-class RandomSolver : public Micromouse {
+/**
+ * @brief The RandomMoveSolver class extends the Micromouse class and implements a maze-solving algorithm that makes random decisions at each step. It randomly selects from possible directions based on the current direction and checks if the direction is valid before making a move.
+ */
+class RandomMoveSolver : public Micromouse {
 public:
-    RandomSolver();
+    /**
+     * @brief Constructor for RandomMoveSolver.
+     * Initializes the RandomMoveSolver with the corresponding log file.
+     */
+    RandomMoveSolver();
+
+    /**
+     * @brief Implements the decision-making process based on a random algorithm.
+     * This function calls the followRandomAlgorithm() method to decide the next move.
+     */
     void makeDecision() override;
 
 private:
-    void followRandomAlgorithm();
+    /**
+     * @brief Follows a random move algorithm to determine the next move.
+     * Randomly shuffles a set of potential directions and chooses a valid direction to move.
+     */
+    void followRandomMoveAlgorithm();
 };
 
 #endif // MICROMOUSE_H

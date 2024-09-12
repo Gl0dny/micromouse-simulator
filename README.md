@@ -160,6 +160,7 @@ Choose Micromouse type:
     1. Right Hand Rule
     2. Left Hand Rule
     3. Teleporting Undecided Solver
+    4. Random Move Algorithm
 
 Choose Sensor type:
     1. Distance Sensor
@@ -190,6 +191,7 @@ Multiple Solvers - different algorithms for navigation:
 - Right-Hand Rule: Follows the right-hand rule with backtracking to navigate.
 - Left-Hand Rule: Follows the left-hand rule with backtracking to navigate.
 - Teleporting Undecided: Checks untried directions and uses backtracking for teleporting to make it seem like the micromouse's behaviour is undefined.
+- Random Move: Randomly shuffles a set of potential directions and chooses a valid direction to move.
 
 
 ###### Sensor
@@ -534,6 +536,7 @@ classDiagram
     RightHandRuleBacktrackingMazeSolver --|> Micromouse : inherits
     LeftHandRuleBacktrackingMazeSolver --|> Micromouse : inherits
     TeleportingUndecidedMazeSolver --|> Micromouse : inherits
+    RandomMoveSolver --|> Micromouse : inherits
 
     class RightHandRuleBacktrackingMazeSolver {
         +RightHandRuleBacktrackingMazeSolver()
@@ -555,6 +558,12 @@ classDiagram
         -std::stack<std::pair<int, int>> backtrackStack
         -bool hasUntriedDirection(int x, int y)
         -std::string getNextDirection(int x, int y)
+    }
+    
+    class RandomMoveSolver {
+        +RandomMoveSolver()
+        +void makeDecision() override
+        -followRandomMoveAlgorithm()
     }
     
     class Sensor {

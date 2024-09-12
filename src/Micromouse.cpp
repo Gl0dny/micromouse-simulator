@@ -1,6 +1,9 @@
 #include "Micromouse.h"
 #include <iostream>
 #include <limits>
+#include <random>
+#include <vector>
+#include <algorithm>
 
 Micromouse::Micromouse(const std::string& logFileName)
     : posX(1), posY(1), direction("North"), step(0), logger(std::make_unique<Logger>("logs/" + logFileName + ".log")) {
@@ -208,9 +211,39 @@ void TeleportingUndecidedMazeSolver::makeDecision() {
     getLogger()->logMessage("Step " + std::to_string(getStep()) + ": Micromouse is stuck with no untried directions available.");
 }
 
+RandomSolver::RandomSolver()
+    : Micromouse("random_solver") {}
+
+void RandomSolver::makeDecision() {
+    followRandomAlgorithm();
+}
+
+void RandomSolver::followRandomAlgorithm() {
+    std::cout << "Following a random solver algorithm" << std::endl;
+    std::vector<std::string> possibleDirections = {
+        getLeftTurns().at(getDirection()),       
+        getRightTurns().at(getDirection()),       
+        getLeftTurns().at(getLeftTurns().at(getDirection())), 
+        getDirection() 
+    };
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::shuffle(possibleDirections.begin(), possibleDirections.end(), gen);
+
+    for (const auto& newDirection : possibleDirections) {
+        auto [dx, dy] = getDirections().at(newDirection);
+        if (getKnownMaze()[getPosX() + dx][getPosY() + dy] != 1) {
+            setDirection(newDirection);
+            break; 
+        }
+    }
+    getLogger()->logMessage("Step " + std::to_string(getStep()) + ": Following random algorithm. Micromouse decided to turn " + getDirection());
+}
+
 std::shared_ptr<Micromouse> chooseMicromouse(Maze& maze) {
     int solverChoice, sensorChoice;
-    std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n2. Left Hand Rule\n3. Teleporting Undecided Solver\n";
+    std::cout << "Choose Micromouse type:\n1. Right Hand Rule\n2. Left Hand Rule\n3. Teleporting Undecided Solver\n4. Random Algorithm\n";
     std::cin >> solverChoice;
     std::cout << "Choose Sensor type:\n1. Distance Sensor\n2. Laser Sensor\n3. Lidar Sensor\n";
     std::cin >> sensorChoice;
@@ -248,6 +281,18 @@ std::shared_ptr<Micromouse> chooseMicromouse(Maze& maze) {
                     return createMicromouse<TeleportingUndecidedMazeSolver, LaserSensor>(maze);
                 case 3:
                     return createMicromouse<TeleportingUndecidedMazeSolver, LidarSensor>(maze);
+                default:
+                    std::cerr << "Invalid sensor choice" << std::endl;
+                    return nullptr;
+            }
+        case 4:
+            switch (sensorChoice) {
+                case 1:
+                    return createMicromouse<RandomSolver, DistanceSensor>(maze);
+                case 2:
+                    return createMicromouse<RandomSolver, LaserSensor>(maze);
+                case 3:
+                    return createMicromouse<RandomSolver, LidarSensor>(maze);
                 default:
                     std::cerr << "Invalid sensor choice" << std::endl;
                     return nullptr;

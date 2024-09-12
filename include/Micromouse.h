@@ -248,4 +248,13 @@ template <typename SolverType, typename SensorType> std::shared_ptr<Micromouse> 
  */
 std::shared_ptr<Micromouse> chooseMicromouse(Maze& maze);
 
+class RandomSolver : public Micromouse {
+public:
+    RandomSolver();
+    void makeDecision() override;
+
+private:
+    void followRandomAlgorithm();
+};
+
 #endif // MICROMOUSE_H

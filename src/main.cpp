@@ -74,12 +74,12 @@ int main() {
     std::thread inputThread([&commandQueue, &exitFlag]() {
         std::string command;
         std::cout << "Enter 'start' to start the simulation, 'pause' to pause it, 'reset' to reset it, or 'exit' to exit: \n";
-        while (!exitFlag.load()) {
+        while (!exitFlag.load(std::memory_order_acquire)) {
             std::getline(std::cin, command);
             if (!command.empty()) {
                 commandQueue.push(command);
                 if (command == "exit") {
-                    exitFlag.store(true);
+                    exitFlag.store(true, std::memory_order_release);
                 }
             }
         }
@@ -87,7 +87,7 @@ int main() {
 
     std::thread simulationThread([&simulator, &commandQueue, &exitFlag, &logger]() {
         std::string command;
-        while (!exitFlag.load()) {
+        while (!exitFlag.load(std::memory_order_acquire)) {
             if (commandQueue.pop(command)) {
                 if (command == "start") {
                     simulator->start();
